@@ -67,3 +67,8 @@ of the same dimension:
 
 There are factory functions for transform, view and projection matrices, color 
 conversion functions and more. Read the (undocumented source) to find out more ;-)
+
+## Constexpr
+
+Most functions are declared `constexpr` and can thus be used at compile time 
+(with for a few exceptions where the implementation does not allow it).
