@@ -23,14 +23,14 @@
     TEMPLATE_TEST_CASE_SIG(__VA_ARGS__,                                        \
                            ((typename T, std::size_t Rows,                     \
                              std::size_t Columns,                              \
-                             mtl::vector_options Options),                     \
+                             vml::vector_options Options),                     \
                             T, Rows, Columns, Options),                        \
-                           TYPE_LIST(mtl::vector_options{}),                   \
-                           TYPE_LIST(mtl::vector_options{}.packed(true)))
+                           TYPE_LIST(vml::vector_options{}),                   \
+                           TYPE_LIST(vml::vector_options{}.packed(true)))
 
-#define MATRIX_TYPE ::mtl::matrix<T, Rows, Columns, Options>
+#define MATRIX_TYPE ::vml::matrix<T, Rows, Columns, Options>
 
-using namespace mtl::short_types;
+using namespace vml::short_types;
 
 namespace {
 template <typename T>
@@ -41,14 +41,14 @@ template <>
 struct OtherType<int> {
     using type = float;
 };
-template <mtl::vector_options O>
+template <vml::vector_options O>
 struct OtherOptions {
     auto constexpr static value = O.packed(!O.packed());
 };
 } // namespace
 
 MATRIX_TEST_CASE("matrix offsets", "[matrix][matrix_data]") {
-    using M = mtl::matrix<T, Rows, Columns, Options>;
+    using M = vml::matrix<T, Rows, Columns, Options>;
     CHECK(std::is_trivial_v<M>);
     if constexpr (Options.packed()) {
         CHECK(sizeof(M) == sizeof(T) * M::size());
@@ -62,7 +62,7 @@ MATRIX_TEST_CASE("matrix offsets", "[matrix][matrix_data]") {
 
 MATRIX_TEST_CASE("matrix single value constructor", "[matrix]") {
     T const value = (T)GENERATE(0, 1, -1, 5321);
-    mtl::matrix<T, Rows, Columns, Options> const m = value;
+    vml::matrix<T, Rows, Columns, Options> const m = value;
     for (std::size_t i = 0; i < Rows; ++i) {
         for (std::size_t j = 0; j < Columns; ++j) {
             if (i == j) {
@@ -76,7 +76,7 @@ MATRIX_TEST_CASE("matrix single value constructor", "[matrix]") {
 }
 
 MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
-    using M = mtl::matrix<T, Rows, Columns, Options>;
+    using M = vml::matrix<T, Rows, Columns, Options>;
     T const values[16] = { 0,     1, (T)-1, 5321,  35,     (T)-23, (T)1.2,  3,
                            (T)-2, 0, 1,     (T)-3, (T)3.5, 23,     (T)-1.2, 3 };
     M m;
@@ -106,7 +106,7 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
                             RowType([&](int i) { return values[4 + i]; }),
                             RowType([&](int i) { return values[8 + i]; }),
                             RowType([&](int i) { return values[12 + i]; }) };
-        m = M(mtl::rows, [&](int i) { return rows[i]; });
+        m = M(vml::rows, [&](int i) { return rows[i]; });
         for (std::size_t i = 0; i < Rows; ++i) {
             for (std::size_t j = 0; j < Columns; ++j) {
                 CHECK(m(i, j) == values[i * 4 + j]);
@@ -121,7 +121,7 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
             ColumnType([&](int i) { return values[i * 4 + 2]; }),
             ColumnType([&](int i) { return values[i * 4 + 3]; })
         };
-        m = M(mtl::columns, [&](int i) { return columns[i]; });
+        m = M(vml::columns, [&](int i) { return columns[i]; });
         for (std::size_t i = 0; i < Rows; ++i) {
             for (std::size_t j = 0; j < Columns; ++j) {
                 CHECK(m(i, j) == values[i * 4 + j]);
@@ -133,11 +133,11 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
 MATRIX_TEST_CASE("matrix conversion", "[matrix]") {
     T const values[16] = { 0,     1, (T)-1, 5321,  35,     (T)-23, (T)1.2,  3,
                            (T)-2, 0, 1,     (T)-3, (T)3.5, 23,     (T)-1.2, 3 };
-    mtl::matrix<T, Rows, Columns, Options> const m(
+    vml::matrix<T, Rows, Columns, Options> const m(
         [&](int i) { return values[i]; });
     using U = typename OtherType<T>::type;
     constexpr auto P = OtherOptions<Options>::value;
-    mtl::matrix<U, Rows, Columns, P> const n = m;
+    vml::matrix<U, Rows, Columns, P> const n = m;
     INFO(n);
     INFO(m);
     for (int i = 0; auto value: n) {
@@ -167,7 +167,7 @@ TEST_CASE("matrix::diag", "[matrix]") {
 #if 0
 
 TEST_CASE("map(matrix)", "[matrix]") {
-	auto const m = mtl::map(float3x4::diag(0.1f, 0.2f, 0.3f), int3x4::diag(1, 2, 3), packed_int3x4{}, utl::plus);
+	auto const m = vml::map(float3x4::diag(0.1f, 0.2f, 0.3f), int3x4::diag(1, 2, 3), packed_int3x4{}, utl::plus);
 	static_assert(std::is_same_v<decltype(m)::value_type, float>);
 	static_assert(!decltype(m)::options().packed());
 	CHECK(m == float3x4::diag(1.1f, 2.2f, 3.3f));
@@ -177,8 +177,8 @@ TEST_CASE("fold(matrix)", "[matrix]") {
 	SECTION("1 / associativity") {
 		double const x = 1e30, y = -1e30, z = 1;
 		auto const A = double3x3::diag(x, y, z);
-		auto const lf = mtl::left_fold(A, utl::plus);
-		auto const rf = mtl::right_fold(A, utl::plus);
+		auto const lf = vml::left_fold(A, utl::plus);
+		auto const rf = vml::right_fold(A, utl::plus);
 		static_assert(std::is_same_v<decltype(lf), double const>);
 		static_assert(std::is_same_v<decltype(rf), double const>);
 		CHECK(lf == (x + y) + z);
@@ -186,8 +186,8 @@ TEST_CASE("fold(matrix)", "[matrix]") {
 	}
 	SECTION("2") {
 		int2x3 const A = { 1, 1, 1, 1, 1, 1 };
-		auto const lf = mtl::left_fold(A, utl::multiplies);
-		auto const rf = mtl::right_fold(A, utl::multiplies);
+		auto const lf = vml::left_fold(A, utl::multiplies);
+		auto const rf = vml::right_fold(A, utl::multiplies);
 		static_assert(std::is_same_v<decltype(lf), int const>);
 		static_assert(std::is_same_v<decltype(rf), int const>);
 		CHECK(lf == 1);

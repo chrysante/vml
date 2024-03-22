@@ -3,7 +3,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-using namespace mtl::short_types;
+using namespace vml::short_types;
 
 TEST_CASE("vector basic arithmetic", "[vector]") {
     int3 a = { 1, 2, 3 };
@@ -24,9 +24,9 @@ TEST_CASE("vector basic arithmetic", "[vector]") {
     CHECK(a % 2 == int3{ 1, 0, 1 });
     CHECK(2 % a == int3{ 0, 0, 2 });
 
-    using namespace mtl::literals;
+    using namespace vml::literals;
     CHECK(complex_int{ 3, -2 } * 1_i ==
-          mtl::__mtl_mul_by_i(complex_int{ 3, -2 }));
+          vml::__vml_mul_by_i(complex_int{ 3, -2 }));
 }
 
 TEST_CASE("matrix basic arithmetic", "[matrix]") {
@@ -51,43 +51,43 @@ TEST_CASE("matrix multiplication", "[matrix]") {
 }
 
 #define TYPE_LIST(_Tp, _Up)                                                    \
-    (mtl::quaternion<_Tp>, mtl::quaternion<_Up>, 0),                           \
-        (mtl::quaternion<_Tp>, mtl::complex<_Up>, 0),                          \
-        (mtl::quaternion<_Tp>, _Up, 0),                                        \
-        (mtl::complex<_Tp>, mtl::quaternion<_Up>, 0),                          \
-        (_Tp, mtl::quaternion<_Up>, 0),                                        \
-        (mtl::complex<_Tp>, mtl::complex<_Up>, 0),                             \
-        (_Tp, mtl::complex<_Up>, 0), (mtl::complex<_Tp>, _Up, 0),              \
+    (vml::quaternion<_Tp>, vml::quaternion<_Up>, 0),                           \
+        (vml::quaternion<_Tp>, vml::complex<_Up>, 0),                          \
+        (vml::quaternion<_Tp>, _Up, 0),                                        \
+        (vml::complex<_Tp>, vml::quaternion<_Up>, 0),                          \
+        (_Tp, vml::quaternion<_Up>, 0),                                        \
+        (vml::complex<_Tp>, vml::complex<_Up>, 0),                             \
+        (_Tp, vml::complex<_Up>, 0), (vml::complex<_Tp>, _Up, 0),              \
                                                                                \
-        (mtl::vector3<mtl::quaternion<_Tp>>, mtl::quaternion<_Up>, 0),         \
-        (mtl::vector3<mtl::quaternion<_Tp>>, mtl::complex<_Up>, 0),            \
-        (mtl::vector3<mtl::quaternion<_Tp>>, _Up, 0),                          \
-        (mtl::vector3<mtl::complex<_Tp>>, mtl::quaternion<_Up>, 0),            \
-        (mtl::vector3<_Tp>, mtl::quaternion<_Up>, 0),                          \
-        (mtl::vector3<mtl::complex<_Tp>>, mtl::complex<_Up>, 0),               \
-        (mtl::vector3<_Tp>, mtl::complex<_Up>, 0),                             \
-        (mtl::vector3<mtl::complex<_Tp>>, _Up, 0),                             \
+        (vml::vector3<vml::quaternion<_Tp>>, vml::quaternion<_Up>, 0),         \
+        (vml::vector3<vml::quaternion<_Tp>>, vml::complex<_Up>, 0),            \
+        (vml::vector3<vml::quaternion<_Tp>>, _Up, 0),                          \
+        (vml::vector3<vml::complex<_Tp>>, vml::quaternion<_Up>, 0),            \
+        (vml::vector3<_Tp>, vml::quaternion<_Up>, 0),                          \
+        (vml::vector3<vml::complex<_Tp>>, vml::complex<_Up>, 0),               \
+        (vml::vector3<_Tp>, vml::complex<_Up>, 0),                             \
+        (vml::vector3<vml::complex<_Tp>>, _Up, 0),                             \
                                                                                \
-        (mtl::quaternion<_Tp>, mtl::vector3<mtl::quaternion<_Up>>, 0),         \
-        (mtl::quaternion<_Tp>, mtl::vector3<mtl::complex<_Up>>, 0),            \
-        (mtl::quaternion<_Tp>, mtl::vector3<_Up>, 0),                          \
-        (mtl::complex<_Tp>, mtl::vector3<mtl::quaternion<_Up>>, 0),            \
-        (_Tp, mtl::vector3<mtl::quaternion<_Up>>, 0),                          \
-        (mtl::complex<_Tp>, mtl::vector3<mtl::complex<_Up>>, 0),               \
-        (_Tp, mtl::vector3<mtl::complex<_Up>>, 0),                             \
-        (mtl::complex<_Tp>, mtl::vector3<_Up>, 0),                             \
+        (vml::quaternion<_Tp>, vml::vector3<vml::quaternion<_Up>>, 0),         \
+        (vml::quaternion<_Tp>, vml::vector3<vml::complex<_Up>>, 0),            \
+        (vml::quaternion<_Tp>, vml::vector3<_Up>, 0),                          \
+        (vml::complex<_Tp>, vml::vector3<vml::quaternion<_Up>>, 0),            \
+        (_Tp, vml::vector3<vml::quaternion<_Up>>, 0),                          \
+        (vml::complex<_Tp>, vml::vector3<vml::complex<_Up>>, 0),               \
+        (_Tp, vml::vector3<vml::complex<_Up>>, 0),                             \
+        (vml::complex<_Tp>, vml::vector3<_Up>, 0),                             \
                                                                                \
-        (mtl::vector3<mtl::quaternion<_Tp>>,                                   \
-         mtl::vector3<mtl::quaternion<_Up>>, 0),                               \
-        (mtl::vector3<mtl::quaternion<_Tp>>, mtl::vector3<mtl::complex<_Up>>,  \
+        (vml::vector3<vml::quaternion<_Tp>>,                                   \
+         vml::vector3<vml::quaternion<_Up>>, 0),                               \
+        (vml::vector3<vml::quaternion<_Tp>>, vml::vector3<vml::complex<_Up>>,  \
          0),                                                                   \
-        (mtl::vector3<mtl::quaternion<_Tp>>, mtl::vector3<_Up>, 0),            \
-        (mtl::vector3<mtl::complex<_Tp>>, mtl::vector3<mtl::quaternion<_Up>>,  \
+        (vml::vector3<vml::quaternion<_Tp>>, vml::vector3<_Up>, 0),            \
+        (vml::vector3<vml::complex<_Tp>>, vml::vector3<vml::quaternion<_Up>>,  \
          0),                                                                   \
-        (mtl::vector3<_Tp>, mtl::vector3<mtl::quaternion<_Up>>, 0),            \
-        (mtl::vector3<mtl::complex<_Tp>>, mtl::vector3<mtl::complex<_Up>>, 0), \
-        (mtl::vector3<_Tp>, mtl::vector3<mtl::complex<_Up>>, 0),               \
-        (mtl::vector3<mtl::complex<_Tp>>, mtl::vector3<_Up>, 0)
+        (vml::vector3<_Tp>, vml::vector3<vml::quaternion<_Up>>, 0),            \
+        (vml::vector3<vml::complex<_Tp>>, vml::vector3<vml::complex<_Up>>, 0), \
+        (vml::vector3<_Tp>, vml::vector3<vml::complex<_Up>>, 0),               \
+        (vml::vector3<vml::complex<_Tp>>, vml::vector3<_Up>, 0)
 
 #define ARITHMETIC_INST_TEST(...)                                              \
     TEMPLATE_TEST_CASE_SIG(__VA_ARGS__,                                        \
@@ -112,7 +112,7 @@ ARITHMETIC_INST_TEST("arithmetic instantiation test",
 
 TEST_CASE("arithmetic matrix instantiation test",
           "[matrix][vector][quaternion][complex]") {
-    using namespace mtl;
+    using namespace vml;
     static_assert(requires {
         {
             matrix3x3<complex<float>>{} * quaternion<int> {}

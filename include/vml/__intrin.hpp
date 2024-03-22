@@ -1,5 +1,5 @@
-#ifndef __MTL_INTRIN_HPP_INCLUDED__
-#define __MTL_INTRIN_HPP_INCLUDED__
+#ifndef __VML_INTRIN_HPP_INCLUDED__
+#define __VML_INTRIN_HPP_INCLUDED__
 
 #include <cstddef>
 
@@ -7,7 +7,7 @@
 
 #include "__common.hpp"
 
-namespace mtl {
+namespace vml {
 
 template <typename T, std::size_t Size, bool Packed>
 struct __simd_type {
@@ -45,7 +45,7 @@ struct __simd_type<float, 4, false> {
     static void div(type& a, type const& b) { a = _mm_div_ps(a, b); }
 };
 
-#if MTL_AVX
+#if VML_AVX
 template <>
 struct __simd_type<double, 4, false> {
     using type = __m256d;
@@ -64,6 +64,6 @@ struct __simd_type<double, 4, false> {
 
 #endif
 
-} // namespace mtl
+} // namespace vml
 
-#endif // __MTL_INTRIN_HPP_INCLUDED__
+#endif // __VML_INTRIN_HPP_INCLUDED__

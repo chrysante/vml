@@ -1,5 +1,5 @@
-#ifndef __MTL_BASE_HPP_INCLUDED__
-#define __MTL_BASE_HPP_INCLUDED__
+#ifndef __VML_BASE_HPP_INCLUDED__
+#define __VML_BASE_HPP_INCLUDED__
 
 // MARK: Check Compiler Compatibility
 
@@ -9,35 +9,35 @@
 
 // MARK: Customization Points
 
-#ifndef MTL_DEBUG_LEVEL
+#ifndef VML_DEBUG_LEVEL
 #ifdef NDEBUG
-#define MTL_DEBUG_LEVEL 0
+#define VML_DEBUG_LEVEL 0
 #else
-#define MTL_DEBUG_LEVEL 1
+#define VML_DEBUG_LEVEL 1
 #endif
 #endif
 
-#ifndef MTL_SAFE_MATH
-#define MTL_SAFE_MATH 1
+#ifndef VML_SAFE_MATH
+#define VML_SAFE_MATH 1
 #endif
 
-#ifndef MTL_DEFAULT_PACKED
-#define MTL_DEFAULT_PACKED 0
+#ifndef VML_DEFAULT_PACKED
+#define VML_DEFAULT_PACKED 0
 #endif
 
-#ifndef MTL_AVX
-#define MTL_AVX 0
+#ifndef VML_AVX
+#define VML_AVX 0
 #endif
 
-#ifndef MTL_NAMESPACE_NAME
-#define MTL_NAMESPACE_NAME mtl
+#ifndef VML_NAMESPACE_NAME
+#define VML_NAMESPACE_NAME vml
 #endif
 
-#ifndef MTL_UNICODE_MATH_PARANTHESES
+#ifndef VML_UNICODE_MATH_PARANTHESES
 #if defined(__APPLE__)
-#define MTL_UNICODE_MATH_PARANTHESES 1
+#define VML_UNICODE_MATH_PARANTHESES 1
 #else
-#define MTL_UNICODE_MATH_PARANTHESES 0
+#define VML_UNICODE_MATH_PARANTHESES 0
 #endif
 #endif
 
@@ -45,87 +45,87 @@
 
 #if defined(__GNUC__) || defined(__clang__)
 
-#define __mtl_pure         __attribute__((const))
-#define __mtl_nodiscard    [[nodiscard]]
-#define __mtl_mathfunction __mtl_nodiscard
-#if MTL_DEBUG_LEVEL > 1
-#define __mtl_always_inline
-#else // MTL_DEBUG_LEVEL > 1
-#define __mtl_always_inline __attribute__((always_inline))
-#endif // MTL_DEBUG_LEVEL > 1
+#define __vml_pure         __attribute__((const))
+#define __vml_nodiscard    [[nodiscard]]
+#define __vml_mathfunction __vml_nodiscard
+#if VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_always_inline __attribute__((always_inline))
+#endif // VML_DEBUG_LEVEL > 1
 
-#define __mtl_noinline __attribute__((noinline))
-#if MTL_DEBUG_LEVEL > 1
-#define __mtl_interface_export
-#else // MTL_DEBUG_LEVEL > 1
-#define __mtl_interface_export __attribute__((nodebug))
-#endif // MTL_DEBUG_LEVEL > 1
+#define __vml_noinline __attribute__((noinline))
+#if VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_interface_export __attribute__((nodebug))
+#endif // VML_DEBUG_LEVEL > 1
 
 #else
 
-#define __mtl_pure
-#define __mtl_nodiscard
-#define __mtl_mathfunction
-#if MTL_DEBUG_LEVEL > 1
-#define __mtl_always_inline
-#else // MTL_DEBUG_LEVEL > 1
-#define __mtl_always_inline
-#endif // MTL_DEBUG_LEVEL > 1
+#define __vml_pure
+#define __vml_nodiscard
+#define __vml_mathfunction
+#if VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#endif // VML_DEBUG_LEVEL > 1
 
-#define __mtl_noinline
-#if MTL_DEBUG_LEVEL > 1
-#define __mtl_interface_export
-#else // MTL_DEBUG_LEVEL > 1
-#define __mtl_interface_export
-#endif // MTL_DEBUG_LEVEL > 1
+#define __vml_noinline
+#if VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#endif // VML_DEBUG_LEVEL > 1
 
 #endif
 
 /// MARK: - Debug
 
-#if MTL_DEBUG_LEVEL > 0
-#define __mtl_assert(COND)                                                     \
-    (!(COND) ? (__mtl_debugbreak("Assertion Failed"), (void)0) : (void)0)
-#else // MTL_DEBUG_LEVEL > 0
-#define __mtl_assert(COND) (void)0
-#endif // MTL_DEBUG_LEVEL > 0
+#if VML_DEBUG_LEVEL > 0
+#define __vml_assert(COND)                                                     \
+    (!(COND) ? (__vml_debugbreak("Assertion Failed"), (void)0) : (void)0)
+#else // VML_DEBUG_LEVEL > 0
+#define __vml_assert(COND) (void)0
+#endif // VML_DEBUG_LEVEL > 0
 
-#if MTL_DEBUG_LEVEL > 1
-#define __mtl_assert_audit(COND) __mtl_assert(COND)
-#else // MTL_DEBUG_LEVEL > 1
-#define __mtl_assert_audit(COND) (void)0
-#endif // MTL_DEBUG_LEVEL > 1
+#if VML_DEBUG_LEVEL > 1
+#define __vml_assert_audit(COND) __vml_assert(COND)
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_assert_audit(COND) (void)0
+#endif // VML_DEBUG_LEVEL > 1
 
-#define __mtl_expect(COND) __mtl_assert(COND)
-#define __mtl_ensure(COND) __mtl_assert(COND)
+#define __vml_expect(COND) __vml_assert(COND)
+#define __vml_ensure(COND) __vml_assert(COND)
 
 #if defined(__clang__)
-#define __mtl_debugbreak(msg) __builtin_debugtrap()
+#define __vml_debugbreak(msg) __builtin_debugtrap()
 #elif defined(__GNUC__)
-#define __mtl_debugbreak(msg) __builtin_trap()
+#define __vml_debugbreak(msg) __builtin_trap()
 #elif defined(_MSC_VER)
-#define __mtl_debugbreak(msg) __debugbreak()
+#define __vml_debugbreak(msg) __debugbreak()
 #else
 #error
 #endif
 
-#define __mtl_bounds_check(index, lower, upper)                                \
-    (__mtl_expect(lower <= index), __mtl_expect(index < upper))
+#define __vml_bounds_check(index, lower, upper)                                \
+    (__vml_expect(lower <= index), __vml_expect(index < upper))
 
 /// MARK: Namespace
 
-#ifdef _VMTL
-#error We need this macro name _VMTL
+#ifdef _VVML
+#error We need this macro name _VVML
 #else
-#define _VMTL MTL_NAMESPACE_NAME
+#define _VVML VML_NAMESPACE_NAME
 #endif
 
 /// MARK: Safe Arithmetic
 
-#if MTL_SAFE_MATH
-#define __mtl_safe_math_if(...) if (__VA_ARGS__)
+#if VML_SAFE_MATH
+#define __vml_safe_math_if(...) if (__VA_ARGS__)
 #else
-#define __mtl_safe_math_if(...) if constexpr ((0))
+#define __vml_safe_math_if(...) if constexpr ((0))
 #endif
 
-#endif // __MTL_BASE_HPP_INCLUDED__
+#endif // __VML_BASE_HPP_INCLUDED__

@@ -1,5 +1,5 @@
-#ifndef __MTL_EXT_HPP_INCLUDED__
-#define __MTL_EXT_HPP_INCLUDED__
+#ifndef __VML_EXT_HPP_INCLUDED__
+#define __VML_EXT_HPP_INCLUDED__
 
 #include <cmath>
 #include <concepts>
@@ -12,18 +12,18 @@
 #include "__quaternion.hpp"
 #include "__vector.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 /// MARK: - 4x4 Matrix Factories
 /// look_at() -> View Matrix
 template <handedness H = default_handedness, typename T = double,
           vector_options O = vector_options{}, typename U = T,
           vector_options P = O, typename V = T, vector_options Q = O>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<
-    __mtl_promote(T, U, V), combine(O, P, Q)>
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<
+    __vml_promote(T, U, V), combine(O, P, Q)>
     look_at(vector3<T, O> const& eye, vector3<U, P> const& center,
             vector3<V, Q> const& up) {
-    using TT = __mtl_promote(T, U, V);
+    using TT = __vml_promote(T, U, V);
     auto constexpr OO = combine(O, P, Q);
 
     if constexpr (H == left_handed) {
@@ -32,18 +32,18 @@ __mtl_mathfunction __mtl_interface_export constexpr matrix4x4<
         vector3<TT, OO> const u = cross(f, s);
 
         matrix4x4<TT, OO> Result(1);
-        Result.__mtl_at(0, 0) = s.__mtl_at(0);
-        Result.__mtl_at(0, 1) = s.__mtl_at(1);
-        Result.__mtl_at(0, 2) = s.__mtl_at(2);
-        Result.__mtl_at(1, 0) = u.__mtl_at(0);
-        Result.__mtl_at(1, 1) = u.__mtl_at(1);
-        Result.__mtl_at(1, 2) = u.__mtl_at(2);
-        Result.__mtl_at(2, 0) = f.__mtl_at(0);
-        Result.__mtl_at(2, 1) = f.__mtl_at(1);
-        Result.__mtl_at(2, 2) = f.__mtl_at(2);
-        Result.__mtl_at(0, 3) = -dot(s, eye);
-        Result.__mtl_at(1, 3) = -dot(u, eye);
-        Result.__mtl_at(2, 3) = -dot(f, eye);
+        Result.__vml_at(0, 0) = s.__vml_at(0);
+        Result.__vml_at(0, 1) = s.__vml_at(1);
+        Result.__vml_at(0, 2) = s.__vml_at(2);
+        Result.__vml_at(1, 0) = u.__vml_at(0);
+        Result.__vml_at(1, 1) = u.__vml_at(1);
+        Result.__vml_at(1, 2) = u.__vml_at(2);
+        Result.__vml_at(2, 0) = f.__vml_at(0);
+        Result.__vml_at(2, 1) = f.__vml_at(1);
+        Result.__vml_at(2, 2) = f.__vml_at(2);
+        Result.__vml_at(0, 3) = -dot(s, eye);
+        Result.__vml_at(1, 3) = -dot(u, eye);
+        Result.__vml_at(2, 3) = -dot(f, eye);
         return Result;
     }
     else {
@@ -53,18 +53,18 @@ __mtl_mathfunction __mtl_interface_export constexpr matrix4x4<
         vector3<TT, OO> const u = cross(s, f);
 
         matrix4x4<TT, OO> Result(1);
-        Result.__mtl_at(0, 0) = s.__mtl_at(0);
-        Result.__mtl_at(0, 1) = s.__mtl_at(1);
-        Result.__mtl_at(0, 2) = s.__mtl_at(2);
-        Result.__mtl_at(1, 0) = u.__mtl_at(0);
-        Result.__mtl_at(1, 1) = u.__mtl_at(1);
-        Result.__mtl_at(1, 2) = u.__mtl_at(2);
-        Result.__mtl_at(2, 0) = -f.__mtl_at(0);
-        Result.__mtl_at(2, 1) = -f.__mtl_at(1);
-        Result.__mtl_at(2, 2) = -f.__mtl_at(2);
-        Result.__mtl_at(0, 3) = -dot(s, eye);
-        Result.__mtl_at(1, 3) = -dot(u, eye);
-        Result.__mtl_at(2, 3) = dot(f, eye);
+        Result.__vml_at(0, 0) = s.__vml_at(0);
+        Result.__vml_at(0, 1) = s.__vml_at(1);
+        Result.__vml_at(0, 2) = s.__vml_at(2);
+        Result.__vml_at(1, 0) = u.__vml_at(0);
+        Result.__vml_at(1, 1) = u.__vml_at(1);
+        Result.__vml_at(1, 2) = u.__vml_at(2);
+        Result.__vml_at(2, 0) = -f.__vml_at(0);
+        Result.__vml_at(2, 1) = -f.__vml_at(1);
+        Result.__vml_at(2, 2) = -f.__vml_at(2);
+        Result.__vml_at(0, 3) = -dot(s, eye);
+        Result.__vml_at(1, 3) = -dot(u, eye);
+        Result.__vml_at(2, 3) = dot(f, eye);
         return Result;
     }
 }
@@ -72,7 +72,7 @@ __mtl_mathfunction __mtl_interface_export constexpr matrix4x4<
 /// ortho() -> Orthogonal Projection Matrix
 template <handedness H = default_handedness, real_scalar T,
           vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> ortho(
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O> ortho(
     T const& left, T const& right, T const& bottom, T const& top,
     T const& zNear, T const& zFar) {
     if constexpr (H == left_handed) {
@@ -96,39 +96,39 @@ __mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> ortho(
     else {
         static_assert(H == right_handed);
         matrix4x4<T, O> Result(1);
-        Result.__mtl_at(0, 0) = T(2) / (right - left);
-        Result.__mtl_at(1, 1) = T(2) / (top - bottom);
-        Result.__mtl_at(2, 2) = -T(1) / (zFar - zNear);
-        Result.__mtl_at(0, 3) = -(right + left) / (right - left);
-        Result.__mtl_at(1, 3) = -(top + bottom) / (top - bottom);
-        Result.__mtl_at(2, 3) = -zNear / (zFar - zNear);
+        Result.__vml_at(0, 0) = T(2) / (right - left);
+        Result.__vml_at(1, 1) = T(2) / (top - bottom);
+        Result.__vml_at(2, 2) = -T(1) / (zFar - zNear);
+        Result.__vml_at(0, 3) = -(right + left) / (right - left);
+        Result.__vml_at(1, 3) = -(top + bottom) / (top - bottom);
+        Result.__vml_at(2, 3) = -zNear / (zFar - zNear);
         return Result;
     }
 }
 
 template <handedness H = default_handedness,
           vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr auto ortho(
+__vml_mathfunction __vml_interface_export constexpr auto ortho(
     real_scalar auto const& left, real_scalar auto const& right,
     real_scalar auto const& bottom, real_scalar auto const& top,
     real_scalar auto const& zNear, real_scalar auto const& zFar) {
-    using T = __mtl_promote(__mtl_decltype_stripped(left),
-                            __mtl_decltype_stripped(right),
-                            __mtl_decltype_stripped(bottom),
-                            __mtl_decltype_stripped(top),
-                            __mtl_decltype_stripped(zNear),
-                            __mtl_decltype_stripped(zFar));
+    using T = __vml_promote(__vml_decltype_stripped(left),
+                            __vml_decltype_stripped(right),
+                            __vml_decltype_stripped(bottom),
+                            __vml_decltype_stripped(top),
+                            __vml_decltype_stripped(zNear),
+                            __vml_decltype_stripped(zFar));
     return ortho<H, T>(left, right, bottom, top, zNear, zFar);
 }
 
 template <handedness H = default_handedness,
           vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr auto infinite_perspective(
+__vml_mathfunction __vml_interface_export constexpr auto infinite_perspective(
     real_scalar auto const& field_of_view, real_scalar auto const& aspect_ratio,
     real_scalar auto const& near) {
-    using T = __mtl_promote(__mtl_decltype_stripped(field_of_view),
-                            __mtl_decltype_stripped(aspect_ratio),
-                            __mtl_decltype_stripped(near));
+    using T = __vml_promote(__vml_decltype_stripped(field_of_view),
+                            __vml_decltype_stripped(aspect_ratio),
+                            __vml_decltype_stripped(near));
     T const range = std::tan(field_of_view / T(2)) * near;
     T const left = -range * aspect_ratio;
     T const right = range * aspect_ratio;
@@ -136,82 +136,82 @@ __mtl_mathfunction __mtl_interface_export constexpr auto infinite_perspective(
     T const top = range;
     if constexpr (H == left_handed) {
         matrix<T, 4, 4, O> result{};
-        result.__mtl_at(0, 0) = (T(2) * near) / (right - left);
-        result.__mtl_at(1, 1) = (T(2) * near) / (top - bottom);
-        result.__mtl_at(2, 2) = T(1);
-        result.__mtl_at(3, 2) = T(1);
-        result.__mtl_at(2, 3) = -T(2) * near;
+        result.__vml_at(0, 0) = (T(2) * near) / (right - left);
+        result.__vml_at(1, 1) = (T(2) * near) / (top - bottom);
+        result.__vml_at(2, 2) = T(1);
+        result.__vml_at(3, 2) = T(1);
+        result.__vml_at(2, 3) = -T(2) * near;
         return result;
     }
     else {
         matrix<T, 4, 4, O> result{};
-        result.__mtl_at(0, 0) = (T(2) * near) / (right - left);
-        result.__mtl_at(1, 1) = (T(2) * near) / (top - bottom);
-        result.__mtl_at(2, 2) = -T(1);
-        result.__mtl_at(3, 2) = -T(1);
-        result.__mtl_at(2, 3) = -T(2) * near;
+        result.__vml_at(0, 0) = (T(2) * near) / (right - left);
+        result.__vml_at(1, 1) = (T(2) * near) / (top - bottom);
+        result.__vml_at(2, 2) = -T(1);
+        result.__vml_at(3, 2) = -T(1);
+        result.__vml_at(2, 3) = -T(2) * near;
         return result;
     }
 }
 
 template <handedness H = default_handedness,
           vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr auto perspective(
+__vml_mathfunction __vml_interface_export constexpr auto perspective(
     real_scalar auto const& field_of_view, real_scalar auto const& aspect_ratio,
     real_scalar auto const& near, real_scalar auto const& far) {
-    using T = __mtl_promote(__mtl_decltype_stripped(field_of_view),
-                            __mtl_decltype_stripped(aspect_ratio),
-                            __mtl_decltype_stripped(near),
-                            __mtl_decltype_stripped(far));
-    __mtl_expect(std::abs(aspect_ratio - std::numeric_limits<T>::epsilon()) >
+    using T = __vml_promote(__vml_decltype_stripped(field_of_view),
+                            __vml_decltype_stripped(aspect_ratio),
+                            __vml_decltype_stripped(near),
+                            __vml_decltype_stripped(far));
+    __vml_expect(std::abs(aspect_ratio - std::numeric_limits<T>::epsilon()) >
                  T(0));
 
     T const tanHalfFovy = std::tan(field_of_view / T(2));
 
     if constexpr (H == left_handed) {
         matrix<T, 4, 4, O> result{};
-        result.__mtl_at(0, 0) = T(1) / (aspect_ratio * tanHalfFovy);
-        result.__mtl_at(1, 1) = T(1) / (tanHalfFovy);
-        result.__mtl_at(2, 2) = far / (far - near);
-        result.__mtl_at(3, 2) = T(1);
-        result.__mtl_at(2, 3) = -(far * near) / (far - near);
+        result.__vml_at(0, 0) = T(1) / (aspect_ratio * tanHalfFovy);
+        result.__vml_at(1, 1) = T(1) / (tanHalfFovy);
+        result.__vml_at(2, 2) = far / (far - near);
+        result.__vml_at(3, 2) = T(1);
+        result.__vml_at(2, 3) = -(far * near) / (far - near);
         return result;
     }
     else {
         matrix<T, 4, 4, O> result{};
-        result.__mtl_at(0, 0) = T(1) / (aspect_ratio * tanHalfFovy);
-        result.__mtl_at(1, 1) = T(1) / (tanHalfFovy);
-        result.__mtl_at(2, 2) = far / (near - far);
-        result.__mtl_at(3, 2) = -T(1);
-        result.__mtl_at(2, 3) = -(far * near) / (far - near);
+        result.__vml_at(0, 0) = T(1) / (aspect_ratio * tanHalfFovy);
+        result.__vml_at(1, 1) = T(1) / (tanHalfFovy);
+        result.__vml_at(2, 2) = far / (near - far);
+        result.__vml_at(3, 2) = -T(1);
+        result.__vml_at(2, 3) = -(far * near) / (far - near);
         return result;
     }
 }
 
 /// MARK: Transforms
 template <std::floating_point T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> translation(
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O> translation(
     vector3<T, O> const& offset) {
-    return { T(1), T(0), T(0), offset.__mtl_at(0),
-             T(0), T(1), T(0), offset.__mtl_at(1),
-             T(0), T(0), T(1), offset.__mtl_at(2),
+    return { T(1), T(0), T(0), offset.__vml_at(0),
+             T(0), T(1), T(0), offset.__vml_at(1),
+             T(0), T(0), T(1), offset.__vml_at(2),
              T(0), T(0), T(0), T(1) };
 }
 
 template <std::floating_point T, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> rotation(
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O> rotation(
     quaternion<T> const& q) {
-    return { 2 * (__mtl_sqr(q[0]) + __mtl_sqr(q[1])) - 1,
+    return { 2 * (__vml_sqr(q[0]) + __vml_sqr(q[1])) - 1,
              2 * (q[1] * q[2] - q[0] * q[3]),
              2 * (q[1] * q[3] + q[0] * q[2]),
              0,
              2 * (q[1] * q[2] + q[0] * q[3]),
-             2 * (__mtl_sqr(q[0]) + __mtl_sqr(q[2])) - 1,
+             2 * (__vml_sqr(q[0]) + __vml_sqr(q[2])) - 1,
              2 * (q[2] * q[3] - q[0] * q[1]),
              0,
              2 * (q[1] * q[3] - q[0] * q[2]),
              2 * (q[2] * q[3] + q[0] * q[1]),
-             2 * (__mtl_sqr(q[0]) + __mtl_sqr(q[3])) - 1,
+             2 * (__vml_sqr(q[0]) + __vml_sqr(q[3])) - 1,
              0,
              0,
              0,
@@ -220,28 +220,28 @@ __mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> rotation(
 }
 
 template <std::floating_point T, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> scale(
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O> scale(
     vector3<T> const& s) {
     return { s[0], 0, 0, 0, 0, s[1], 0, 0, 0, 0, s[2], 0, 0, 0, 0, 1 };
 }
 
 template <std::floating_point T, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O> scale(T s) {
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O> scale(T s) {
     scale({ s, s, s });
 }
 
 template <std::floating_point T, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<T, O>
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<T, O>
     make_transform(vector3<T, O> const& position,
                    quaternion<T> const& orientation, vector3<T, O> const& s) {
     return translation(position) * rotation(orientation) * scale(s);
 }
 
-__mtl_mathfunction __mtl_interface_export constexpr auto to_quaternion(
+__vml_mathfunction __vml_interface_export constexpr auto to_quaternion(
     real_scalar auto roll, real_scalar auto pitch, real_scalar auto yaw) {
     // Abbreviations for the various angular functions
-    using T = __mtl_floatify(
-        __mtl_promote(decltype(yaw), decltype(pitch), decltype(roll)));
+    using T = __vml_floatify(
+        __vml_promote(decltype(yaw), decltype(pitch), decltype(roll)));
     double cy = std::cos(yaw * T(0.5));
     double sy = std::sin(yaw * T(0.5));
     double cp = std::cos(pitch * T(0.5));
@@ -256,36 +256,36 @@ __mtl_mathfunction __mtl_interface_export constexpr auto to_quaternion(
 }
 
 template <typename T>
-__mtl_mathfunction __mtl_interface_export constexpr quaternion<
-    __mtl_floatify(T)>
+__vml_mathfunction __vml_interface_export constexpr quaternion<
+    __vml_floatify(T)>
     to_quaternion(vector3<T> const& euler) {
-    return to_quaternion(euler.__mtl_at(0), euler.__mtl_at(1),
-                         euler.__mtl_at(2));
+    return to_quaternion(euler.__vml_at(0), euler.__vml_at(1),
+                         euler.__vml_at(2));
 }
 
 template <std::floating_point T>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<T> to_euler(
+__vml_mathfunction __vml_interface_export constexpr vector3<T> to_euler(
     quaternion<T> const& q) {
     // roll (x-axis rotation)
     T const sinr_cosp =
-        2 * (q.__mtl_at(0) * q.__mtl_at(1) + q.__mtl_at(2) * q.__mtl_at(3));
+        2 * (q.__vml_at(0) * q.__vml_at(1) + q.__vml_at(2) * q.__vml_at(3));
     T const cosr_cosp =
-        1 - 2 * (q.__mtl_at(1) * q.__mtl_at(1) + q.__mtl_at(2) * q.__mtl_at(2));
+        1 - 2 * (q.__vml_at(1) * q.__vml_at(1) + q.__vml_at(2) * q.__vml_at(2));
     T const roll = std::atan2(sinr_cosp, cosr_cosp);
 
     // pitch (y-axis rotation)
     T const sinp =
-        2 * (q.__mtl_at(0) * q.__mtl_at(2) - q.__mtl_at(3) * q.__mtl_at(1));
+        2 * (q.__vml_at(0) * q.__vml_at(2) - q.__vml_at(3) * q.__vml_at(1));
     T const pitch = std::abs(sinp) >= 1 ?
-                        std::copysign(_VMTL::constants<T>::pi / 2,
+                        std::copysign(_VVML::constants<T>::pi / 2,
                                       sinp) : // use 90 degrees if out of range
                         std::asin(sinp);
 
     // yaw (z-axis rotation)
     T const siny_cosp =
-        2 * (q.__mtl_at(0) * q.__mtl_at(3) + q.__mtl_at(1) * q.__mtl_at(2));
+        2 * (q.__vml_at(0) * q.__vml_at(3) + q.__vml_at(1) * q.__vml_at(2));
     T const cosy_cosp =
-        1 - 2 * (q.__mtl_at(2) * q.__mtl_at(2) + q.__mtl_at(3) * q.__mtl_at(3));
+        1 - 2 * (q.__vml_at(2) * q.__vml_at(2) + q.__vml_at(3) * q.__vml_at(3));
     T const yaw = std::atan2(siny_cosp, cosy_cosp);
 
     return { roll, pitch, yaw };
@@ -295,47 +295,47 @@ __mtl_mathfunction __mtl_interface_export constexpr vector3<T> to_euler(
 /// Decompose Rotation matrix (special orthogonal / determinant 1) to a
 /// quaternion
 template <std::floating_point T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr quaternion<T>
+__vml_mathfunction __vml_interface_export constexpr quaternion<T>
     decompose_rotation(matrix3x3<T, O> m) {
     T const tr = trace(m);
     if (tr > 0) {
         T const S = std::sqrt(tr + T(1.0)) * 2; // S=4*qw
-        return { T(0.25) * S, (m.__mtl_at(2, 1) - m.__mtl_at(1, 2)) / S,
-                 (m.__mtl_at(0, 2) - m.__mtl_at(2, 0)) / S,
-                 (m.__mtl_at(1, 0) - m.__mtl_at(0, 1)) / S };
+        return { T(0.25) * S, (m.__vml_at(2, 1) - m.__vml_at(1, 2)) / S,
+                 (m.__vml_at(0, 2) - m.__vml_at(2, 0)) / S,
+                 (m.__vml_at(1, 0) - m.__vml_at(0, 1)) / S };
     }
-    else if (m.__mtl_at(0, 0) > m.__mtl_at(1, 1) &&
-             m.__mtl_at(0, 0) > m.__mtl_at(2, 2))
+    else if (m.__vml_at(0, 0) > m.__vml_at(1, 1) &&
+             m.__vml_at(0, 0) > m.__vml_at(2, 2))
     {
-        T const S = std::sqrt(T(1.0) + m.__mtl_at(0, 0) - m.__mtl_at(1, 1) -
-                              m.__mtl_at(2, 2)) *
+        T const S = std::sqrt(T(1.0) + m.__vml_at(0, 0) - m.__vml_at(1, 1) -
+                              m.__vml_at(2, 2)) *
                     2; // S=4*qx
-        return { (m.__mtl_at(2, 1) - m.__mtl_at(1, 2)) / S, 0.25 * S,
-                 (m.__mtl_at(0, 1) + m.__mtl_at(1, 0)) / S,
-                 (m.__mtl_at(0, 2) + m.__mtl_at(2, 0)) / S };
+        return { (m.__vml_at(2, 1) - m.__vml_at(1, 2)) / S, 0.25 * S,
+                 (m.__vml_at(0, 1) + m.__vml_at(1, 0)) / S,
+                 (m.__vml_at(0, 2) + m.__vml_at(2, 0)) / S };
     }
-    else if (m.__mtl_at(1, 1) > m.__mtl_at(2, 2)) {
-        T const S = std::sqrt(T(1.0) + m.__mtl_at(1, 1) - m.__mtl_at(0, 0) -
-                              m.__mtl_at(2, 2)) *
+    else if (m.__vml_at(1, 1) > m.__vml_at(2, 2)) {
+        T const S = std::sqrt(T(1.0) + m.__vml_at(1, 1) - m.__vml_at(0, 0) -
+                              m.__vml_at(2, 2)) *
                     2; // S=4*qy
-        return { (m.__mtl_at(0, 2) - m.__mtl_at(2, 0)) / S,
-                 (m.__mtl_at(0, 1) + m.__mtl_at(1, 0)) / S, 0.25 * S,
-                 (m.__mtl_at(1, 2) + m.__mtl_at(2, 1)) / S };
+        return { (m.__vml_at(0, 2) - m.__vml_at(2, 0)) / S,
+                 (m.__vml_at(0, 1) + m.__vml_at(1, 0)) / S, 0.25 * S,
+                 (m.__vml_at(1, 2) + m.__vml_at(2, 1)) / S };
     }
     else {
-        float S = std::sqrt(T(1.0) + m.__mtl_at(2, 2) - m.__mtl_at(0, 0) -
-                            m.__mtl_at(1, 1)) *
+        float S = std::sqrt(T(1.0) + m.__vml_at(2, 2) - m.__vml_at(0, 0) -
+                            m.__vml_at(1, 1)) *
                   2; // S=4*qz
-        return { (m.__mtl_at(1, 0) - m.__mtl_at(0, 1)) / S,
-                 (m.__mtl_at(0, 2) + m.__mtl_at(2, 0)) / S,
-                 (m.__mtl_at(1, 2) + m.__mtl_at(2, 1)) / S, T(0.25) * S };
+        return { (m.__vml_at(1, 0) - m.__vml_at(0, 1)) / S,
+                 (m.__vml_at(0, 2) + m.__vml_at(2, 0)) / S,
+                 (m.__vml_at(1, 2) + m.__vml_at(2, 1)) / S, T(0.25) * S };
     }
 }
 
 /// Deompose a 4x4 affine (what about shearing?) transform matrix into
 /// translation, orientation and scale
 template <std::floating_point T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr std::tuple<
+__vml_mathfunction __vml_interface_export constexpr std::tuple<
     vector3<T, O>, quaternion<T>, vector3<T, O>>
     decompose_transform(matrix4x4<T, O> t) {
     vector3<T, O> translation = t.column(3).swizzle(0, 1, 2);
@@ -383,7 +383,7 @@ struct colors<vector<T, 3, O>> {
 template <std::floating_point T, vector_options O>
 struct colors<vector<T, 4, O>> {
     static constexpr vector<T, 4, O> hex(std::uint32_t value) {
-        value = _VMTL::__mtl_byte_swap(value);
+        value = _VVML::__vml_byte_swap(value);
         vector<std::uint8_t, 4, O> chars;
         std::memcpy(&chars, &value, sizeof(value));
         return vector<T, 4, O>(chars) / T((1 << 8) - 1);
@@ -403,10 +403,10 @@ struct colors<vector<T, 4, O>> {
 };
 
 template <real_scalar T = float, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr vector3<__vml_floatify(T),
                                                             O>
     rgb_to_hsv(vector3<T, O> const& rgb) {
-    using F = __mtl_floatify(T);
+    using F = __vml_floatify(T);
     float K = F(0);
     auto [r, g, b] = rgb;
 
@@ -426,30 +426,30 @@ __mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T),
 };
 
 template <real_scalar T, real_scalar U, real_scalar V>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T)>
+__vml_mathfunction __vml_interface_export constexpr vector3<__vml_floatify(T)>
     rgb_to_hsv(T const& r, U const& g, V const& b) {
     return rgb_to_hsv({ r, b, g });
 }
 
 template <real_scalar T = float, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr vector4<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr vector4<__vml_floatify(T),
                                                             O>
     rgba_to_hsva(vector4<T, O> const& rgba) {
-    return { rgb_to_hsv(rgba.swizzle(0, 1, 2)), rgba.__mtl_at(3) };
+    return { rgb_to_hsv(rgba.swizzle(0, 1, 2)), rgba.__vml_at(3) };
 }
 
 template <real_scalar T, real_scalar U, real_scalar V, real_scalar W>
-__mtl_mathfunction __mtl_interface_export constexpr vector4<__mtl_floatify(T)>
+__vml_mathfunction __vml_interface_export constexpr vector4<__vml_floatify(T)>
     rgba_to_hsva(T const& r, U const& g, V const& b, W const& a) {
     return rgba_to_hsva({ r, b, g, a });
 }
 
 template <real_scalar T = float, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr vector3<__vml_floatify(T),
                                                             O>
     hsv_to_rgb(vector3<T, O> const& hsv) {
-    using V = vector3<__mtl_floatify(T), O>;
-    using F = __mtl_floatify(T);
+    using V = vector3<__vml_floatify(T), O>;
+    using F = __vml_floatify(T);
 
     auto [h, s, v] = hsv;
 
@@ -482,48 +482,48 @@ __mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T),
 }
 
 template <real_scalar T, real_scalar U, real_scalar V>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_floatify(T)>
+__vml_mathfunction __vml_interface_export constexpr vector3<__vml_floatify(T)>
     hsv_to_rgb(T const& h, U const& s, V const& v) {
     return hsv_to_rgb({ h, s, v });
 }
 
 template <real_scalar T = float, vector_options O = vector_options{}>
-__mtl_mathfunction __mtl_interface_export constexpr vector4<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr vector4<__vml_floatify(T),
                                                             O>
     hsva_to_rgba(vector4<T, O> const& hsva) {
-    return { hsv_to_rgb(hsva.swizzle(0, 1, 2)), hsva.__mtl_at(3) };
+    return { hsv_to_rgb(hsva.swizzle(0, 1, 2)), hsva.__vml_at(3) };
 }
 
 template <real_scalar T, real_scalar U, real_scalar V, real_scalar W>
-__mtl_mathfunction __mtl_interface_export constexpr vector4<__mtl_floatify(T)>
+__vml_mathfunction __vml_interface_export constexpr vector4<__vml_floatify(T)>
     hsva_to_rgba(T const& h, U const& s, V const& v, W const& a) {
     return hsva_to_rgba({ h, s, v, a });
 }
 
-} // namespace _VMTL
+} // namespace _VVML
 
-/// MARK: - utl::iota<mtl::vector<...>>
+/// MARK: - utl::iota<vml::vector<...>>
 namespace utl {
 
 template <typename>
 class iota;
 
-template <typename T, std::size_t N, _VMTL::vector_options O>
+template <typename T, std::size_t N, _VVML::vector_options O>
     requires std::is_integral_v<T>
-iota(_VMTL::vector<T, N, O>) -> iota<_VMTL::vector<T, N, O>>;
+iota(_VVML::vector<T, N, O>) -> iota<_VVML::vector<T, N, O>>;
 
-template <typename T, typename U, std::size_t N, _VMTL::vector_options O,
-          _VMTL::vector_options P>
+template <typename T, typename U, std::size_t N, _VVML::vector_options O,
+          _VVML::vector_options P>
     requires std::is_integral_v<T> && std::is_integral_v<U>
-iota(_VMTL::vector<T, N, O>, _VMTL::vector<U, N, P>)
-    -> iota<_VMTL::vector<__mtl_promote(T, U), N, combine(O, P)>>;
+iota(_VVML::vector<T, N, O>, _VVML::vector<U, N, P>)
+    -> iota<_VVML::vector<__vml_promote(T, U), N, combine(O, P)>>;
 
-template <typename T, std::size_t N, _VMTL::vector_options O>
+template <typename T, std::size_t N, _VVML::vector_options O>
     requires std::is_integral_v<T>
-class iota<_VMTL::vector<T, N, O>> {
+class iota<_VVML::vector<T, N, O>> {
 public:
-    using value_type = _VMTL::vector<T, N, O>;
-    using size_type = _VMTL::vector<
+    using value_type = _VVML::vector<T, N, O>;
+    using size_type = _VVML::vector<
         std::conditional_t<std::is_signed_v<T>, std::ptrdiff_t, std::size_t>, N,
         O>;
 
@@ -534,10 +534,10 @@ public:
             _begin(begin), _current(begin), _last(last) {}
 
     public:
-        __mtl_interface_export constexpr value_type operator*() const {
+        __vml_interface_export constexpr value_type operator*() const {
             return _current;
         }
-        __mtl_interface_export constexpr iterator& operator++() {
+        __vml_interface_export constexpr iterator& operator++() {
             for (std::size_t i = N - 1;;) {
                 if (++_current[i] != _last[i]) {
                     break;
@@ -553,10 +553,10 @@ public:
 
             return *this;
         }
-        __mtl_interface_export constexpr bool operator!=(
+        __vml_interface_export constexpr bool operator!=(
             iterator const& rhs) const {
-            __mtl_assert_audit(this->_begin == rhs._begin);
-            __mtl_assert_audit(this->_last == rhs._last);
+            __vml_assert_audit(this->_begin == rhs._begin);
+            __vml_assert_audit(this->_last == rhs._last);
             return !_done;
         }
 
@@ -566,19 +566,19 @@ public:
     };
 
 public:
-    __mtl_interface_export constexpr iota(value_type last):
+    __vml_interface_export constexpr iota(value_type last):
         _first(0), _last(last) {}
-    __mtl_interface_export constexpr iota(value_type first, size_type last):
+    __vml_interface_export constexpr iota(value_type first, size_type last):
         _first(first), _last(last) {}
 
-    __mtl_interface_export constexpr iterator begin() const {
+    __vml_interface_export constexpr iterator begin() const {
         return iterator(_first, _last);
     }
-    __mtl_interface_export constexpr iterator end() const {
+    __vml_interface_export constexpr iterator end() const {
         return iterator(_first, _last);
     }
 
-    __mtl_interface_export constexpr size_type size() const {
+    __vml_interface_export constexpr size_type size() const {
         return _last - _first;
     }
 
@@ -589,4 +589,4 @@ private:
 
 } // namespace utl
 
-#endif // __MTL_EXT_HPP_INCLUDED__
+#endif // __VML_EXT_HPP_INCLUDED__

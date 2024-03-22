@@ -1,5 +1,5 @@
-#ifndef __MTL_VECTOR_HPP_INCLUDED__
-#define __MTL_VECTOR_HPP_INCLUDED__
+#ifndef __VML_VECTOR_HPP_INCLUDED__
+#define __VML_VECTOR_HPP_INCLUDED__
 
 #include <iosfwd>
 
@@ -9,117 +9,117 @@
 #include "__fwd.hpp"
 #include "__intrin.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 template <typename... T, std::size_t S, vector_options... O,
           std::invocable<T...> F>
-__mtl_mathfunction __mtl_always_inline constexpr auto __map_impl(
+__vml_mathfunction __vml_always_inline constexpr auto __map_impl(
     F&& f, vector<T, S, O> const&... v) {
     using U = std::invoke_result_t<F, T...>;
     if constexpr (std::same_as<U, void>) {
         for (std::size_t i = 0; i < S; ++i) {
-            std::invoke(__mtl_forward(f), v.__mtl_vec_at(i)...);
+            std::invoke(__vml_forward(f), v.__vml_vec_at(i)...);
         }
     }
     else {
         constexpr auto P = combine(O...);
         return vector<U, S, P>([&](std::size_t i) {
-            return std::invoke(__mtl_forward(f), v.__mtl_vec_at(i)...);
+            return std::invoke(__vml_forward(f), v.__vml_vec_at(i)...);
         });
     }
 }
 
 template <typename T0, std::size_t S, vector_options O0, std::invocable<T0> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, F&& f) {
-    return __map_impl(__mtl_forward(f), v0);
+    return __map_impl(__vml_forward(f), v0);
 }
 template <typename T0, typename T1, std::size_t S, vector_options O0,
           vector_options O1, std::invocable<T0, T1> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, vector<T1, S, O1> const& v1, F&& f) {
-    return __map_impl(__mtl_forward(f), v0, v1);
+    return __map_impl(__vml_forward(f), v0, v1);
 }
 template <typename T0, typename T1, typename T2, std::size_t S,
           vector_options O0, vector_options O1, vector_options O2,
           std::invocable<T0, T1, T2> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, vector<T1, S, O1> const& v1,
         vector<T2, S, O2> const& v2, F&& f) {
-    return __map_impl(__mtl_forward(f), v0, v1, v2);
+    return __map_impl(__vml_forward(f), v0, v1, v2);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, std::size_t S,
           vector_options O0, vector_options O1, vector_options O2,
           vector_options O3, std::invocable<T0, T1, T2, T3> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, vector<T1, S, O1> const& v1,
         vector<T2, S, O2> const& v2, vector<T3, S, O3> const& v3, F&& f) {
-    return __map_impl(__mtl_forward(f), v0, v1, v2, v3);
+    return __map_impl(__vml_forward(f), v0, v1, v2, v3);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, typename T4,
           std::size_t S, vector_options O0, vector_options O1,
           vector_options O2, vector_options O3, vector_options O4,
           std::invocable<T0, T1, T2, T3, T4> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, vector<T1, S, O1> const& v1,
         vector<T2, S, O2> const& v2, vector<T3, S, O3> const& v3,
         vector<T4, S, O4> const& v4, F&& f) {
-    return __map_impl(__mtl_forward(f), v0, v1, v2, v3, v4);
+    return __map_impl(__vml_forward(f), v0, v1, v2, v3, v4);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, typename T4,
           typename T5, std::size_t S, vector_options O0, vector_options O1,
           vector_options O2, vector_options O3, vector_options O4,
           vector_options O5, std::invocable<T0, T1, T2, T3, T4, T5> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(vector<T0, S, O0> const& v0, vector<T1, S, O1> const& v1,
         vector<T2, S, O2> const& v2, vector<T3, S, O3> const& v3,
         vector<T4, S, O4> const& v4, vector<T5, S, O5> const& v5, F&& f) {
-    return __map_impl(__mtl_forward(f), v0, v1, v2, v3, v4, v5);
+    return __map_impl(__vml_forward(f), v0, v1, v2, v3, v4, v5);
 }
 
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     __left_fold_impl(auto&& f, auto&& a) {
     return a;
 }
 
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     __left_fold_impl(auto&& f, auto&& a, auto&& b) {
-    return std::invoke(f, __mtl_forward(a), __mtl_forward(b));
+    return std::invoke(f, __vml_forward(a), __vml_forward(b));
 }
 
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     __left_fold_impl(auto&& f, auto&& a, auto&& b, auto&&... c) {
     return __left_fold_impl(f,
-                            std::invoke(f, __mtl_forward(a), __mtl_forward(b)),
-                            __mtl_forward(c)...);
+                            std::invoke(f, __vml_forward(a), __vml_forward(b)),
+                            __vml_forward(c)...);
 }
 
 template <typename T, std::size_t S, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T
     left_fold(vector<T, S, O> const& v, F&& f) {
-    return __mtl_with_index_sequence((I, S), {
-        return __left_fold_impl(f, v.__mtl_at(I)...);
+    return __vml_with_index_sequence((I, S), {
+        return __left_fold_impl(f, v.__vml_at(I)...);
     });
 }
 
 template <typename T, std::size_t S, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T
     right_fold(vector<T, S, O> const& v, F&& f) {
-    return __mtl_with_index_sequence((I, S), {
-        return __left_fold_impl(f, v.__mtl_at(S - 1 - I)...);
+    return __vml_with_index_sequence((I, S), {
+        return __left_fold_impl(f, v.__vml_at(S - 1 - I)...);
     });
 }
 
 template <typename T, std::size_t S, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T fold(
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T fold(
     vector<T, S, O> const& v, F&& f) {
-    return _VMTL::left_fold(v, __mtl_forward(f));
+    return _VVML::left_fold(v, __vml_forward(f));
 }
 
 template <typename, std::size_t, vector_options, typename, typename>
@@ -143,7 +143,7 @@ struct __vector_data_ {
                 __vec = _mm_load_ps(arr);
             }
         }
-#if MTL_AVX
+#if VML_AVX
         else if constexpr (std::is_same_v<T, double> && Size == 4 &&
                            !O.packed())
         {
@@ -177,22 +177,22 @@ private:
                         struct {
                             T z, w;
                         };
-                        _VMTL::vector<T, 2, O.packed(true)> zw;
+                        _VVML::vector<T, 2, O.packed(true)> zw;
                     };
                 };
-                _VMTL::vector<T, 3, O.packed(true)> yzw;
-                _VMTL::vector<T, 2, O.packed(true)> yz;
+                _VVML::vector<T, 3, O.packed(true)> yzw;
+                _VVML::vector<T, 2, O.packed(true)> yz;
             };
         };
-        _VMTL::vector<T, 3, O.packed(true)> xyz;
-        _VMTL::vector<T, 2, O.packed(true)> xy;
+        _VVML::vector<T, 3, O.packed(true)> xyz;
+        _VVML::vector<T, 2, O.packed(true)> xy;
 
         //  for quaternion
         struct {
             T real;
             union {
-                _VMTL::vector<T, 3, O.packed(true)> vector;
-                _VMTL::vector<T, 3, O.packed(true)> imag;
+                _VVML::vector<T, 3, O.packed(true)> vector;
+                _VVML::vector<T, 3, O.packed(true)> imag;
             };
         };
 
@@ -205,50 +205,50 @@ private:
                         struct {
                             T b, a;
                         };
-                        _VMTL::vector<T, 2, O.packed(true)> ba;
+                        _VVML::vector<T, 2, O.packed(true)> ba;
                     };
                 };
-                _VMTL::vector<T, 3, O.packed(true)> gba;
-                _VMTL::vector<T, 2, O.packed(true)> gb;
+                _VVML::vector<T, 3, O.packed(true)> gba;
+                _VVML::vector<T, 2, O.packed(true)> gb;
             };
         };
-        _VMTL::vector<T, 3, O.packed(true)> rgb;
-        _VMTL::vector<T, 2, O.packed(true)> rg;
+        _VVML::vector<T, 3, O.packed(true)> rgb;
+        _VVML::vector<T, 2, O.packed(true)> rg;
     };
 };
 
 template <typename T, std::size_t Size, vector_options O>
 struct __vector_data: __vector_data_<T, Size, O> {
-    using __mtl_base = __vector_data_<T, Size, O>;
-    using __mtl_base::__mtl_base;
+    using __vml_base = __vector_data_<T, Size, O>;
+    using __vml_base::__vml_base;
 
-    using __mtl_base::__data;
-    using __mtl_base::__vec;
+    using __vml_base::__data;
+    using __vml_base::__vec;
 
-    using __mtl_base::w;
-    using __mtl_base::x;
-    using __mtl_base::xy;
-    using __mtl_base::xyz;
-    using __mtl_base::y;
-    using __mtl_base::yz;
-    using __mtl_base::yzw;
-    using __mtl_base::z;
-    using __mtl_base::zw;
+    using __vml_base::w;
+    using __vml_base::x;
+    using __vml_base::xy;
+    using __vml_base::xyz;
+    using __vml_base::y;
+    using __vml_base::yz;
+    using __vml_base::yzw;
+    using __vml_base::z;
+    using __vml_base::zw;
 
-    using __mtl_base::a;
-    using __mtl_base::b;
-    using __mtl_base::ba;
-    using __mtl_base::g;
-    using __mtl_base::gb;
-    using __mtl_base::gba;
-    using __mtl_base::r;
-    using __mtl_base::rg;
-    using __mtl_base::rgb;
+    using __vml_base::a;
+    using __vml_base::b;
+    using __vml_base::ba;
+    using __vml_base::g;
+    using __vml_base::gb;
+    using __vml_base::gba;
+    using __vml_base::r;
+    using __vml_base::rg;
+    using __vml_base::rgb;
 
-    using __mtl_base::alpha;
-    using __mtl_base::hue;
-    using __mtl_base::saturation;
-    using __mtl_base::value;
+    using __vml_base::alpha;
+    using __vml_base::hue;
+    using __vml_base::saturation;
+    using __vml_base::value;
 };
 
 /// MARK: Size = 3
@@ -296,27 +296,27 @@ private:
 
 template <typename T, vector_options O>
 struct __vector_data<T, 3, O>: __vector_data_<T, 3, O> {
-    using __mtl_base = __vector_data_<T, 3, O>;
-    using __mtl_base::__mtl_base;
+    using __vml_base = __vector_data_<T, 3, O>;
+    using __vml_base::__vml_base;
 
-    using __mtl_base::__data;
-    using __mtl_base::__vec;
+    using __vml_base::__data;
+    using __vml_base::__vec;
 
-    using __mtl_base::x;
-    using __mtl_base::xy;
-    using __mtl_base::y;
-    using __mtl_base::yz;
-    using __mtl_base::z;
+    using __vml_base::x;
+    using __vml_base::xy;
+    using __vml_base::y;
+    using __vml_base::yz;
+    using __vml_base::z;
 
-    using __mtl_base::b;
-    using __mtl_base::g;
-    using __mtl_base::gb;
-    using __mtl_base::r;
-    using __mtl_base::rg;
+    using __vml_base::b;
+    using __vml_base::g;
+    using __vml_base::gb;
+    using __vml_base::r;
+    using __vml_base::rg;
 
-    using __mtl_base::hue;
-    using __mtl_base::saturation;
-    using __mtl_base::value;
+    using __vml_base::hue;
+    using __vml_base::saturation;
+    using __vml_base::value;
 };
 
 template <typename T, vector_options O>
@@ -349,17 +349,17 @@ private:
 
 template <typename T, vector_options O>
 struct __vector_data<T, 2, O>: __vector_data_<T, 2, O> {
-    using __mtl_base = __vector_data_<T, 2, O>;
-    using __mtl_base::__mtl_base;
+    using __vml_base = __vector_data_<T, 2, O>;
+    using __vml_base::__vml_base;
 
-    using __mtl_base::__data;
-    using __mtl_base::__vec;
+    using __vml_base::__data;
+    using __vml_base::__vec;
 
-    using __mtl_base::x;
-    using __mtl_base::y;
+    using __vml_base::x;
+    using __vml_base::y;
 
-    using __mtl_base::g;
-    using __mtl_base::r;
+    using __vml_base::g;
+    using __vml_base::r;
 };
 
 /// MARK: - struct __vector_base
@@ -369,7 +369,7 @@ constexpr std::size_t __calculate_alignment(std::size_t TAlign, std::size_t S,
         switch (S) {
         case 0: // fallthrough
         case 1:
-            __mtl_debugbreak("invalid");
+            __vml_debugbreak("invalid");
             return -1;
         case 2:
             return 2;
@@ -389,51 +389,51 @@ constexpr std::size_t __calculate_alignment(std::size_t TAlign, std::size_t S,
 }
 
 template <typename T, std::size_t Size, vector_options O,
-          typename = __mtl_make_type_sequence<T, Size>,
-          typename = __mtl_make_index_sequence<Size>>
+          typename = __vml_make_type_sequence<T, Size>,
+          typename = __vml_make_index_sequence<Size>>
 struct __vector_base;
 
 template <typename T, std::size_t Size, vector_options O, typename... AllT,
           std::size_t... I>
 class alignas(__calculate_alignment(alignof(T), Size, O.packed()))
-    __vector_base<T, Size, O, __mtl_type_sequence<AllT...>,
-                  __mtl_index_sequence<I...>>:
+    __vector_base<T, Size, O, __vml_type_sequence<AllT...>,
+                  __vml_index_sequence<I...>>:
     public __vector_data<T, Size, O> {
-    using __mtl_base = __vector_data<T, Size, O>;
+    using __vml_base = __vector_data<T, Size, O>;
 
 public:
     // constructors:
     __vector_base() = default;
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         T const& x):
-        __mtl_base{ ((void)I, x)... } {}
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+        __vml_base{ ((void)I, x)... } {}
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         AllT const&... x):
-        __mtl_base{ x... } {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __vector_base(
-        _VMTL::invocable_r<T> auto&&
+        __vml_base{ x... } {}
+    __vml_always_inline __vml_interface_export explicit constexpr __vector_base(
+        _VVML::invocable_r<T> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f)>):
-        __mtl_base{ ((void)I, std::invoke(f))... } {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __vector_base(
-        _VMTL::invocable_r<T, std::size_t> auto&&
+        __vml_base{ ((void)I, std::invoke(f))... } {}
+    __vml_always_inline __vml_interface_export explicit constexpr __vector_base(
+        _VVML::invocable_r<T, std::size_t> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f), std::size_t>):
-        __mtl_base{ std::invoke(f, I)... } {}
+        __vml_base{ std::invoke(f, I)... } {}
 
     template <std::convertible_to<T> U, vector_options P>
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         vector<U, Size, P> const& rhs):
-        __mtl_base{ static_cast<T>(rhs.__mtl_at(I))... } {}
+        __vml_base{ static_cast<T>(rhs.__vml_at(I))... } {}
 
     /// Construct from foreign tuple type
     template <__tuple_of_types<AllT...> Tuple>
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         Tuple&& t)
-        requires(_VMTL::__is_foreign_type<Tuple>::value)
-        : __mtl_base{ get<I>(t)... } {}
+        requires(_VVML::__is_foreign_type<Tuple>::value)
+        : __vml_base{ get<I>(t)... } {}
 
     /// Construct from foreign vector type
     template <typename VectorType>
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 2) &&
                 requires {
@@ -443,10 +443,10 @@ public:
                     {
                         v.y
                     } -> std::convertible_to<T>;
-                } && (_VMTL::__is_foreign_type<VectorType>::value)
-        : __mtl_base{ v.x, v.y } {}
+                } && (_VVML::__is_foreign_type<VectorType>::value)
+        : __vml_base{ v.x, v.y } {}
     template <typename VectorType>
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 3) &&
                 requires {
@@ -459,10 +459,10 @@ public:
                     {
                         v.z
                     } -> std::convertible_to<T>;
-                } && (_VMTL::__is_foreign_type<VectorType>::value)
-        : __mtl_base{ v.x, v.y, v.z } {}
+                } && (_VVML::__is_foreign_type<VectorType>::value)
+        : __vml_base{ v.x, v.y, v.z } {}
     template <typename VectorType>
-    __mtl_always_inline __mtl_interface_export constexpr __vector_base(
+    __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 4) &&
                 requires {
@@ -478,8 +478,8 @@ public:
                     {
                         v.w
                     } -> std::convertible_to<T>;
-                } && (_VMTL::__is_foreign_type<VectorType>::value)
-        : __mtl_base{ v.x, v.y, v.z, v.w } {}
+                } && (_VVML::__is_foreign_type<VectorType>::value)
+        : __vml_base{ v.x, v.y, v.z, v.w } {}
 
     /// Convert to foreign vector type
     template <__foreign_vector_type<T, Size> VectorType>
@@ -494,27 +494,27 @@ public:
 
 template <typename T, std::size_t Size, vector_options O>
 struct vector: public __vector_base<T, Size, O> {
-    using __mtl_base = __vector_base<T, Size, O>;
+    using __vml_base = __vector_base<T, Size, O>;
 
-    __mtl_always_inline constexpr T& __mtl_at(std::size_t i) & {
-        __mtl_assert_audit(i < Size);
+    __vml_always_inline constexpr T& __vml_at(std::size_t i) & {
+        __vml_assert_audit(i < Size);
         return this->__data[i];
     }
-    __mtl_always_inline constexpr T const& __mtl_at(std::size_t i) const& {
-        __mtl_assert_audit(i < Size);
+    __vml_always_inline constexpr T const& __vml_at(std::size_t i) const& {
+        __vml_assert_audit(i < Size);
         return this->__data[i];
     }
-    __mtl_always_inline constexpr T&& __mtl_at(std::size_t i) && {
-        __mtl_assert_audit(i < Size);
+    __vml_always_inline constexpr T&& __vml_at(std::size_t i) && {
+        __vml_assert_audit(i < Size);
         return std::move(this->__data[i]);
     }
-    __mtl_always_inline constexpr T const&& __mtl_at(std::size_t i) const&& {
-        __mtl_assert_audit(i < Size);
+    __vml_always_inline constexpr T const&& __vml_at(std::size_t i) const&& {
+        __vml_assert_audit(i < Size);
         return std::move(this->__data[i]);
     }
 
-    __mtl_always_inline constexpr T __mtl_vec_at(std::size_t i) const {
-        __mtl_assert_audit(i < Size);
+    __vml_always_inline constexpr T __vml_vec_at(std::size_t i) const {
+        __vml_assert_audit(i < Size);
         if (std::is_constant_evaluated()) {
             return this->__data[i];
         }
@@ -524,293 +524,293 @@ struct vector: public __vector_base<T, Size, O> {
     }
 
     using value_type = T;
-    __mtl_pure __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    __vml_pure __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         size() {
         return Size;
     }
-    __mtl_pure __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    __vml_pure __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         data_size() {
         return Size + (Size == 3 && !O.packed());
     }
-    __mtl_pure __mtl_always_inline
-        __mtl_interface_export static constexpr vector_options
+    __vml_pure __vml_always_inline
+        __vml_interface_export static constexpr vector_options
         options() {
         return O;
     }
 
     static constexpr vector<T, Size, O> unit(std::size_t index,
                                              T const& value = 1) {
-        __mtl_bounds_check(index, 0, Size);
+        __vml_bounds_check(index, 0, Size);
         vector<T, Size, O> result{};
-        result.__mtl_at(index) = value;
+        result.__vml_at(index) = value;
         return result;
     }
 
     /// Inheriting Constructors from __vector_base:
-    using __mtl_base::__mtl_base;
+    using __vml_base::__vml_base;
     vector() = default;
 
     /// Some more Constructors
     // vector3(vector2, scalar)
-    __mtl_always_inline __mtl_interface_export constexpr vector(
+    __vml_always_inline __vml_interface_export constexpr vector(
         vector<T, 2, O> const& a, T const& b)
         requires(Size == 3)
-        : vector(a.__mtl_at(0), a.__mtl_at(1), b) {}
+        : vector(a.__vml_at(0), a.__vml_at(1), b) {}
     // vector3(scalar, vector2)
-    __mtl_always_inline __mtl_interface_export constexpr vector(
+    __vml_always_inline __vml_interface_export constexpr vector(
         T const& a, vector<T, 2, O> const& b)
         requires(Size == 3)
-        : vector(a, b.__mtl_at(0), b.__mtl_at(1)) {}
+        : vector(a, b.__vml_at(0), b.__vml_at(1)) {}
     // vector4(vector2, s, s)
-    __mtl_always_inline __mtl_interface_export constexpr vector(
+    __vml_always_inline __vml_interface_export constexpr vector(
         vector<T, 2, O> const& a, T const& b, T const& c)
         requires(Size == 4)
-        : vector(a.__mtl_at(0), a.__mtl_at(1), b, c) {}
+        : vector(a.__vml_at(0), a.__vml_at(1), b, c) {}
     // vector4(scalar, vector2, scalar)
-    __mtl_always_inline __mtl_interface_export constexpr vector(
+    __vml_always_inline __vml_interface_export constexpr vector(
         T const& a, vector<T, 2, O> const& b, T const& c)
         requires(Size == 4)
-        : vector(a, b.__mtl_at(0), b.__mtl_at(1), c) {}
+        : vector(a, b.__vml_at(0), b.__vml_at(1), c) {}
     // vector4(scalar, scalar, vector2)
-    __mtl_always_inline __mtl_interface_export constexpr vector(
+    __vml_always_inline __vml_interface_export constexpr vector(
         T const& a, T const& b, vector<T, 2, O> const& c)
         requires(Size == 4)
-        : vector(a, b, c.__mtl_at(0), c.__mtl_at(1)) {}
+        : vector(a, b, c.__vml_at(0), c.__vml_at(1)) {}
     // vector4(vector2, vector2)
-    __mtl_always_inline __mtl_interface_export vector(vector<T, 2, O> const& a,
+    __vml_always_inline __vml_interface_export vector(vector<T, 2, O> const& a,
                                                       vector<T, 2, O> const& b)
         requires(Size == 4)
-        : vector(a.__mtl_at(0), a.__mtl_at(1), b.__mtl_at(0), b.__mtl_at(1)) {}
+        : vector(a.__vml_at(0), a.__vml_at(1), b.__vml_at(0), b.__vml_at(1)) {}
     // vector4(vector3, scalar)
-    __mtl_always_inline __mtl_interface_export vector(vector<T, 3, O> const& a,
+    __vml_always_inline __vml_interface_export vector(vector<T, 3, O> const& a,
                                                       T const& b)
         requires(Size == 4)
-        : vector(a.__mtl_at(0), a.__mtl_at(1), a.__mtl_at(2), b) {}
+        : vector(a.__vml_at(0), a.__vml_at(1), a.__vml_at(2), b) {}
     // vector4(scalar, vector3)
-    __mtl_always_inline __mtl_interface_export vector(T const& a,
+    __vml_always_inline __vml_interface_export vector(T const& a,
                                                       vector<T, 3, O> const& b)
         requires(Size == 4)
-        : vector(a, b.__mtl_at(0), b.__mtl_at(1), b.__mtl_at(2)) {}
+        : vector(a, b.__vml_at(0), b.__vml_at(1), b.__vml_at(2)) {}
 
     vector& operator=(vector const&) & = default;
 
     /// operator[]:
-    __mtl_always_inline __mtl_interface_export constexpr T& operator[](
+    __vml_always_inline __vml_interface_export constexpr T& operator[](
         std::size_t index) & {
         return const_cast<T&>(const_cast<vector const&>(*this)[index]);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const& operator[](
         std::size_t index) const& {
-        __mtl_bounds_check(index, 0, Size);
-        return __mtl_at(index);
+        __vml_bounds_check(index, 0, Size);
+        return __vml_at(index);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T&& operator[](
         std::size_t index) && {
         return const_cast<T&&>(const_cast<vector const&&>(*this)[index]);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const&& operator[](
         std::size_t index) const&& {
-        __mtl_bounds_check(index, 0, Size);
-        return std::move(__mtl_at(index));
+        __vml_bounds_check(index, 0, Size);
+        return std::move(__vml_at(index));
     }
 
     /// begin, end:
-    __mtl_always_inline __mtl_interface_export constexpr T* begin() {
+    __vml_always_inline __vml_interface_export constexpr T* begin() {
         return this->__data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* begin()
+    __vml_always_inline __vml_interface_export constexpr T const* begin()
         const {
         return this->__data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* cbegin()
+    __vml_always_inline __vml_interface_export constexpr T const* cbegin()
         const {
         return this->__data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr T* end() {
+    __vml_always_inline __vml_interface_export constexpr T* end() {
         return this->__data + size();
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* end() const {
+    __vml_always_inline __vml_interface_export constexpr T const* end() const {
         return this->__data + size();
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* cend() const {
+    __vml_always_inline __vml_interface_export constexpr T const* cend() const {
         return this->__data + size();
     }
 
     /// data:
-    __mtl_always_inline __mtl_interface_export constexpr T* data() {
+    __vml_always_inline __vml_interface_export constexpr T* data() {
         return this->__data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* data() const {
+    __vml_always_inline __vml_interface_export constexpr T const* data() const {
         return this->__data;
     }
 
     /// swizzle:
     template <std::convertible_to<std::size_t>... I>
-    __mtl_always_inline __mtl_interface_export constexpr vector<T, sizeof...(I),
+    __vml_always_inline __vml_interface_export constexpr vector<T, sizeof...(I),
                                                                 O>
         swizzle(I... i) const {
         return { (*this)[i]... };
     }
 
     /// map:
-    __mtl_always_inline __mtl_interface_export constexpr auto map(
+    __vml_always_inline __vml_interface_export constexpr auto map(
         std::invocable<T> auto&& f) const {
-        return _VMTL::map(*this, __mtl_forward(f));
+        return _VVML::map(*this, __vml_forward(f));
     }
 
     /// fold:
-    __mtl_always_inline __mtl_interface_export constexpr T fold(
-        _VMTL::invocable_r<T, T, T> auto&& f) const {
-        return _VMTL::fold(*this, __mtl_forward(f));
+    __vml_always_inline __vml_interface_export constexpr T fold(
+        _VVML::invocable_r<T, T, T> auto&& f) const {
+        return _VVML::fold(*this, __vml_forward(f));
     }
 
     /// MARK: Arithmetic Assignment
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator+=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator+=(
         vector const& rhs) & {
         *this = *this + rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator+=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator+=(
         T const& rhs) & {
         *this = *this + rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator-=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator-=(
         vector const& rhs) & {
         *this = *this - rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator-=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator-=(
         T const& rhs) & {
         *this = *this - rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator*=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator*=(
         vector const& rhs) & {
         *this = *this * rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator*=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator*=(
         T const& rhs) & {
         *this = *this * rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator/=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator/=(
         vector const& rhs) & {
         *this = *this / rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator/=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator/=(
         T const& rhs) & {
         *this = *this / rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator%=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator%=(
         vector const& rhs) &
         requires std::integral<T>
     {
         *this = *this % rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator%=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator%=(
         T const& rhs) &
         requires std::integral<T>
     {
         *this = *this % rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator&=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator&=(
         vector const& rhs) & {
         *this = *this & rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator|=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator|=(
         vector const& rhs) & {
         *this = *this | rhs;
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator^=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator^=(
         vector const& rhs) & {
         *this = *this ^ rhs;
         return *this;
     }
 
     template <std::integral U, vector_options P>
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator<<=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator<<=(
         vector<U, Size, P> const& rhs) & {
         *this = *this << rhs;
         return *this;
     }
 
     template <std::integral U, vector_options P>
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator>>=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator>>=(
         vector<U, Size, P> const& rhs) & {
         *this = *this >> rhs;
         return *this;
     }
 
     template <std::integral U>
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator<<=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator<<=(
         U rhs) & {
         *this = *this << rhs;
         return *this;
     }
 
     template <std::integral U>
-    __mtl_always_inline __mtl_interface_export constexpr vector& operator>>=(
+    __vml_always_inline __vml_interface_export constexpr vector& operator>>=(
         U rhs) & {
         *this = *this >> rhs;
         return *this;
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr bool all() const
+    __vml_always_inline __vml_interface_export constexpr bool all() const
         requires std::convertible_to<T, bool>
     {
-        return fold(__mtl_logical_and);
+        return fold(__vml_logical_and);
     }
-    __mtl_always_inline __mtl_interface_export constexpr bool any() const
+    __vml_always_inline __vml_interface_export constexpr bool any() const
         requires std::convertible_to<T, bool>
     {
-        return fold(__mtl_logical_or);
+        return fold(__vml_logical_or);
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr T& min()
+    __vml_always_inline __vml_interface_export constexpr T& min()
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::min(__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::min(__vml_at(I)...);
         });
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr T const& min() const
+    __vml_always_inline __vml_interface_export constexpr T const& min() const
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::min(__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::min(__vml_at(I)...);
         });
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr T& max()
+    __vml_always_inline __vml_interface_export constexpr T& max()
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::max(__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::max(__vml_at(I)...);
         });
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr T const& max() const
+    __vml_always_inline __vml_interface_export constexpr T const& max() const
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::max(__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::max(__vml_at(I)...);
         });
     }
 };
 
 template <typename... T>
-vector(T...) -> vector<__mtl_promote(T...), sizeof...(T)>;
+vector(T...) -> vector<__vml_promote(T...), sizeof...(T)>;
 
 template <typename T, typename U, std::size_t Size, vector_options O,
           vector_options P>
@@ -819,10 +819,10 @@ template <typename T, typename U, std::size_t Size, vector_options O,
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(vector<T, Size, O> const& v, vector<U, Size, P> const& w) {
-    return _VMTL::fold(_VMTL::map(v, w, _VMTL::__mtl_equals),
-                       _VMTL::__mtl_logical_and);
+    return _VVML::fold(_VVML::map(v, w, _VVML::__vml_equals),
+                       _VVML::__vml_logical_and);
 }
 
 template <typename T, typename U, std::size_t Size, vector_options O>
@@ -831,10 +831,10 @@ template <typename T, typename U, std::size_t Size, vector_options O>
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(vector<T, Size, O> const& v, U const& w) {
-    return _VMTL::fold(_VMTL::map(v, [&](auto i) { return i == w; }),
-                       _VMTL::__mtl_logical_and);
+    return _VVML::fold(_VVML::map(v, [&](auto i) { return i == w; }),
+                       _VVML::__vml_logical_and);
 }
 
 template <typename T, typename U, std::size_t Size, vector_options O>
@@ -843,13 +843,13 @@ template <typename T, typename U, std::size_t Size, vector_options O>
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(U const& w, vector<T, Size, O> const& v) {
     return v == w;
 }
 
 template <typename CharT, typename T, std::size_t Size, vector_options O>
-__mtl_interface_export std::basic_ostream<CharT>& operator<<(
+__vml_interface_export std::basic_ostream<CharT>& operator<<(
     std::basic_ostream<CharT>& str, vector<T, Size, O> const& v) {
     str << '(';
     for (bool first = true; auto&& i: v) {
@@ -862,118 +862,118 @@ __mtl_interface_export std::basic_ostream<CharT>& operator<<(
 /// programming
 // (s, s)
 template <scalar T, scalar U>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U), 2>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U), 2>
     concat(T const& a, U const& b) {
-    return vector<__mtl_promote(T, U), 2>(a, b);
+    return vector<__vml_promote(T, U), 2>(a, b);
 }
 
 // (s, s, s)
 template <scalar T, scalar U, scalar V>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U, V), 3>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U, V), 3>
     concat(T const& a, U const& b, V const& c) {
-    return vector<__mtl_promote(T, U, V), 3>(a, b, c);
+    return vector<__vml_promote(T, U, V), 3>(a, b, c);
 }
 
 // (s, s, s, s)
 template <scalar T, scalar U, scalar V, scalar W>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U, V, W), 4>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U, V, W), 4>
     concat(T const& a, U const& b, V const& c, W const& d) {
-    return vector<__mtl_promote(T, U, V, W), 4>(a, b, c, d);
+    return vector<__vml_promote(T, U, V, W), 4>(a, b, c, d);
 }
 
 // (v2, s)
 template <scalar T, scalar U, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export
-    vector<__mtl_promote(T, U), 3, O>
+__vml_mathfunction __vml_always_inline __vml_interface_export
+    vector<__vml_promote(T, U), 3, O>
     concat(vector<T, 2, O> const& a, U const& b) {
-    return vector<__mtl_promote(T, U), 3, O>(a, b);
+    return vector<__vml_promote(T, U), 3, O>(a, b);
 }
 
 // (s, v2)
 template <scalar T, scalar U, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U), 3, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U), 3, O>
     concat(T const& a, vector<U, 2, O> const& b) {
-    return vector<__mtl_promote(T, U), 3, O>(a, b);
+    return vector<__vml_promote(T, U), 3, O>(a, b);
 }
 
 // (v2, s, s)
 template <scalar T, scalar U, scalar V, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U, V), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U, V), 4, O>
     concat(vector<T, 2, O> const& a, U const& b, V const& c) {
-    return vector<__mtl_promote(T, U, V), 4, O>(a, b, c);
+    return vector<__vml_promote(T, U, V), 4, O>(a, b, c);
 }
 
 // (s, v2, s)
 template <scalar T, scalar U, scalar V, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U, V), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U, V), 4, O>
     concat(T const& a, vector<U, 2, O> const& b, V const& c) {
-    return vector<__mtl_promote(T, U, V), 4, O>(a, b, c);
+    return vector<__vml_promote(T, U, V), 4, O>(a, b, c);
 }
 
 // (s, s, v2)
 template <scalar T, scalar U, scalar V, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U, V), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U, V), 4, O>
     concat(T const& a, U const& b, vector<V, 2, O> const& c) {
-    return vector<__mtl_promote(T, U, V), 4, O>(a, b, c);
+    return vector<__vml_promote(T, U, V), 4, O>(a, b, c);
 }
 
 // (v2, v2)
 template <scalar T, scalar U, vector_options O, vector_options P>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U), 4, O>
     concat(vector<T, 2, O> const& a, vector<U, 2, P> const& b) {
-    return vector<__mtl_promote(T, U), 4, O>(a, b);
+    return vector<__vml_promote(T, U), 4, O>(a, b);
 }
 
 // (v3, s)
 template <scalar T, scalar U, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U), 4, O>
     concat(vector<T, 3, O> const& a, U const& b) {
-    return vector<__mtl_promote(T, U), 4, O>(a, b);
+    return vector<__vml_promote(T, U), 4, O>(a, b);
 }
 
 // (s, v3)
 template <scalar T, scalar U, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_promote(T, U), 4, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_promote(T, U), 4, O>
     concat(T const& a, vector<U, 3, O> const& b) {
-    return vector<__mtl_promote(T, U), 4, O>(a, b);
+    return vector<__vml_promote(T, U), 4, O>(a, b);
 }
 
 template <typename T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<T, Size, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<T, Size, O>
     reverse(vector<T, Size, O> const& v) {
     return vector<T, Size, O>(
-        [&](std::size_t i) { return v.__mtl_at(Size - 1 - i); });
+        [&](std::size_t i) { return v.__vml_at(Size - 1 - i); });
 }
 
 template <typename To, typename T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<To, Size, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<To, Size, O>
     type_cast(vector<T, Size, O> const& v) {
     return vector<To, Size, O>(
-        [&](std::size_t i) { return static_cast<To>(v.__mtl_at(i)); });
+        [&](std::size_t i) { return static_cast<To>(v.__vml_at(i)); });
 }
 
 template <std::size_t To, typename T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<T, To, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<T, To, O>
     dimension_cast(vector<T, Size, O> const& v) {
     return vector<T, To, O>([&](std::size_t i) {
         if constexpr (To > Size) {
-            return i >= Size ? T(0) : v.__mtl_at(i);
+            return i >= Size ? T(0) : v.__vml_at(i);
         }
         else {
-            return v.__mtl_at(i);
+            return v.__vml_at(i);
         }
     });
 }
@@ -982,7 +982,7 @@ template <typename T, std::size_t Size, vector_options O>
 constexpr vector<bool, Size, O> isnan(vector<T, Size, O> const& m) {
     return vector<bool, Size, O>([&](std::size_t i) {
         using std::isnan;
-        return isnan(m.__mtl_at(i));
+        return isnan(m.__vml_at(i));
     });
 }
 
@@ -990,7 +990,7 @@ template <typename T, std::size_t Size, vector_options O>
 constexpr vector<bool, Size, O> isinf(vector<T, Size, O> const& m) {
     return vector<bool, Size, O>([&](std::size_t i) {
         using std::isinf;
-        return isinf(m.__mtl_at(i));
+        return isinf(m.__vml_at(i));
     });
 }
 
@@ -998,7 +998,7 @@ template <typename T, std::size_t Size, vector_options O>
 constexpr vector<bool, Size, O> isfinite(vector<T, Size, O> const& m) {
     return vector<bool, Size, O>([&](std::size_t i) {
         using std::isfinite;
-        return isfinite(m.__mtl_at(i));
+        return isfinite(m.__vml_at(i));
     });
 }
 
@@ -1006,161 +1006,161 @@ template <typename T, std::size_t Size, vector_options O>
 constexpr vector<bool, Size, O> isnormal(vector<T, Size, O> const& m) {
     return vector<bool, Size, O>([&](std::size_t i) {
         using std::isnormal;
-        return isnormal(m.__mtl_at(i));
+        return isnormal(m.__vml_at(i));
     });
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     dot(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
-    return fold(a * b, _VMTL::__mtl_plus);
+    return fold(a * b, _VVML::__vml_plus);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     norm_squared(vector<T, Size, O> const& a) {
     return map(a, [](auto const& x) {
         return norm_squared(x);
-    }).fold(_VMTL::__mtl_plus);
+    }).fold(_VVML::__vml_plus);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     length_squared(vector<T, Size, O> const& a) {
     return norm_squared(a);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     norm(vector<T, Size, O> const& a) {
     if constexpr (real_scalar<T>) {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::hypot(a.__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::hypot(a.__vml_at(I)...);
         });
     }
     else {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::hypot(norm(a.__mtl_at(I))...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::hypot(norm(a.__vml_at(I))...);
         });
     }
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     fast_norm(vector<T, Size, O> const& a) {
     if constexpr (real_scalar<T>) {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::fast_hypot(a.__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::fast_hypot(a.__vml_at(I)...);
         });
     }
     else {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::fast_hypot(fast_norm(a.__mtl_at(I))...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::fast_hypot(fast_norm(a.__vml_at(I))...);
         });
     }
 }
 
 template <scalar F, scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     pnorm(F p, vector<T, Size, O> const& a) {
     if constexpr (real_scalar<T>) {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::phypot(p, a.__mtl_at(I)...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::phypot(p, a.__vml_at(I)...);
         });
     }
     else {
-        return __mtl_with_index_sequence((I, Size), {
-            return _VMTL::phypot(p, pnorm(p, a.__mtl_at(I))...);
+        return __vml_with_index_sequence((I, Size), {
+            return _VVML::phypot(p, pnorm(p, a.__vml_at(I))...);
         });
     }
 }
 
 template <typename T, std::size_t Size, vector_options O>
 constexpr auto sum_norm(vector<T, Size, O> const& v) {
-    return __mtl_with_index_sequence((I, Size), {
+    return __vml_with_index_sequence((I, Size), {
         using std::abs;
-        return (abs(v.__mtl_at(I)) + ...);
+        return (abs(v.__vml_at(I)) + ...);
     });
 }
 
 template <typename T, std::size_t Size, vector_options O>
 constexpr auto max_norm(vector<T, Size, O> const& v) {
-    return __mtl_with_index_sequence((I, Size), {
+    return __vml_with_index_sequence((I, Size), {
         using std::abs;
-        return max(abs(v.__mtl_at(I))...);
+        return max(abs(v.__vml_at(I))...);
     });
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     length(vector<T, Size, O> const& a) {
     return norm(a);
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     distance_squared(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
     return norm_squared(a - b);
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     distance(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
     return norm(a - b);
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     fast_distance(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
     return fast_norm(a - b);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     normalize(vector<T, Size, O> const& a) {
     return a / norm(a);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     fast_normalize(vector<T, Size, O> const& a) {
     return a / fast_norm(a);
 }
 
 template <real_scalar T, real_scalar... U, std::size_t Size, vector_options O,
           vector_options... P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr vector<
-    __mtl_promote(T, U...), Size, combine(O, P...)>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
+    __vml_promote(T, U...), Size, combine(O, P...)>
     min(vector<T, Size, O> const& v, vector<U, Size, P> const&... w) {
-    return map(v, w..., [](auto&&... x) { return _VMTL::min(x...); });
+    return map(v, w..., [](auto&&... x) { return _VVML::min(x...); });
 }
 
 template <real_scalar T, real_scalar... U, std::size_t Size, vector_options O,
           vector_options... P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr vector<
-    __mtl_promote(T, U...), Size, combine(O, P...)>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
+    __vml_promote(T, U...), Size, combine(O, P...)>
     max(vector<T, Size, O> const& v, vector<U, Size, P> const&... w) {
-    return map(v, w..., [](auto&&... x) { return _VMTL::max(x...); });
+    return map(v, w..., [](auto&&... x) { return _VVML::max(x...); });
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     abs(vector<T, Size, O> const& a) {
-    return a.map(_VMTL::__mtl_abs);
+    return a.map(_VVML::__vml_abs);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     sqrt(vector<T, Size, O> const& a) {
-    return a.map(_VMTL::__mtl_sqrt);
+    return a.map(_VVML::__vml_sqrt);
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     cbrt(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::cbrt;
@@ -1170,7 +1170,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 
 template <scalar T, scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     pow(vector<T, Size, O> const& base, vector<U, Size, P> const& exp) {
     return map(base, exp, [](T const& b, U const& e) {
         using std::pow;
@@ -1179,7 +1179,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     pow(vector<T, Size, O> const& base, U const& exp) {
     return base.map([&](T const& b) {
         using std::pow;
@@ -1188,7 +1188,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, scalar U, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     pow(T const& base, vector<U, Size, O> const& exp) {
     return exp.map([&](U const& e) {
         using std::pow;
@@ -1197,7 +1197,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     exp(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::exp;
@@ -1206,7 +1206,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     exp2(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::exp2;
@@ -1215,7 +1215,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     log(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::log;
@@ -1224,7 +1224,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     log2(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::log2;
@@ -1233,7 +1233,7 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 }
 
 template <scalar T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     log10(vector<T, Size, O> const& a) {
     return a.map([](T const& a) {
         using std::log10;
@@ -1244,38 +1244,38 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
 template <typename T, typename U = T, std::size_t Size, vector_options O,
           vector_options P = O>
     requires std::is_integral_v<T> && std::is_integral_v<U>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     ceil_divide(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
     return map(a, b, [](auto&& x, auto&& y) {
-        return _VMTL::__mtl_ceil_divide(x, y);
+        return _VVML::__vml_ceil_divide(x, y);
     });
 }
 
 template <typename T, typename U, std::size_t Size, vector_options O>
     requires std::is_integral_v<T> && std::is_integral_v<U>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     ceil_divide(vector<T, Size, O> const& a, U const& b) {
-    return a.map([&](auto x) { return _VMTL::__mtl_ceil_divide(x, b); });
+    return a.map([&](auto x) { return _VVML::__vml_ceil_divide(x, b); });
 }
 
 template <typename T, typename U, std::size_t Size, vector_options O>
     requires std::is_integral_v<T> && std::is_integral_v<U>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     ceil_divide(T const& a, vector<U, Size, O> const& b) {
-    return b.map([&](auto x) { return _VMTL::__mtl_ceil_divide(a, x); });
+    return b.map([&](auto x) { return _VVML::__vml_ceil_divide(a, x); });
 }
 
 template <typename T, std::size_t Size, vector_options O>
     requires std::is_floating_point_v<T>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     fract(vector<T, Size, O> const& a) {
-    return a.map([](auto&& x) { return _VMTL::__mtl_fract(x); });
+    return a.map([](auto&& x) { return _VVML::__vml_fract(x); });
 }
 
 template <typename T, std::size_t Size, vector_options O>
     requires std::is_floating_point_v<T>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<T, Size, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<T, Size, O>
     floor(vector<T, Size, O> const& a) {
     return a.map([](auto&& x) {
         using std::floor;
@@ -1285,8 +1285,8 @@ __mtl_mathfunction __mtl_always_inline
 
 template <typename T, std::size_t Size, vector_options O>
     requires std::is_floating_point_v<T>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<T, Size, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<T, Size, O>
     ceil(vector<T, Size, O> const& a) {
     return a.map([](auto&& x) {
         using std::ceil;
@@ -1295,8 +1295,8 @@ __mtl_mathfunction __mtl_always_inline
 }
 
 template <typename T, std::size_t Size, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr vector<__mtl_floatify(T), Size, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr vector<__vml_floatify(T), Size, O>
     floor(vector<T, Size, O> const& a) {
     return a.map([](auto&& x) {
         using std::exp;
@@ -1305,92 +1305,92 @@ __mtl_mathfunction __mtl_always_inline
 }
 
 template <real_scalar T, real_scalar U, vector_options O, vector_options P>
-__mtl_mathfunction __mtl_interface_export constexpr vector3<__mtl_promote(T, U),
+__vml_mathfunction __vml_interface_export constexpr vector3<__vml_promote(T, U),
                                                             combine(O, P)>
     cross(vector3<T, O> const& a, vector3<U, P> const& b) {
-    return { a.__mtl_at(1) * b.__mtl_at(2) - a.__mtl_at(2) * b.__mtl_at(1),
-             a.__mtl_at(2) * b.__mtl_at(0) - a.__mtl_at(0) * b.__mtl_at(2),
-             a.__mtl_at(0) * b.__mtl_at(1) - a.__mtl_at(1) * b.__mtl_at(0) };
+    return { a.__vml_at(1) * b.__vml_at(2) - a.__vml_at(2) * b.__vml_at(1),
+             a.__vml_at(2) * b.__vml_at(0) - a.__vml_at(0) * b.__vml_at(2),
+             a.__vml_at(0) * b.__vml_at(1) - a.__vml_at(1) * b.__vml_at(0) };
 }
 
 template <real_scalar T, real_scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_interface_export constexpr vector<bool, Size,
+__vml_mathfunction __vml_interface_export constexpr vector<bool, Size,
                                                            combine(O, P)>
     operator<(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
-    return map(a, b, __mtl_less);
+    return map(a, b, __vml_less);
 }
 
 template <real_scalar T, real_scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_interface_export constexpr vector<bool, Size,
+__vml_mathfunction __vml_interface_export constexpr vector<bool, Size,
                                                            combine(O, P)>
     operator<=(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
-    return map(a, b, __mtl_less_eq);
+    return map(a, b, __vml_less_eq);
 }
 
 template <real_scalar T, real_scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_interface_export constexpr vector<bool, Size,
+__vml_mathfunction __vml_interface_export constexpr vector<bool, Size,
                                                            combine(O, P)>
     operator>(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
-    return map(a, b, __mtl_greater);
+    return map(a, b, __vml_greater);
 }
 
 template <real_scalar T, real_scalar U, std::size_t Size, vector_options O,
           vector_options P>
-__mtl_mathfunction __mtl_interface_export constexpr vector<bool, Size,
+__vml_mathfunction __vml_interface_export constexpr vector<bool, Size,
                                                            combine(O, P)>
     operator>=(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
-    return map(a, b, __mtl_greater_eq);
+    return map(a, b, __vml_greater_eq);
 }
 
-} // namespace _VMTL
+} // namespace _VVML
 
-template <typename T, std::size_t N, _VMTL::vector_options O>
-class std::hash<_VMTL::vector<T, N, O>> {
+template <typename T, std::size_t N, _VVML::vector_options O>
+class std::hash<_VVML::vector<T, N, O>> {
 public:
-    std::size_t operator()(_VMTL::vector<T, N, O> const& v) const {
-        std::size_t seed = _VMTL::__mtl_hash_seed;
+    std::size_t operator()(_VVML::vector<T, N, O> const& v) const {
+        std::size_t seed = _VVML::__vml_hash_seed;
         for (auto& i: v) {
-            seed = _VMTL::__mtl_hash_combine(seed, i);
+            seed = _VVML::__vml_hash_combine(seed, i);
         }
         return seed;
     }
 };
 
-namespace _VMTL {
+namespace _VVML {
 
 template <std::size_t I, typename T, std::size_t Size, vector_options O>
     requires(I < Size)
 constexpr T const& get(vector<T, Size, O> const& v) {
-    return v.__mtl_at(I);
+    return v.__vml_at(I);
 }
 template <std::size_t I, typename T, std::size_t Size, vector_options O>
     requires(I < Size)
 constexpr T& get(vector<T, Size, O>& v) {
-    return v.__mtl_at(I);
+    return v.__vml_at(I);
 }
 template <std::size_t I, typename T, std::size_t Size, vector_options O>
     requires(I < Size)
 constexpr T&& get(vector<T, Size, O>&& v) {
-    return std::move(v.__mtl_at(I));
+    return std::move(v.__vml_at(I));
 }
 template <std::size_t I, typename T, std::size_t Size, vector_options O>
     requires(I < Size)
 constexpr T const&& get(vector<T, Size, O> const&& v) {
-    return std::move(v.__mtl_at(I));
+    return std::move(v.__vml_at(I));
 }
 
-} // namespace _VMTL
+} // namespace _VVML
 
-template <typename T, std::size_t Size, _VMTL::vector_options O>
-struct std::tuple_size<_VMTL::vector<T, Size, O>>:
+template <typename T, std::size_t Size, _VVML::vector_options O>
+struct std::tuple_size<_VVML::vector<T, Size, O>>:
     std::integral_constant<std::size_t, Size> {};
 
-template <std::size_t I, typename T, std::size_t Size, _VMTL::vector_options O>
-struct std::tuple_element<I, _VMTL::vector<T, Size, O>> {
+template <std::size_t I, typename T, std::size_t Size, _VVML::vector_options O>
+struct std::tuple_element<I, _VVML::vector<T, Size, O>> {
     using type = T;
 };
 
-#endif // __MTL_VECTOR_HPP_INCLUDED__
+#endif // __VML_VECTOR_HPP_INCLUDED__

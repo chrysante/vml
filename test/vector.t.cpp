@@ -8,7 +8,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using namespace mtl::short_types;
+using namespace vml::short_types;
 
 #define TYPE_LIST(O)                                                           \
     (int, 2, O), (int, 3, O), (int, 4, O), (unsigned, 2, O), (unsigned, 3, O), \
@@ -19,10 +19,10 @@ using namespace mtl::short_types;
 #define VECTOR_TEST_CASE(...)                                                  \
     TEMPLATE_TEST_CASE_SIG(__VA_ARGS__,                                        \
                            ((typename T, std::size_t Size,                     \
-                             mtl::vector_options Options),                     \
+                             vml::vector_options Options),                     \
                             T, Size, Options),                                 \
-                           TYPE_LIST(mtl::vector_options{}),                   \
-                           TYPE_LIST(mtl::vector_options{}.packed(true)))
+                           TYPE_LIST(vml::vector_options{}),                   \
+                           TYPE_LIST(vml::vector_options{}.packed(true)))
 
 namespace {
 
@@ -34,7 +34,7 @@ template <>
 struct OtherType<int> {
     using type = float;
 };
-template <mtl::vector_options O>
+template <vml::vector_options O>
 struct OtherOptions {
     auto constexpr static value = O.packed(!O.packed());
 };
@@ -42,7 +42,7 @@ struct OtherOptions {
 } // namespace
 
 VECTOR_TEST_CASE("vector offsets", "[vector][vector_data]") {
-    using V = mtl::vector<T, Size, Options>;
+    using V = vml::vector<T, Size, Options>;
     CHECK(std::is_trivial_v<V>);
     if constexpr (Options.packed()) {
         CHECK(sizeof(V) == sizeof(T) * Size);
@@ -72,14 +72,14 @@ VECTOR_TEST_CASE("vector offsets", "[vector][vector_data]") {
 
 VECTOR_TEST_CASE("vector single value constructor", "[vector]") {
     T const value = (T)GENERATE(0, 1, -1, 5321);
-    mtl::vector<T, Size, Options> const v = value;
+    vml::vector<T, Size, Options> const v = value;
     for (auto i: v) {
         CHECK(i == value);
     }
 }
 
 VECTOR_TEST_CASE("vector functional constructor", "[vector]") {
-    using V = mtl::vector<T, Size, Options>;
+    using V = vml::vector<T, Size, Options>;
     static_assert(Size <= 8);
     T const values[8] = { 0, 1, (T)-1, 5321, 1, 2, 3, 4 };
     V v;
@@ -96,10 +96,10 @@ VECTOR_TEST_CASE("vector functional constructor", "[vector]") {
 
 VECTOR_TEST_CASE("vector conversion", "[vector]") {
     T const values[8] = { 0, (T)1.5, (T)-1, 5321, 1, 2, 3, 4 };
-    mtl::vector<T, Size, Options> const v([&](int i) { return values[i]; });
+    vml::vector<T, Size, Options> const v([&](int i) { return values[i]; });
     using U = typename OtherType<T>::type;
     constexpr auto P = OtherOptions<Options>::value;
-    mtl::vector<U, Size, P> const w = v;
+    vml::vector<U, Size, P> const w = v;
     for (int i = 0; auto value: w) {
         CHECK(value == (U)values[i++]);
     }
@@ -134,16 +134,16 @@ struct Vec4_2 {
 TEST_CASE("extern vector type conversion", "[vector]") {
     SECTION("Size = 2") {
         Vec<int, 2> const ex = { 1, 2 };
-        mtl::int2 const v = ex;
-        CHECK(v == mtl::int2{ 1, 2 });
+        vml::int2 const v = ex;
+        CHECK(v == vml::int2{ 1, 2 });
         Vec<int, 2> const ex2 = v;
         CHECK(ex2.x == 1);
         CHECK(ex2.y == 2);
     }
     SECTION("Size = 3") {
         Vec<int, 3> const ex = { 1, 2, 3 };
-        mtl::int3 const v = ex;
-        CHECK(v == mtl::int3{ 1, 2, 3 });
+        vml::int3 const v = ex;
+        CHECK(v == vml::int3{ 1, 2, 3 });
         Vec<int, 3> const ex2 = v;
         CHECK(ex2.x == 1);
         CHECK(ex2.y == 2);
@@ -151,8 +151,8 @@ TEST_CASE("extern vector type conversion", "[vector]") {
     }
     SECTION("Size = 4") {
         Vec<int, 4> const ex = { 1, 2, 3, 4 };
-        mtl::int4 const v = ex;
-        CHECK(v == mtl::int4{ 1, 2, 3, 4 });
+        vml::int4 const v = ex;
+        CHECK(v == vml::int4{ 1, 2, 3, 4 });
         Vec<int, 4> const ex2 = v;
         CHECK(ex2.x == 1);
         CHECK(ex2.y == 2);
@@ -163,8 +163,8 @@ TEST_CASE("extern vector type conversion", "[vector]") {
 
 TEST_CASE("extern vector type conversion 2", "[vector]") {
     Vec4_2<int> const ex = { 1, 2, 3, 4 };
-    mtl::int4 const v = ex;
-    CHECK(v == mtl::int4{ 1, 2, 3, 4 });
+    vml::int4 const v = ex;
+    CHECK(v == vml::int4{ 1, 2, 3, 4 });
     Vec4_2<int> const ex2 = v;
     CHECK(ex2.x == 1);
     CHECK(ex2.y == 2);
@@ -174,8 +174,8 @@ TEST_CASE("extern vector type conversion 2", "[vector]") {
 
 TEST_CASE("vector tuple conversion", "[vector]") {
     std::tuple<int, int, int, int> const t = { 1, 2, 3, 4 };
-    mtl::int4 const v = t;
-    CHECK(v == mtl::int4{ 1, 2, 3, 4 });
+    vml::int4 const v = t;
+    CHECK(v == vml::int4{ 1, 2, 3, 4 });
     std::tuple<int, int, int, int> const s = v;
     CHECK(std::get<0>(s) == 1);
     CHECK(std::get<1>(s) == 2);
@@ -185,8 +185,8 @@ TEST_CASE("vector tuple conversion", "[vector]") {
 
 TEST_CASE("vector tuple conversion 2", "[vector]") {
     std::tuple<int, float, double, char> const t = { 1, 2, 3, 4 };
-    mtl::int4 const v = t;
-    CHECK(v == mtl::int4{ 1, 2, 3, 4 });
+    vml::int4 const v = t;
+    CHECK(v == vml::int4{ 1, 2, 3, 4 });
     std::tuple<int, float, double, char> const s = v;
     CHECK(std::get<0>(s) == 1);
     CHECK(std::get<1>(s) == 2);
@@ -196,8 +196,8 @@ TEST_CASE("vector tuple conversion 2", "[vector]") {
 
 TEST_CASE("vector array conversion", "[vector]") {
     std::array<int, 4> const t = { 1, 2, 3, 4 };
-    mtl::int4 const v = t;
-    CHECK(v == mtl::int4{ 1, 2, 3, 4 });
+    vml::int4 const v = t;
+    CHECK(v == vml::int4{ 1, 2, 3, 4 });
     std::array<int, 4> const s = v;
     CHECK(s[0] == 1);
     CHECK(s[1] == 2);
@@ -206,10 +206,10 @@ TEST_CASE("vector array conversion", "[vector]") {
 }
 
 TEST_CASE("vector quaternion conversion", "[vector]") {
-    mtl::quaternion_int const q = { 1, 2, 3, 4 };
-    mtl::int4 const v = q;
-    CHECK(v == mtl::int4{ 1, 2, 3, 4 });
-    mtl::quaternion_int const r = v;
+    vml::quaternion_int const q = { 1, 2, 3, 4 };
+    vml::int4 const v = q;
+    CHECK(v == vml::int4{ 1, 2, 3, 4 });
+    vml::quaternion_int const r = v;
     CHECK(r.x == 1);
     CHECK(r.y == 2);
     CHECK(r.z == 3);
@@ -217,16 +217,16 @@ TEST_CASE("vector quaternion conversion", "[vector]") {
 }
 
 TEST_CASE("vector complex conversion", "[vector]") {
-    mtl::complex_int const z = { 1, 2 };
-    mtl::int2 const v = z;
-    CHECK(v == mtl::int2{ 1, 2 });
-    mtl::complex_int const r = z;
+    vml::complex_int const z = { 1, 2 };
+    vml::int2 const v = z;
+    CHECK(v == vml::int2{ 1, 2 });
+    vml::complex_int const r = z;
     CHECK(r.x == 1);
     CHECK(r.y == 2);
 }
 
 TEST_CASE("vector deduction guide", "[vector]") {
-    mtl::vector v = { 1, 1.4, 2u };
+    vml::vector v = { 1, 1.4, 2u };
     static_assert(std::is_same_v<decltype(v)::value_type, double>);
     static_assert(decltype(v)::size() == 3);
     static_assert(!decltype(v)::options().packed());
@@ -236,7 +236,7 @@ TEST_CASE("vector deduction guide", "[vector]") {
 #if 0
 
 TEST_CASE("map(vector)", "[vector]") {
-	auto const m = mtl::map(float3{ 0.1f, 0.2f, 0.3f }, int3{ 1, 2, 3 }, packed_int3{}, utl::plus);
+	auto const m = vml::map(float3{ 0.1f, 0.2f, 0.3f }, int3{ 1, 2, 3 }, packed_int3{}, utl::plus);
 	static_assert(std::is_same_v<decltype(m)::value_type, float>);
 	static_assert(!decltype(m)::options().packed());
 	CHECK(m == float3{ 1.1f, 2.2f, 3.3f });
@@ -244,8 +244,8 @@ TEST_CASE("map(vector)", "[vector]") {
 
 TEST_CASE("fold(vector)", "[vector]") {
 	double const x = 1e30, y = -1e30, z = 1;
-	auto const lf = mtl::left_fold(double3{ x, y, z }, utl::plus);
-	auto const rf = mtl::right_fold(double3{ x, y, z }, utl::plus);
+	auto const lf = vml::left_fold(double3{ x, y, z }, utl::plus);
+	auto const rf = vml::right_fold(double3{ x, y, z }, utl::plus);
 	CHECK(lf == 1);
 	CHECK(rf == 0);
 	static_assert(std::is_same_v<decltype(lf), double const>);

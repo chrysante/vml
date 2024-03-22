@@ -16,7 +16,7 @@ constexpr bool operator==(_wrap_type<T>, _wrap_type<U>) {
 #define _wrap_promote(...) _wrap(std::common_type_t<__VA_ARGS__>)
 
 TEST_CASE("promote") {
-    using namespace mtl;
+    using namespace vml;
     CHECK(_wrap_promote(int, float) == _wrap(float));
     CHECK(_wrap_promote(float, double) == _wrap(double));
     CHECK(_wrap_promote(char, long double) == _wrap(long double));

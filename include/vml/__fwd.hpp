@@ -1,5 +1,5 @@
-#ifndef __MTL_FWD_HPP_INCLUDED__
-#define __MTL_FWD_HPP_INCLUDED__
+#ifndef __VML_FWD_HPP_INCLUDED__
+#define __VML_FWD_HPP_INCLUDED__
 
 /// Forward declarations of all types and typedefs
 
@@ -7,7 +7,7 @@
 
 #include "__base.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 struct vector_options {
     constexpr bool packed() const { return __packed; }
@@ -17,7 +17,7 @@ struct vector_options {
         return result;
     }
 
-    bool __packed = MTL_DEFAULT_PACKED;
+    bool __packed = VML_DEFAULT_PACKED;
 
     friend constexpr vector_options combine(
         std::same_as<vector_options> auto const&... o) {
@@ -38,7 +38,7 @@ template <typename, std::size_t, std::size_t, vector_options = vector_options{}>
 struct matrix;
 
 /**
- These exist so I can conditionally declare 'namespace metal = mtl' in shared
+ These exist so I can conditionally declare 'namespace metal = vml' in shared
  header files and use types below as metal::int32_t etc.
  */
 
@@ -647,6 +647,6 @@ using aligned_ldouble4x4 =
 
 } // namespace short_types
 
-} // namespace _VMTL
+} // namespace _VVML
 
-#endif // __MTL_FWD_HPP_INCLUDED__
+#endif // __VML_FWD_HPP_INCLUDED__

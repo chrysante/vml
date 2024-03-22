@@ -1,5 +1,5 @@
-#ifndef __MTL_MATRIX_HPP_INCLUDED__
-#define __MTL_MATRIX_HPP_INCLUDED__
+#ifndef __VML_MATRIX_HPP_INCLUDED__
+#define __VML_MATRIX_HPP_INCLUDED__
 
 #include <array>
 #include <iomanip>
@@ -11,7 +11,7 @@
 #include "__common.hpp"
 #include "__vector.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 /// Tag type to select matrix row constructor
 struct rows_tag {};
@@ -25,18 +25,18 @@ inline constexpr columns_tag columns{};
 /// MARK: Map
 template <typename... T, std::size_t R, std::size_t C, vector_options... O,
           std::invocable<T...> F>
-__mtl_mathfunction __mtl_always_inline constexpr auto __map_impl(
+__vml_mathfunction __vml_always_inline constexpr auto __map_impl(
     F&& f, matrix<T, R, C, O> const&... m) {
     using U = std::invoke_result_t<F, T...>;
     if constexpr (std::same_as<U, void>) {
         for (std::size_t i = 0; i < R * C; ++i) {
-            std::invoke(__mtl_forward(f), m.__mtl_vec_at(i)...);
+            std::invoke(__vml_forward(f), m.__vml_vec_at(i)...);
         }
     }
     else {
         constexpr auto P = combine(O...);
         return matrix<U, R, C, P>([&](std::size_t i) {
-            return std::invoke(__mtl_forward(f), m.__mtl_vec_at(i)...);
+            return std::invoke(__vml_forward(f), m.__vml_vec_at(i)...);
         });
     }
 }
@@ -44,48 +44,48 @@ __mtl_mathfunction __mtl_always_inline constexpr auto __map_impl(
 /// Map the unary function object f onto the matrix m0
 template <typename T0, std::size_t R, std::size_t C, vector_options O0,
           std::invocable<T0> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, F&& f) {
-    return __map_impl(__mtl_forward(f), m0);
+    return __map_impl(__vml_forward(f), m0);
 }
 
 /// Map the binary function object f onto the matrices m0 and m1
 template <typename T0, typename T1, std::size_t R, std::size_t C,
           vector_options O0, vector_options O1, std::invocable<T0, T1> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, matrix<T1, R, C, O1> const& m1, F&& f) {
-    return __map_impl(__mtl_forward(f), m0, m1);
+    return __map_impl(__vml_forward(f), m0, m1);
 }
 
 /// Map the ternary function object f onto the matrices m0, m1, m2
 template <typename T0, typename T1, typename T2, std::size_t R, std::size_t C,
           vector_options O0, vector_options O1, vector_options O2,
           std::invocable<T0, T1, T2> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, matrix<T1, R, C, O1> const& m1,
         matrix<T2, R, C, O2> const& m2, F&& f) {
-    return __map_impl(__mtl_forward(f), m0, m1, m2);
+    return __map_impl(__vml_forward(f), m0, m1, m2);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, std::size_t R,
           std::size_t C, vector_options O0, vector_options O1,
           vector_options O2, vector_options O3,
           std::invocable<T0, T1, T2, T3> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, matrix<T1, R, C, O1> const& m1,
         matrix<T2, R, C, O2> const& m2, matrix<T3, R, C, O3> const& m3, F&& f) {
-    return __map_impl(__mtl_forward(f), m0, m1, m2, m3);
+    return __map_impl(__vml_forward(f), m0, m1, m2, m3);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, typename T4,
           std::size_t R, std::size_t C, vector_options O0, vector_options O1,
           vector_options O2, vector_options O3, vector_options O4,
           std::invocable<T0, T1, T2, T3, T4> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, matrix<T1, R, C, O1> const& m1,
         matrix<T2, R, C, O2> const& m2, matrix<T3, R, C, O3> const& m3,
         matrix<T4, R, C, O4> const& m4, F&& f) {
-    return __map_impl(__mtl_forward(f), m0, m1, m2, m3, m4);
+    return __map_impl(__vml_forward(f), m0, m1, m2, m3, m4);
 }
 
 template <typename T0, typename T1, typename T2, typename T3, typename T4,
@@ -93,37 +93,37 @@ template <typename T0, typename T1, typename T2, typename T3, typename T4,
           vector_options O1, vector_options O2, vector_options O3,
           vector_options O4, vector_options O5,
           std::invocable<T0, T1, T2, T3, T4, T5> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr auto
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     map(matrix<T0, R, C, O0> const& m0, matrix<T1, R, C, O1> const& m1,
         matrix<T2, R, C, O2> const& m2, matrix<T3, R, C, O3> const& m3,
         matrix<T4, R, C, O4> const& m4, matrix<T5, R, C, O5> const& m5, F&& f) {
-    return __map_impl(__mtl_forward(f), m0, m1, m2, m3, m4, m5);
+    return __map_impl(__vml_forward(f), m0, m1, m2, m3, m4, m5);
 }
 
 /// MARK: Fold
 template <typename T, std::size_t R, std::size_t C, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T
     left_fold(matrix<T, R, C, O> const& m, F&& f) {
-    return __mtl_with_index_sequence((I, R * C), {
-        return __left_fold_impl(f, m.__mtl_at(I)...);
+    return __vml_with_index_sequence((I, R * C), {
+        return __left_fold_impl(f, m.__vml_at(I)...);
     });
 }
 
 template <typename T, std::size_t R, std::size_t C, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T
     right_fold(matrix<T, R, C, O> const& m, F&& f) {
-    return __mtl_with_index_sequence((I, R * C), {
-        return __left_fold_impl(f, m.__mtl_at(R * C - 1 - I)...);
+    return __vml_with_index_sequence((I, R * C), {
+        return __left_fold_impl(f, m.__vml_at(R * C - 1 - I)...);
     });
 }
 
 template <typename T, std::size_t R, std::size_t C, vector_options O,
-          _VMTL::invocable_r<T, T, T> F>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T fold(
+          _VVML::invocable_r<T, T, T> F>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T fold(
     matrix<T, R, C, O> const& m, F&& f) {
-    return _VMTL::left_fold(m, __mtl_forward(f));
+    return _VVML::left_fold(m, __vml_forward(f));
 }
 
 /// MARK: - struct __matrix_data
@@ -149,56 +149,56 @@ struct __matrix_data {
         __simd_type_t<T, Columns, Packed> __vec[Rows];
     };
 
-    __mtl_always_inline constexpr T& __mtl_at(std::size_t i) & {
-        __mtl_assert_audit(i < Rows * Columns);
+    __vml_always_inline constexpr T& __vml_at(std::size_t i) & {
+        __vml_assert_audit(i < Rows * Columns);
         return __data[i];
     }
-    __mtl_always_inline constexpr T const& __mtl_at(std::size_t i) const& {
-        __mtl_assert_audit(i < Rows * Columns);
+    __vml_always_inline constexpr T const& __vml_at(std::size_t i) const& {
+        __vml_assert_audit(i < Rows * Columns);
         return __data[i];
     }
-    __mtl_always_inline constexpr T&& __mtl_at(std::size_t i) && {
-        __mtl_assert_audit(i < Rows * Columns);
+    __vml_always_inline constexpr T&& __vml_at(std::size_t i) && {
+        __vml_assert_audit(i < Rows * Columns);
         return (T&&)(__data[i]);
     }
-    __mtl_always_inline constexpr T const&& __mtl_at(std::size_t i) const&& {
-        __mtl_assert_audit(i < Rows * Columns);
+    __vml_always_inline constexpr T const&& __vml_at(std::size_t i) const&& {
+        __vml_assert_audit(i < Rows * Columns);
         return (T const&&)(__data[i]);
     }
 
-    __mtl_always_inline constexpr T __mtl_vec_at(std::size_t i) const {
-        __mtl_assert_audit(i < Rows * Columns);
+    __vml_always_inline constexpr T __vml_vec_at(std::size_t i) const {
+        __vml_assert_audit(i < Rows * Columns);
         return __vec[i / Columns][i % Columns];
     }
 
-    __mtl_always_inline constexpr T& __mtl_at(std::size_t i, std::size_t j) & {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < Columns);
+    __vml_always_inline constexpr T& __vml_at(std::size_t i, std::size_t j) & {
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < Columns);
         return __data[i * Columns + j];
     }
-    __mtl_always_inline constexpr T const& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T const& __vml_at(std::size_t i,
                                                     std::size_t j) const& {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < Columns);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < Columns);
         return __data[i * Columns + j];
     }
-    __mtl_always_inline constexpr T&& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T&& __vml_at(std::size_t i,
                                                std::size_t j) && {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < Columns);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < Columns);
         return (T&&)(__data[i * Columns + j]);
     }
-    __mtl_always_inline constexpr T const&& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T const&& __vml_at(std::size_t i,
                                                      std::size_t j) const&& {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < Columns);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < Columns);
         return (T const&&)(__data[i * Columns + j]);
     }
 
-    __mtl_always_inline constexpr T __mtl_vec_at(std::size_t i,
+    __vml_always_inline constexpr T __vml_vec_at(std::size_t i,
                                                  std::size_t j) const {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < Columns);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < Columns);
         return __vec[i][j];
     }
 };
@@ -214,79 +214,79 @@ struct __matrix_data<T, Rows, 3, false> {
         T __data[__size_in_data];
         __simd_type_t<T, 4, false> __vec[Rows];
     };
-    __mtl_pure __mtl_always_inline static constexpr std::size_t __index(
+    __vml_pure __vml_always_inline static constexpr std::size_t __index(
         std::size_t i, std::size_t j) {
         return i * 4 + j;
     }
 
-    __mtl_always_inline constexpr T& __mtl_at(std::size_t index) & {
-        __mtl_assert_audit(index < Rows * 3);
+    __vml_always_inline constexpr T& __vml_at(std::size_t index) & {
+        __vml_assert_audit(index < Rows * 3);
         return __data[__index(index / 3, index % 3)];
     }
-    __mtl_always_inline constexpr T const& __mtl_at(std::size_t index) const& {
-        __mtl_assert_audit(index < Rows * 3);
+    __vml_always_inline constexpr T const& __vml_at(std::size_t index) const& {
+        __vml_assert_audit(index < Rows * 3);
         return __data[__index(index / 3, index % 3)];
     }
-    __mtl_always_inline constexpr T&& __mtl_at(std::size_t index) && {
-        __mtl_assert_audit(index < Rows * 3);
+    __vml_always_inline constexpr T&& __vml_at(std::size_t index) && {
+        __vml_assert_audit(index < Rows * 3);
         return (T&&)(__data[__index(index / 3, index % 3)]);
     }
-    __mtl_always_inline constexpr T const&& __mtl_at(
+    __vml_always_inline constexpr T const&& __vml_at(
         std::size_t index) const&& {
-        __mtl_assert_audit(index < Rows * 3);
+        __vml_assert_audit(index < Rows * 3);
         return (T const&&)(__data[__index(index / 3, index % 3)]);
     }
 
-    __mtl_always_inline constexpr T __mtl_vec_at(std::size_t index) const {
-        __mtl_assert_audit(index < Rows * 3);
+    __vml_always_inline constexpr T __vml_vec_at(std::size_t index) const {
+        __vml_assert_audit(index < Rows * 3);
         return __vec[index / 3][index % 3];
     }
 
-    __mtl_always_inline constexpr T& __mtl_at(std::size_t i, std::size_t j) & {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < 3);
+    __vml_always_inline constexpr T& __vml_at(std::size_t i, std::size_t j) & {
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < 3);
         return __data[__index(i, j)];
     }
-    __mtl_always_inline constexpr T const& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T const& __vml_at(std::size_t i,
                                                     std::size_t j) const& {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < 3);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < 3);
         return __data[__index(i, j)];
     }
-    __mtl_always_inline constexpr T&& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T&& __vml_at(std::size_t i,
                                                std::size_t j) && {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < 3);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < 3);
         return (T&&)(__data[__index(i, j)]);
     }
-    __mtl_always_inline constexpr T const&& __mtl_at(std::size_t i,
+    __vml_always_inline constexpr T const&& __vml_at(std::size_t i,
                                                      std::size_t j) const&& {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < 3);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < 3);
         return (T const&&)(__data[__index(i, j)]);
     }
 
-    __mtl_always_inline constexpr T __mtl_vec_at(std::size_t i,
+    __vml_always_inline constexpr T __vml_vec_at(std::size_t i,
                                                  std::size_t j) const {
-        __mtl_assert_audit(i < Rows);
-        __mtl_assert_audit(j < 3);
+        __vml_assert_audit(i < Rows);
+        __vml_assert_audit(j < 3);
         return __vec[i][j];
     }
 
     __matrix_data() = default;
-    __mtl_always_inline constexpr __matrix_data(T const& _00, T const& _01,
+    __vml_always_inline constexpr __matrix_data(T const& _00, T const& _01,
                                                 T const& _02, T const& _10,
                                                 T const& _11, T const& _12)
         requires(Rows == 2)
         : __data{ _00, _01, _02, 0, _10, _11, _12, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(T const& _00, T const& _01,
+    __vml_always_inline constexpr __matrix_data(T const& _00, T const& _01,
                                                 T const& _02, T const& _10,
                                                 T const& _11, T const& _12,
                                                 T const& _20, T const& _21,
                                                 T const& _22)
         requires(Rows == 3)
         : __data{ _00, _01, _02, 0, _10, _11, _12, 0, _20, _21, _22, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(T const& _00, T const& _01,
+    __vml_always_inline constexpr __matrix_data(T const& _00, T const& _01,
                                                 T const& _02, T const& _10,
                                                 T const& _11, T const& _12,
                                                 T const& _20, T const& _21,
@@ -296,7 +296,7 @@ struct __matrix_data<T, Rows, 3, false> {
         :
         __data{ _00, _01, _02, 0, _10, _11, _12, 0,
                 _20, _21, _22, 0, _30, _31, _32, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(
+    __vml_always_inline constexpr __matrix_data(
         T const& _00, T const& _01, T const& _02, T const& _10, T const& _11,
         T const& _12, T const& _20, T const& _21, T const& _22, T const& _30,
         T const& _31, T const& _32, T const& _40, T const& _41, T const& _42)
@@ -304,7 +304,7 @@ struct __matrix_data<T, Rows, 3, false> {
         :
         __data{ _00, _01, _02, 0,   _10, _11, _12, 0,   _20, _21,
                 _22, 0,   _30, _31, _32, 0,   _40, _41, _42, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(
+    __vml_always_inline constexpr __matrix_data(
         T const& _00, T const& _01, T const& _02, T const& _10, T const& _11,
         T const& _12, T const& _20, T const& _21, T const& _22, T const& _30,
         T const& _31, T const& _32, T const& _40, T const& _41, T const& _42,
@@ -313,7 +313,7 @@ struct __matrix_data<T, Rows, 3, false> {
         :
         __data{ _00, _01, _02, 0, _10, _11, _12, 0, _20, _21, _22, 0,
                 _30, _31, _32, 0, _40, _41, _42, 0, _50, _51, _52, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(
+    __vml_always_inline constexpr __matrix_data(
         T const& _00, T const& _01, T const& _02, T const& _10, T const& _11,
         T const& _12, T const& _20, T const& _21, T const& _22, T const& _30,
         T const& _31, T const& _32, T const& _40, T const& _41, T const& _42,
@@ -324,7 +324,7 @@ struct __matrix_data<T, Rows, 3, false> {
         __data{ _00, _01, _02, 0,   _10, _11, _12, 0,   _20, _21,
                 _22, 0,   _30, _31, _32, 0,   _40, _41, _42, 0,
                 _50, _51, _52, 0,   _60, _61, _62, 0 } {}
-    __mtl_always_inline constexpr __matrix_data(
+    __vml_always_inline constexpr __matrix_data(
         T const& _00, T const& _01, T const& _02, T const& _10, T const& _11,
         T const& _12, T const& _20, T const& _21, T const& _22, T const& _30,
         T const& _31, T const& _32, T const& _40, T const& _41, T const& _42,
@@ -339,15 +339,15 @@ struct __matrix_data<T, Rows, 3, false> {
 
 /// MARK: - struct __matrix_base
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O,
-          typename AllT = __mtl_make_type_sequence<T, Rows * Columns>,
-          typename AllI = __mtl_make_index_sequence<Rows * Columns>,
-          typename RowT = __mtl_make_type_sequence<T, Rows>,
-          typename RowI = __mtl_make_index_sequence<Rows>,
-          typename ColumnT = __mtl_make_type_sequence<T, Columns>,
-          typename ColumnI = __mtl_make_index_sequence<Columns>,
+          typename AllT = __vml_make_type_sequence<T, Rows * Columns>,
+          typename AllI = __vml_make_index_sequence<Rows * Columns>,
+          typename RowT = __vml_make_type_sequence<T, Rows>,
+          typename RowI = __vml_make_index_sequence<Rows>,
+          typename ColumnT = __vml_make_type_sequence<T, Columns>,
+          typename ColumnI = __vml_make_index_sequence<Columns>,
           typename DiagT =
-              __mtl_make_type_sequence<T, _VMTL::min(Rows, Columns)>,
-          typename DiagI = __mtl_make_index_sequence<_VMTL::min(Rows, Columns)>>
+              __vml_make_type_sequence<T, _VVML::min(Rows, Columns)>,
+          typename DiagI = __vml_make_index_sequence<_VVML::min(Rows, Columns)>>
 struct __matrix_base;
 
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O,
@@ -356,15 +356,15 @@ template <typename T, std::size_t Rows, std::size_t Columns, vector_options O,
           typename... DiagT, std::size_t... DiagI>
 struct alignas(__calculate_alignment(alignof(T), Columns, O.packed()))
     __matrix_base<
-        T, Rows, Columns, O, __mtl_type_sequence<AllT...>,
-        __mtl_index_sequence<AllI...>, __mtl_type_sequence<RowT...>,
-        __mtl_index_sequence<RowI...>, __mtl_type_sequence<ColumnT...>,
-        __mtl_index_sequence<ColumnI...>, __mtl_type_sequence<DiagT...>,
-        __mtl_index_sequence<DiagI...>>:
+        T, Rows, Columns, O, __vml_type_sequence<AllT...>,
+        __vml_index_sequence<AllI...>, __vml_type_sequence<RowT...>,
+        __vml_index_sequence<RowI...>, __vml_type_sequence<ColumnT...>,
+        __vml_index_sequence<ColumnI...>, __vml_type_sequence<DiagT...>,
+        __vml_index_sequence<DiagI...>>:
     public __matrix_data<T, Rows, Columns, O.packed()> {
 public:
-    using __mtl_base = __matrix_data<T, Rows, Columns, O.packed()>;
-    using __mtl_base::__mtl_at;
+    using __vml_base = __matrix_data<T, Rows, Columns, O.packed()>;
+    using __vml_base::__vml_at;
 
     using row_type = vector<T, Columns, O>;
     using column_type = vector<T, Rows, O>;
@@ -372,90 +372,90 @@ public:
 public:
     /// MARK: Public Interface
     /// Value Constructors
-    __mtl_interface_export __matrix_base() = default;
-    __mtl_always_inline __mtl_interface_export constexpr __matrix_base(T x):
-        __mtl_base{ (AllI / Columns == AllI % Columns ? x : T(0))... } {}
-    __mtl_always_inline __mtl_interface_export constexpr __matrix_base(
+    __vml_interface_export __matrix_base() = default;
+    __vml_always_inline __vml_interface_export constexpr __matrix_base(T x):
+        __vml_base{ (AllI / Columns == AllI % Columns ? x : T(0))... } {}
+    __vml_always_inline __vml_interface_export constexpr __matrix_base(
         AllT... x):
-        __mtl_base{ x... } {}
-    __mtl_always_inline __mtl_interface_export constexpr __matrix_base(
+        __vml_base{ x... } {}
+    __vml_always_inline __vml_interface_export constexpr __matrix_base(
         rows_tag, vector<RowT, Columns, O> const&... rows):
-        __mtl_base{} {
-        ([&](std::size_t j) { ((__mtl_at(RowI, j) = rows[j]), ...); }(ColumnI),
+        __vml_base{} {
+        ([&](std::size_t j) { ((__vml_at(RowI, j) = rows[j]), ...); }(ColumnI),
          ...);
     }
-    __mtl_always_inline __mtl_interface_export constexpr __matrix_base(
+    __vml_always_inline __vml_interface_export constexpr __matrix_base(
         columns_tag, vector<ColumnT, Rows, O> const&... columns):
-        __mtl_base{} {
-        ([&](std::size_t j) { ((__mtl_at(j, ColumnI) = columns[j]), ...); }(
+        __vml_base{} {
+        ([&](std::size_t j) { ((__vml_at(j, ColumnI) = columns[j]), ...); }(
              RowI),
          ...);
     }
 
     /// Functional Constructors
-    __mtl_always_inline __mtl_interface_export explicit constexpr __matrix_base(
-        _VMTL::invocable_r<T> auto&&
+    __vml_always_inline __vml_interface_export explicit constexpr __matrix_base(
+        _VVML::invocable_r<T> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f)>):
-        __mtl_base{ ((void)AllI, (T)std::invoke(f))... } {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __matrix_base(
-        _VMTL::invocable_r<T, std::size_t> auto&&
+        __vml_base{ ((void)AllI, (T)std::invoke(f))... } {}
+    __vml_always_inline __vml_interface_export explicit constexpr __matrix_base(
+        _VVML::invocable_r<T, std::size_t> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f), std::size_t>):
-        __mtl_base{ (T)std::invoke(f, AllI)... } {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __matrix_base(
-        _VMTL::invocable_r<T, std::size_t, std::size_t> auto&&
+        __vml_base{ (T)std::invoke(f, AllI)... } {}
+    __vml_always_inline __vml_interface_export explicit constexpr __matrix_base(
+        _VVML::invocable_r<T, std::size_t, std::size_t> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f), std::size_t,
                                                     std::size_t>):
-        __mtl_base{ (T)std::invoke(f, AllI / Columns, AllI % Columns)... } {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __matrix_base(
+        __vml_base{ (T)std::invoke(f, AllI / Columns, AllI % Columns)... } {}
+    __vml_always_inline __vml_interface_export explicit constexpr __matrix_base(
         rows_tag,
-        _VMTL::invocable_r<row_type, std::size_t> auto&&
+        _VVML::invocable_r<row_type, std::size_t> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f), std::size_t>):
         __matrix_base(rows, std::invoke(f, RowI)...) {}
-    __mtl_always_inline __mtl_interface_export explicit constexpr __matrix_base(
+    __vml_always_inline __vml_interface_export explicit constexpr __matrix_base(
         columns_tag,
-        _VMTL::invocable_r<column_type, std::size_t> auto&&
+        _VVML::invocable_r<column_type, std::size_t> auto&&
             f) noexcept(std::is_nothrow_invocable_v<decltype(f), std::size_t>):
         __matrix_base(columns, std::invoke(f, ColumnI)...) {}
 
     /// Conversion Constructor
     template <std::convertible_to<T> U, vector_options P>
-    __mtl_always_inline __mtl_interface_export constexpr __matrix_base(
+    __vml_always_inline __vml_interface_export constexpr __matrix_base(
         matrix<U, Rows, Columns, P> const& rhs):
-        __mtl_base{ static_cast<T>(rhs.__mtl_at(AllI))... } {}
+        __vml_base{ static_cast<T>(rhs.__vml_at(AllI))... } {}
 
     /// set_row, set_column
-    __mtl_always_inline __mtl_interface_export constexpr matrix<T, Rows,
+    __vml_always_inline __vml_interface_export constexpr matrix<T, Rows,
                                                                 Columns, O>&
         set_row(std::size_t i, RowT const&... row) {
-        __mtl_bounds_check(i, 0, Rows);
-        ((this->__mtl_at(i, RowI) = row), ...);
+        __vml_bounds_check(i, 0, Rows);
+        ((this->__vml_at(i, RowI) = row), ...);
         return (matrix<T, Rows, Columns, O>&)*this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr matrix<T, Rows,
+    __vml_always_inline __vml_interface_export constexpr matrix<T, Rows,
                                                                 Columns, O>&
         set_column(std::size_t j, ColumnT const&... column) {
-        __mtl_bounds_check(j, 0, Columns);
-        ((this->__mtl_at(ColumnI, j) = column), ...);
+        __vml_bounds_check(j, 0, Columns);
+        ((this->__vml_at(ColumnI, j) = column), ...);
         return (matrix<T, Rows, Columns, O>&)*this;
     }
 
     /// Static Functions
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr matrix<T, Rows, Columns, O>
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr matrix<T, Rows, Columns, O>
         diag(T value) {
         return { value };
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr matrix<T, Rows, Columns, O>
-        diag(vector<T, _VMTL::min(Rows, Columns), O> const& values) {
-        return diag(values.__mtl_at(DiagI)...);
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr matrix<T, Rows, Columns, O>
+        diag(vector<T, _VVML::min(Rows, Columns), O> const& values) {
+        return diag(values.__vml_at(DiagI)...);
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr matrix<T, Rows, Columns, O>
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr matrix<T, Rows, Columns, O>
         diag(DiagT... value) {
         matrix<T, Rows, Columns, O> result{};
         std::size_t i = 0;
-        (((void)(result.__mtl_at(i, i) = value), ++i), ...);
+        (((void)(result.__vml_at(i, i) = value), ++i), ...);
         return result;
     }
 };
@@ -463,10 +463,10 @@ public:
 /// MARK: - struct matrix
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O>
 struct matrix: public __matrix_base<T, Rows, Columns, O> {
-    using __mtl_base = __matrix_base<T, Rows, Columns, O>;
-    using __mtl_base::__columns_in_data;
-    using __mtl_base::__data;
-    using __mtl_base::__size_in_data;
+    using __vml_base = __matrix_base<T, Rows, Columns, O>;
+    using __vml_base::__columns_in_data;
+    using __vml_base::__data;
+    using __vml_base::__size_in_data;
 
     template <typename U>
     struct __iterator_base_special {
@@ -482,14 +482,14 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
     struct __iterator:
         std::conditional_t<IsSpecial, __iterator_base_special<U>,
                            __iterator_base<U>> {
-        using __mtl_base =
+        using __vml_base =
             std::conditional_t<IsSpecial, __iterator_base_special<U>,
                                __iterator_base<U>>;
-        using __mtl_base::__ptr_;
-        __mtl_always_inline __mtl_interface_export constexpr __iterator(
+        using __vml_base::__ptr_;
+        __vml_always_inline __vml_interface_export constexpr __iterator(
             U* __ptr):
-            __mtl_base{ __ptr } {}
-        __mtl_always_inline __mtl_interface_export constexpr __iterator&
+            __vml_base{ __ptr } {}
+        __vml_always_inline __vml_interface_export constexpr __iterator&
             operator++() & {
             if constexpr (IsSpecial) {
                 if (++this->__row_index_ == 3) {
@@ -501,19 +501,19 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
             return *this;
         }
 
-        __mtl_always_inline __mtl_interface_export constexpr U& operator*()
+        __vml_always_inline __vml_interface_export constexpr U& operator*()
             const {
             return *__ptr_;
         }
 
-        __mtl_always_inline __mtl_interface_export constexpr U* operator->()
+        __vml_always_inline __vml_interface_export constexpr U* operator->()
             const {
             return __ptr_;
         }
 
         template <typename U_>
             requires(std::is_same_v<std::remove_cv_t<U>, std::remove_cv_t<U_>>)
-        __mtl_always_inline __mtl_interface_export constexpr bool operator==(
+        __vml_always_inline __vml_interface_export constexpr bool operator==(
             __iterator<U_> const& __that) const {
             return this->__ptr_ == __that.__ptr_;
         }
@@ -524,235 +524,235 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
 
     /// MARK: Public Interface
     using value_type = T;
-    using typename __mtl_base::column_type;
-    using typename __mtl_base::row_type;
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    using typename __vml_base::column_type;
+    using typename __vml_base::row_type;
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         size() {
         return Rows * Columns;
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         data_size() {
         return __size_in_data;
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         rows() {
         return Rows;
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr std::size_t
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr std::size_t
         columns() {
         return Columns;
     }
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr vector_options
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr vector_options
         options() {
         return O;
     }
 
-    __mtl_mathfunction __mtl_always_inline
-        __mtl_interface_export static constexpr matrix<T, Rows, Columns, O>
+    __vml_mathfunction __vml_always_inline
+        __vml_interface_export static constexpr matrix<T, Rows, Columns, O>
         unit(std::size_t i, std::size_t j, T const& value = 1) {
-        __mtl_bounds_check(i, 0, Rows);
-        __mtl_bounds_check(j, 0, Columns);
+        __vml_bounds_check(i, 0, Rows);
+        __vml_bounds_check(j, 0, Columns);
         matrix<T, Rows, Columns, O> result{};
-        result.__mtl_at(i, j) = value;
+        result.__vml_at(i, j) = value;
         return result;
     }
 
     /// Inheriting interface from __matrix_base:
-    using __mtl_base::__mtl_base;
-    using __mtl_base::diag;
+    using __vml_base::__vml_base;
+    using __vml_base::diag;
 
     matrix& operator=(matrix const&) & = default;
 
     /// operator[](std::size_t):
-    __mtl_always_inline __mtl_interface_export constexpr T& operator[](
+    __vml_always_inline __vml_interface_export constexpr T& operator[](
         std::size_t index) & {
         return const_cast<T&>(const_cast<matrix const&>(*this)[index]);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const& operator[](
         std::size_t index) const& {
-        __mtl_bounds_check(index, 0, Rows * Columns);
-        return this->__mtl_at(index);
+        __vml_bounds_check(index, 0, Rows * Columns);
+        return this->__vml_at(index);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T&& operator[](
         std::size_t index) && {
         return std::move(this->operator[](index));
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const&& operator[](
         std::size_t index) const&& {
         return std::move(this->operator[](index));
     }
     /// operator[](usize2):
-    __mtl_always_inline __mtl_interface_export constexpr T& operator[](
+    __vml_always_inline __vml_interface_export constexpr T& operator[](
         usize2 index) & {
         return const_cast<T&>(const_cast<matrix const&>(*this)[index]);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const& operator[](
         usize2 index) const& {
-        __mtl_bounds_check(index.__mtl_at(0), 0, Rows);
-        __mtl_bounds_check(index.__mtl_at(1), 0, Columns);
-        return this->__mtl_at(index.__mtl_at(0), index.__mtl_at(1));
+        __vml_bounds_check(index.__vml_at(0), 0, Rows);
+        __vml_bounds_check(index.__vml_at(1), 0, Columns);
+        return this->__vml_at(index.__vml_at(0), index.__vml_at(1));
     }
-    __mtl_always_inline __mtl_interface_export constexpr T&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T&& operator[](
         size2 index) && {
         return std::move(this->operator[](index));
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const&& operator[](
+    __vml_always_inline __vml_interface_export constexpr T const&& operator[](
         size2 index) const&& {
         return std::move(this->operator[](index));
     }
 
     /// operator(): [As a substitute for multi argument subscript]
-    __mtl_always_inline __mtl_interface_export constexpr T& operator()(
+    __vml_always_inline __vml_interface_export constexpr T& operator()(
         std::size_t i, std::size_t j) & {
         return const_cast<T&>(const_cast<matrix const&>(*this)(i, j));
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const& operator()(
+    __vml_always_inline __vml_interface_export constexpr T const& operator()(
         std::size_t i, std::size_t j) const& {
-        __mtl_bounds_check(i, 0, Rows);
-        __mtl_bounds_check(j, 0, Columns);
-        return this->__mtl_at(i, j);
+        __vml_bounds_check(i, 0, Rows);
+        __vml_bounds_check(j, 0, Columns);
+        return this->__vml_at(i, j);
     }
-    __mtl_always_inline __mtl_interface_export constexpr T&& operator()(
+    __vml_always_inline __vml_interface_export constexpr T&& operator()(
         std::size_t i, std::size_t j) && {
         return std::move(this->operator()(i, j));
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const&& operator()(
+    __vml_always_inline __vml_interface_export constexpr T const&& operator()(
         std::size_t i, std::size_t j) const&& {
         return std::move(this->operator()(i, j));
     }
 
     /// row, column:
-    __mtl_always_inline __mtl_interface_export constexpr row_type row(
+    __vml_always_inline __vml_interface_export constexpr row_type row(
         std::size_t i) const {
-        __mtl_bounds_check(i, 0, Rows);
+        __vml_bounds_check(i, 0, Rows);
         return row_type(
-            [this, i](std::size_t j) { return this->__mtl_at(i, j); });
+            [this, i](std::size_t j) { return this->__vml_at(i, j); });
     }
-    __mtl_always_inline __mtl_interface_export constexpr column_type column(
+    __vml_always_inline __vml_interface_export constexpr column_type column(
         std::size_t j) const {
-        __mtl_bounds_check(j, 0, Columns);
+        __vml_bounds_check(j, 0, Columns);
         return column_type(
-            [this, j](std::size_t i) { return this->__mtl_at(i, j); });
+            [this, j](std::size_t i) { return this->__vml_at(i, j); });
     }
-    __mtl_always_inline __mtl_interface_export constexpr matrix& set_row(
+    __vml_always_inline __vml_interface_export constexpr matrix& set_row(
         std::size_t i, row_type const& row) {
-        __mtl_bounds_check(i, 0, Rows);
-        __mtl_with_index_sequence((J, Columns), {
-            ((this->__mtl_at(i, J) = row.__mtl_at(J)), ...);
+        __vml_bounds_check(i, 0, Rows);
+        __vml_with_index_sequence((J, Columns), {
+            ((this->__vml_at(i, J) = row.__vml_at(J)), ...);
         });
         return *this;
     }
-    __mtl_always_inline __mtl_interface_export constexpr matrix& set_column(
+    __vml_always_inline __vml_interface_export constexpr matrix& set_column(
         std::size_t j, column_type const& column) {
-        __mtl_bounds_check(j, 0, Columns);
-        __mtl_with_index_sequence((I, Rows), {
-            ((this->__mtl_at(I, j) = column.__mtl_at(I)), ...);
+        __vml_bounds_check(j, 0, Columns);
+        __vml_with_index_sequence((I, Rows), {
+            ((this->__vml_at(I, j) = column.__vml_at(I)), ...);
         });
         return *this;
     }
-    using __mtl_base::set_column;
-    using __mtl_base::set_row;
+    using __vml_base::set_column;
+    using __vml_base::set_row;
 
     /// begin, end:
-    __mtl_always_inline __mtl_interface_export constexpr iterator begin() {
+    __vml_always_inline __vml_interface_export constexpr iterator begin() {
         return __data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr const_iterator begin()
+    __vml_always_inline __vml_interface_export constexpr const_iterator begin()
         const {
         return __data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr const_iterator cbegin()
+    __vml_always_inline __vml_interface_export constexpr const_iterator cbegin()
         const {
         return __data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr iterator end() {
+    __vml_always_inline __vml_interface_export constexpr iterator end() {
         return __data + __size_in_data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr const_iterator end()
+    __vml_always_inline __vml_interface_export constexpr const_iterator end()
         const {
         return __data + __size_in_data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr const_iterator cend()
+    __vml_always_inline __vml_interface_export constexpr const_iterator cend()
         const {
         return __data + __size_in_data;
     }
 
     /// data
-    __mtl_always_inline __mtl_interface_export constexpr T* data() {
+    __vml_always_inline __vml_interface_export constexpr T* data() {
         return this->__data;
     }
-    __mtl_always_inline __mtl_interface_export constexpr T const* data() const {
+    __vml_always_inline __vml_interface_export constexpr T const* data() const {
         return this->__data;
     }
 
     /// swizzle:
     template <std::convertible_to<std::size_t>... I>
-    __mtl_always_inline __mtl_interface_export constexpr matrix<T, sizeof...(I),
+    __vml_always_inline __vml_interface_export constexpr matrix<T, sizeof...(I),
                                                                 Columns, O>
         row_swizzle(I... i) const
         requires(sizeof...(I) > 0)
     {
-        return { _VMTL::rows, row(i)... };
+        return { _VVML::rows, row(i)... };
     }
     template <std::convertible_to<std::size_t>... I>
-    __mtl_always_inline __mtl_interface_export constexpr matrix<T, Rows,
+    __vml_always_inline __vml_interface_export constexpr matrix<T, Rows,
                                                                 sizeof...(I), O>
         column_swizzle(I... i) const
         requires(sizeof...(I) > 0)
     {
-        return { _VMTL::columns, column(i)... };
+        return { _VVML::columns, column(i)... };
     }
 
     /// Map
-    __mtl_always_inline __mtl_interface_export constexpr auto map(
+    __vml_always_inline __vml_interface_export constexpr auto map(
         std::invocable<T> auto&& f) const {
-        return _VMTL::map(*this, __mtl_forward(f));
+        return _VVML::map(*this, __vml_forward(f));
     }
 
     /// Fold
-    __mtl_always_inline __mtl_interface_export constexpr T fold(
-        _VMTL::invocable_r<T, T, T> auto&& f) const {
-        return _VMTL::fold(*this, __mtl_forward(f));
+    __vml_always_inline __vml_interface_export constexpr T fold(
+        _VVML::invocable_r<T, T, T> auto&& f) const {
+        return _VVML::fold(*this, __vml_forward(f));
     }
 
     /// MARK: Arithmetic Assignment
     /// this + Matrix
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator+=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator+=(
         matrix const& rhs) & {
         *this = *this + rhs;
         return *this;
     }
     /// this - Matrix
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator-=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator-=(
         matrix const& rhs) & {
         *this = *this - rhs;
         return *this;
     }
     /// this * Matrix
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator*=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator*=(
         matrix<T, Columns, Columns, O> const& rhs) & {
         *this = *this * rhs;
         return *this;
     }
     /// this * Scalar
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator*=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator*=(
         T const& rhs) & {
         *this = *this * rhs;
         return *this;
     }
     /// this / Scalar
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator/=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator/=(
         T const& rhs) & {
         *this = *this / rhs;
         return *this;
     }
     /// this % Scalar
-    __mtl_always_inline __mtl_interface_export constexpr matrix& operator%=(
+    __vml_always_inline __vml_interface_export constexpr matrix& operator%=(
         T const& rhs) &
         requires(std::is_integral_v<T>)
     {
@@ -761,35 +761,35 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
     }
 
     /// MARK: Matrix<bool> Members
-    __mtl_always_inline __mtl_interface_export constexpr bool all() const
+    __vml_always_inline __vml_interface_export constexpr bool all() const
         requires std::convertible_to<T, bool>
     {
-        return fold(__mtl_logical_and);
+        return fold(__vml_logical_and);
     }
-    __mtl_always_inline __mtl_interface_export constexpr bool any() const
+    __vml_always_inline __vml_interface_export constexpr bool any() const
         requires std::convertible_to<T, bool>
     {
-        return fold(__mtl_logical_or);
+        return fold(__vml_logical_or);
     }
-    __mtl_always_inline __mtl_interface_export constexpr auto operator!() const
+    __vml_always_inline __vml_interface_export constexpr auto operator!() const
         requires requires(T&& t) { !t; }
     {
-        return map(__mtl_logical_not);
+        return map(__vml_logical_not);
     }
 
     /// MARK: Min, Max
-    __mtl_always_inline __mtl_interface_export constexpr T min() const
+    __vml_always_inline __vml_interface_export constexpr T min() const
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Rows * Columns),
-                                         { return min(this->__mtl_at(I)...); });
+        return __vml_with_index_sequence((I, Rows * Columns),
+                                         { return min(this->__vml_at(I)...); });
     }
 
-    __mtl_always_inline __mtl_interface_export constexpr T max() const
+    __vml_always_inline __vml_interface_export constexpr T max() const
         requires real_scalar<T>
     {
-        return __mtl_with_index_sequence((I, Rows * Columns),
-                                         { return max(this->__mtl_at(I)...); });
+        return __vml_with_index_sequence((I, Rows * Columns),
+                                         { return max(this->__vml_at(I)...); });
     }
 };
 
@@ -801,11 +801,11 @@ template <typename T, typename U = T, std::size_t Rows, std::size_t Columns,
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(matrix<T, Rows, Columns, O> const& m,
                matrix<U, Rows, Columns, P> const& n) {
-    return _VMTL::fold(_VMTL::map(m, n, _VMTL::__mtl_equals),
-                       _VMTL::__mtl_logical_and);
+    return _VVML::fold(_VVML::map(m, n, _VVML::__vml_equals),
+                       _VVML::__vml_logical_and);
 }
 
 template <typename T, scalar U, std::size_t Rows, std::size_t Columns,
@@ -815,9 +815,9 @@ template <typename T, scalar U, std::size_t Rows, std::size_t Columns,
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(matrix<T, Rows, Columns, O> const& m, U const& x) {
-    return m == _VMTL::matrix<U, Rows, Columns, O>(x);
+    return m == _VVML::matrix<U, Rows, Columns, O>(x);
 }
 
 template <scalar T, typename U, std::size_t Rows, std::size_t Columns,
@@ -827,7 +827,7 @@ template <scalar T, typename U, std::size_t Rows, std::size_t Columns,
             t == u
         } -> std::convertible_to<bool>;
     }
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     operator==(T const& x, matrix<U, Rows, Columns, O> const& m) {
     return m == x;
 }
@@ -839,7 +839,7 @@ template <typename CharT, typename T, std::size_t Rows, std::size_t Columns,
             str << t
         } -> std::convertible_to<std::ostream&>;
     }
-__mtl_interface_export std::basic_ostream<CharT>& operator<<(
+__vml_interface_export std::basic_ostream<CharT>& operator<<(
     std::basic_ostream<CharT>& str, matrix<T, Rows, Columns, O> const& m) {
     std::basic_stringstream<CharT> s;
     std::size_t len[Columns]{};
@@ -851,21 +851,21 @@ __mtl_interface_export std::basic_ostream<CharT>& operator<<(
         return 0;
     });
     constexpr CharT const* brackets[6] = {
-#if MTL_UNICODE_MATH_PARANTHESES
+#if VML_UNICODE_MATH_PARANTHESES
         "⎛",
         "⎜",
         "⎝",
         "⎞",
         "⎥",
         "⎠"
-#else  // MTL_UNICODE_MATH_PARANTHESES
+#else  // VML_UNICODE_MATH_PARANTHESES
         "|",
         "|",
         "|",
         "|",
         "|",
         "|"
-#endif // MTL_UNICODE_MATH_PARANTHESES
+#endif // VML_UNICODE_MATH_PARANTHESES
     };
     vector<CharT const*, Rows> left_bracket = brackets[1];
     left_bracket[0] = brackets[0];
@@ -890,55 +890,55 @@ __mtl_interface_export std::basic_ostream<CharT>& operator<<(
 /// Transpose
 template <typename T, std::size_t Rows, std::size_t Columns,
           vector_options Options>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr matrix<T, Columns, Rows, Options>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr matrix<T, Columns, Rows, Options>
     transpose(matrix<T, Rows, Columns, Options> const& m) {
     return matrix<T, Columns, Rows, Options>(
-        [&](std::size_t i, std::size_t j) { return m.__mtl_at(j, i); });
+        [&](std::size_t i, std::size_t j) { return m.__vml_at(j, i); });
 }
 
 /// Conjugate Transpose
 template <typename T, std::size_t Rows, std::size_t Columns,
           vector_options Options>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr matrix<T, Columns, Rows, Options>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr matrix<T, Columns, Rows, Options>
     conj_transpose(matrix<T, Rows, Columns, Options> const& m) {
     return matrix<T, Columns, Rows, Options>(
-        [&](std::size_t i, std::size_t j) { return conj(m.__mtl_at(j, i)); });
+        [&](std::size_t i, std::size_t j) { return conj(m.__vml_at(j, i)); });
 }
 
 /// Submatrix
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O>
-__mtl_mathfunction __mtl_interface_export matrix<T, Rows - 1, Columns - 1, O>
+__vml_mathfunction __vml_interface_export matrix<T, Rows - 1, Columns - 1, O>
     submatrix(matrix<T, Rows, Columns, O> const& m, std::size_t x,
               std::size_t y) {
-    __mtl_bounds_check(x, 0, Rows);
-    __mtl_bounds_check(y, 0, Columns);
+    __vml_bounds_check(x, 0, Rows);
+    __vml_bounds_check(y, 0, Columns);
     return matrix<T, Rows - 1, Columns - 1, O>(
         [&](std::size_t i, std::size_t j) {
-        return m.__mtl_at(i + (i >= x), j + (j >= y));
+        return m.__vml_at(i + (i >= x), j + (j >= y));
     });
 };
 
 /// Type Cast
 template <typename To, typename T, std::size_t Rows, std::size_t Columns,
           vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr matrix<To, Rows, Columns, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr matrix<To, Rows, Columns, O>
     type_cast(matrix<T, Rows, Columns, O> const& v) {
     return matrix<To, Rows, Columns, O>([&](std::size_t i, std::size_t j) {
-        return static_cast<To>(v.__mtl_at(i, j));
+        return static_cast<To>(v.__vml_at(i, j));
     });
 }
 
 /// Dimension Cast
 template <std::size_t ToRows, std::size_t ToColumns, typename T,
           std::size_t Rows, std::size_t Columns, vector_options O>
-__mtl_mathfunction __mtl_always_inline
-    __mtl_interface_export constexpr matrix<T, ToRows, ToColumns, O>
+__vml_mathfunction __vml_always_inline
+    __vml_interface_export constexpr matrix<T, ToRows, ToColumns, O>
     dimension_cast(matrix<T, Rows, Columns, O> const& v) {
     return matrix<T, ToRows, ToColumns, O>([&](std::size_t i, std::size_t j) {
-        return i < Rows && j < Columns ? v.__mtl_at(i, j) : T(0);
+        return i < Rows && j < Columns ? v.__vml_at(i, j) : T(0);
     });
 }
 
@@ -948,7 +948,7 @@ constexpr matrix<bool, Rows, Columns, O> isnan(
     matrix<T, Rows, Columns, O> const& m) {
     return matrix<bool, Rows, Columns, O>([&](std::size_t i) {
         using std::isnan;
-        return isnan(m.__mtl_at(i));
+        return isnan(m.__vml_at(i));
     });
 }
 
@@ -958,7 +958,7 @@ constexpr matrix<bool, Rows, Columns, O> isinf(
     matrix<T, Rows, Columns, O> const& m) {
     return matrix<bool, Rows, Columns, O>([&](std::size_t i) {
         using std::isinf;
-        return isinf(m.__mtl_at(i));
+        return isinf(m.__vml_at(i));
     });
 }
 
@@ -968,7 +968,7 @@ constexpr matrix<bool, Rows, Columns, O> isfinite(
     matrix<T, Rows, Columns, O> const& m) {
     return matrix<bool, Rows, Columns, O>([&](std::size_t i) {
         using std::isfinite;
-        return isfinite(m.__mtl_at(i));
+        return isfinite(m.__vml_at(i));
     });
 }
 
@@ -978,7 +978,7 @@ constexpr matrix<bool, Rows, Columns, O> isnormal(
     matrix<T, Rows, Columns, O> const& m) {
     return matrix<bool, Rows, Columns, O>([&](std::size_t i) {
         using std::isnormal;
-        return isnormal(m.__mtl_at(i));
+        return isnormal(m.__vml_at(i));
     });
 }
 
@@ -986,51 +986,51 @@ constexpr matrix<bool, Rows, Columns, O> isnormal(
 /// Row Sum Norm
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O>
 constexpr auto row_sum_norm(matrix<T, Rows, Columns, O> const& m) {
-    return __mtl_with_index_sequence((I, Columns),
+    return __vml_with_index_sequence((I, Columns),
                                      { return max(sum_norm(m.row(I))...); });
 }
 
 /// Column Sum Norm
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O>
 constexpr auto column_sum_norm(matrix<T, Rows, Columns, O> const& m) {
-    return __mtl_with_index_sequence((I, Columns),
+    return __vml_with_index_sequence((I, Columns),
                                      { return max(sum_norm(m.column(I))...); });
 }
 
 /// Maximum Norm
 template <typename T, std::size_t Rows, std::size_t Columns, vector_options O>
 constexpr auto max_norm(matrix<T, Rows, Columns, O> const& m) {
-    return __mtl_with_index_sequence((I, Rows * Columns), {
+    return __vml_with_index_sequence((I, Rows * Columns), {
         using std::abs;
-        return max(abs(m.__mtl_at(I))...);
+        return max(abs(m.__vml_at(I))...);
     });
 }
 
 /// Determinant
 template <scalar T, vector_options O>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr T det(
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr T det(
     matrix2x2<T, O> const& A) {
-    return A.__mtl_at(0) * A.__mtl_at(3) - A.__mtl_at(2) * A.__mtl_at(1);
+    return A.__vml_at(0) * A.__vml_at(3) - A.__vml_at(2) * A.__vml_at(1);
 }
 template <scalar T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr T det(
+__vml_mathfunction __vml_interface_export constexpr T det(
     matrix3x3<T, O> const& A) {
-    return A.__mtl_at(0, 0) * (A.__mtl_at(1, 1) * A.__mtl_at(2, 2) -
-                               A.__mtl_at(2, 1) * A.__mtl_at(1, 2)) -
-           A.__mtl_at(0, 1) * (A.__mtl_at(1, 0) * A.__mtl_at(2, 2) -
-                               A.__mtl_at(1, 2) * A.__mtl_at(2, 0)) +
-           A.__mtl_at(0, 2) * (A.__mtl_at(1, 0) * A.__mtl_at(2, 1) -
-                               A.__mtl_at(1, 1) * A.__mtl_at(2, 0));
+    return A.__vml_at(0, 0) * (A.__vml_at(1, 1) * A.__vml_at(2, 2) -
+                               A.__vml_at(2, 1) * A.__vml_at(1, 2)) -
+           A.__vml_at(0, 1) * (A.__vml_at(1, 0) * A.__vml_at(2, 2) -
+                               A.__vml_at(1, 2) * A.__vml_at(2, 0)) +
+           A.__vml_at(0, 2) * (A.__vml_at(1, 0) * A.__vml_at(2, 1) -
+                               A.__vml_at(1, 1) * A.__vml_at(2, 0));
 }
 template <scalar T, std::size_t N, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr T det(
+__vml_mathfunction __vml_interface_export constexpr T det(
     matrix<T, N, N, O> const& m) {
     auto constexpr sign = [](std::size_t i, std::size_t j) {
         return (int)((i + j + 1) % 2) * 2 - 1;
     };
-    return __mtl_with_index_sequence((I, N), {
+    return __vml_with_index_sequence((I, N), {
         return (
-            (m.__mtl_at(I, 0) * sign(I, 0) * _VMTL::det(submatrix(m, I, 0))) +
+            (m.__vml_at(I, 0) * sign(I, 0) * _VVML::det(submatrix(m, I, 0))) +
             ...);
     });
 }
@@ -1038,223 +1038,223 @@ __mtl_mathfunction __mtl_interface_export constexpr T det(
 /// Trace
 template <scalar T, std::size_t N, vector_options O>
 constexpr T trace(matrix<T, N, N, O> const& m) {
-    return __mtl_with_index_sequence((I, N),
-                                     { return (m.__mtl_at(I, I) + ...); });
+    return __vml_with_index_sequence((I, N),
+                                     { return (m.__vml_at(I, I) + ...); });
 }
 
 /// Inverse
 template <scalar T, vector_options O>
-constexpr matrix2x2<T, O> __mtl_inverse(matrix2x2<T, O> const& m) {
+constexpr matrix2x2<T, O> __vml_inverse(matrix2x2<T, O> const& m) {
     T const d = det(m);
-    __mtl_expect(__mtl_is_unit(d));
-    return matrix2x2<T, O>{ m.__mtl_at(3), -m.__mtl_at(1), -m.__mtl_at(2),
-                            m.__mtl_at(0) } /
+    __vml_expect(__vml_is_unit(d));
+    return matrix2x2<T, O>{ m.__vml_at(3), -m.__vml_at(1), -m.__vml_at(2),
+                            m.__vml_at(0) } /
            d;
 }
 template <scalar T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr matrix2x2<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix2x2<__vml_floatify(T),
                                                               O>
     inverse(matrix2x2<T, O> const& m) {
     if constexpr (std::is_floating_point_v<T>) {
-        return __mtl_inverse(m);
+        return __vml_inverse(m);
     }
     else {
-        return __mtl_inverse(type_cast<__mtl_floatify(T)>(m));
+        return __vml_inverse(type_cast<__vml_floatify(T)>(m));
     }
 }
 template <typename T, vector_options O>
     requires(std::is_integral_v<T>)
-__mtl_mathfunction __mtl_interface_export constexpr matrix2x2<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix2x2<__vml_floatify(T),
                                                               O>
     integral_inverse(matrix2x2<T, O> const& m) {
-    return __mtl_inverse(m);
+    return __vml_inverse(m);
 }
 template <scalar T, vector_options O>
-constexpr matrix3x3<T, O> __mtl_inverse(matrix3x3<T, O> const& m) {
+constexpr matrix3x3<T, O> __vml_inverse(matrix3x3<T, O> const& m) {
     T const d = det(m);
-    __mtl_expect(__mtl_is_unit(d));
-    return matrix3x3<T, O>{ m.__mtl_at(1, 1) * m.__mtl_at(2, 2) -
-                                m.__mtl_at(2, 1) * m.__mtl_at(1, 2),
-                            m.__mtl_at(0, 2) * m.__mtl_at(2, 1) -
-                                m.__mtl_at(0, 1) * m.__mtl_at(2, 2),
-                            m.__mtl_at(0, 1) * m.__mtl_at(1, 2) -
-                                m.__mtl_at(0, 2) * m.__mtl_at(1, 1),
-                            m.__mtl_at(1, 2) * m.__mtl_at(2, 0) -
-                                m.__mtl_at(1, 0) * m.__mtl_at(2, 2),
-                            m.__mtl_at(0, 0) * m.__mtl_at(2, 2) -
-                                m.__mtl_at(0, 2) * m.__mtl_at(2, 0),
-                            m.__mtl_at(1, 0) * m.__mtl_at(0, 2) -
-                                m.__mtl_at(0, 0) * m.__mtl_at(1, 2),
-                            m.__mtl_at(1, 0) * m.__mtl_at(2, 1) -
-                                m.__mtl_at(2, 0) * m.__mtl_at(1, 1),
-                            m.__mtl_at(2, 0) * m.__mtl_at(0, 1) -
-                                m.__mtl_at(0, 0) * m.__mtl_at(2, 1),
-                            m.__mtl_at(0, 0) * m.__mtl_at(1, 1) -
-                                m.__mtl_at(1, 0) * m.__mtl_at(0, 1) } /
+    __vml_expect(__vml_is_unit(d));
+    return matrix3x3<T, O>{ m.__vml_at(1, 1) * m.__vml_at(2, 2) -
+                                m.__vml_at(2, 1) * m.__vml_at(1, 2),
+                            m.__vml_at(0, 2) * m.__vml_at(2, 1) -
+                                m.__vml_at(0, 1) * m.__vml_at(2, 2),
+                            m.__vml_at(0, 1) * m.__vml_at(1, 2) -
+                                m.__vml_at(0, 2) * m.__vml_at(1, 1),
+                            m.__vml_at(1, 2) * m.__vml_at(2, 0) -
+                                m.__vml_at(1, 0) * m.__vml_at(2, 2),
+                            m.__vml_at(0, 0) * m.__vml_at(2, 2) -
+                                m.__vml_at(0, 2) * m.__vml_at(2, 0),
+                            m.__vml_at(1, 0) * m.__vml_at(0, 2) -
+                                m.__vml_at(0, 0) * m.__vml_at(1, 2),
+                            m.__vml_at(1, 0) * m.__vml_at(2, 1) -
+                                m.__vml_at(2, 0) * m.__vml_at(1, 1),
+                            m.__vml_at(2, 0) * m.__vml_at(0, 1) -
+                                m.__vml_at(0, 0) * m.__vml_at(2, 1),
+                            m.__vml_at(0, 0) * m.__vml_at(1, 1) -
+                                m.__vml_at(1, 0) * m.__vml_at(0, 1) } /
            d;
 }
 template <scalar T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr matrix3x3<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix3x3<__vml_floatify(T),
                                                               O>
     inverse(matrix3x3<T, O> const& m) {
     if constexpr (std::is_floating_point_v<T>) {
-        return __mtl_inverse(m);
+        return __vml_inverse(m);
     }
     else {
-        return __mtl_inverse(type_cast<__mtl_floatify(T)>(m));
+        return __vml_inverse(type_cast<__vml_floatify(T)>(m));
     }
 }
 template <typename T, vector_options O>
     requires(std::is_integral_v<T>)
-__mtl_mathfunction __mtl_interface_export constexpr matrix3x3<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix3x3<__vml_floatify(T),
                                                               O>
     integral_inverse(matrix3x3<T, O> const& m) {
-    return __mtl_inverse(m);
+    return __vml_inverse(m);
 }
 template <scalar T, vector_options O>
-constexpr matrix4x4<T, O> __mtl_inverse(matrix4x4<T, O> const& m) {
+constexpr matrix4x4<T, O> __vml_inverse(matrix4x4<T, O> const& m) {
     matrix4x4<T, O> const int_result = {
-        m.__mtl_at(5) * m.__mtl_at(10) * m.__mtl_at(15) -
-            m.__mtl_at(5) * m.__mtl_at(11) * m.__mtl_at(14) -
-            m.__mtl_at(9) * m.__mtl_at(6) * m.__mtl_at(15) +
-            m.__mtl_at(9) * m.__mtl_at(7) * m.__mtl_at(14) +
-            m.__mtl_at(13) * m.__mtl_at(6) * m.__mtl_at(11) -
-            m.__mtl_at(13) * m.__mtl_at(7) * m.__mtl_at(10),
+        m.__vml_at(5) * m.__vml_at(10) * m.__vml_at(15) -
+            m.__vml_at(5) * m.__vml_at(11) * m.__vml_at(14) -
+            m.__vml_at(9) * m.__vml_at(6) * m.__vml_at(15) +
+            m.__vml_at(9) * m.__vml_at(7) * m.__vml_at(14) +
+            m.__vml_at(13) * m.__vml_at(6) * m.__vml_at(11) -
+            m.__vml_at(13) * m.__vml_at(7) * m.__vml_at(10),
 
-        -m.__mtl_at(1) * m.__mtl_at(10) * m.__mtl_at(15) +
-            m.__mtl_at(1) * m.__mtl_at(11) * m.__mtl_at(14) +
-            m.__mtl_at(9) * m.__mtl_at(2) * m.__mtl_at(15) -
-            m.__mtl_at(9) * m.__mtl_at(3) * m.__mtl_at(14) -
-            m.__mtl_at(13) * m.__mtl_at(2) * m.__mtl_at(11) +
-            m.__mtl_at(13) * m.__mtl_at(3) * m.__mtl_at(10),
+        -m.__vml_at(1) * m.__vml_at(10) * m.__vml_at(15) +
+            m.__vml_at(1) * m.__vml_at(11) * m.__vml_at(14) +
+            m.__vml_at(9) * m.__vml_at(2) * m.__vml_at(15) -
+            m.__vml_at(9) * m.__vml_at(3) * m.__vml_at(14) -
+            m.__vml_at(13) * m.__vml_at(2) * m.__vml_at(11) +
+            m.__vml_at(13) * m.__vml_at(3) * m.__vml_at(10),
 
-        m.__mtl_at(1) * m.__mtl_at(6) * m.__mtl_at(15) -
-            m.__mtl_at(1) * m.__mtl_at(7) * m.__mtl_at(14) -
-            m.__mtl_at(5) * m.__mtl_at(2) * m.__mtl_at(15) +
-            m.__mtl_at(5) * m.__mtl_at(3) * m.__mtl_at(14) +
-            m.__mtl_at(13) * m.__mtl_at(2) * m.__mtl_at(7) -
-            m.__mtl_at(13) * m.__mtl_at(3) * m.__mtl_at(6),
+        m.__vml_at(1) * m.__vml_at(6) * m.__vml_at(15) -
+            m.__vml_at(1) * m.__vml_at(7) * m.__vml_at(14) -
+            m.__vml_at(5) * m.__vml_at(2) * m.__vml_at(15) +
+            m.__vml_at(5) * m.__vml_at(3) * m.__vml_at(14) +
+            m.__vml_at(13) * m.__vml_at(2) * m.__vml_at(7) -
+            m.__vml_at(13) * m.__vml_at(3) * m.__vml_at(6),
 
-        -m.__mtl_at(1) * m.__mtl_at(6) * m.__mtl_at(11) +
-            m.__mtl_at(1) * m.__mtl_at(7) * m.__mtl_at(10) +
-            m.__mtl_at(5) * m.__mtl_at(2) * m.__mtl_at(11) -
-            m.__mtl_at(5) * m.__mtl_at(3) * m.__mtl_at(10) -
-            m.__mtl_at(9) * m.__mtl_at(2) * m.__mtl_at(7) +
-            m.__mtl_at(9) * m.__mtl_at(3) * m.__mtl_at(6),
+        -m.__vml_at(1) * m.__vml_at(6) * m.__vml_at(11) +
+            m.__vml_at(1) * m.__vml_at(7) * m.__vml_at(10) +
+            m.__vml_at(5) * m.__vml_at(2) * m.__vml_at(11) -
+            m.__vml_at(5) * m.__vml_at(3) * m.__vml_at(10) -
+            m.__vml_at(9) * m.__vml_at(2) * m.__vml_at(7) +
+            m.__vml_at(9) * m.__vml_at(3) * m.__vml_at(6),
 
-        -m.__mtl_at(4) * m.__mtl_at(10) * m.__mtl_at(15) +
-            m.__mtl_at(4) * m.__mtl_at(11) * m.__mtl_at(14) +
-            m.__mtl_at(8) * m.__mtl_at(6) * m.__mtl_at(15) -
-            m.__mtl_at(8) * m.__mtl_at(7) * m.__mtl_at(14) -
-            m.__mtl_at(12) * m.__mtl_at(6) * m.__mtl_at(11) +
-            m.__mtl_at(12) * m.__mtl_at(7) * m.__mtl_at(10),
+        -m.__vml_at(4) * m.__vml_at(10) * m.__vml_at(15) +
+            m.__vml_at(4) * m.__vml_at(11) * m.__vml_at(14) +
+            m.__vml_at(8) * m.__vml_at(6) * m.__vml_at(15) -
+            m.__vml_at(8) * m.__vml_at(7) * m.__vml_at(14) -
+            m.__vml_at(12) * m.__vml_at(6) * m.__vml_at(11) +
+            m.__vml_at(12) * m.__vml_at(7) * m.__vml_at(10),
 
-        m.__mtl_at(0) * m.__mtl_at(10) * m.__mtl_at(15) -
-            m.__mtl_at(0) * m.__mtl_at(11) * m.__mtl_at(14) -
-            m.__mtl_at(8) * m.__mtl_at(2) * m.__mtl_at(15) +
-            m.__mtl_at(8) * m.__mtl_at(3) * m.__mtl_at(14) +
-            m.__mtl_at(12) * m.__mtl_at(2) * m.__mtl_at(11) -
-            m.__mtl_at(12) * m.__mtl_at(3) * m.__mtl_at(10),
+        m.__vml_at(0) * m.__vml_at(10) * m.__vml_at(15) -
+            m.__vml_at(0) * m.__vml_at(11) * m.__vml_at(14) -
+            m.__vml_at(8) * m.__vml_at(2) * m.__vml_at(15) +
+            m.__vml_at(8) * m.__vml_at(3) * m.__vml_at(14) +
+            m.__vml_at(12) * m.__vml_at(2) * m.__vml_at(11) -
+            m.__vml_at(12) * m.__vml_at(3) * m.__vml_at(10),
 
-        -m.__mtl_at(0) * m.__mtl_at(6) * m.__mtl_at(15) +
-            m.__mtl_at(0) * m.__mtl_at(7) * m.__mtl_at(14) +
-            m.__mtl_at(4) * m.__mtl_at(2) * m.__mtl_at(15) -
-            m.__mtl_at(4) * m.__mtl_at(3) * m.__mtl_at(14) -
-            m.__mtl_at(12) * m.__mtl_at(2) * m.__mtl_at(7) +
-            m.__mtl_at(12) * m.__mtl_at(3) * m.__mtl_at(6),
+        -m.__vml_at(0) * m.__vml_at(6) * m.__vml_at(15) +
+            m.__vml_at(0) * m.__vml_at(7) * m.__vml_at(14) +
+            m.__vml_at(4) * m.__vml_at(2) * m.__vml_at(15) -
+            m.__vml_at(4) * m.__vml_at(3) * m.__vml_at(14) -
+            m.__vml_at(12) * m.__vml_at(2) * m.__vml_at(7) +
+            m.__vml_at(12) * m.__vml_at(3) * m.__vml_at(6),
 
-        m.__mtl_at(0) * m.__mtl_at(6) * m.__mtl_at(11) -
-            m.__mtl_at(0) * m.__mtl_at(7) * m.__mtl_at(10) -
-            m.__mtl_at(4) * m.__mtl_at(2) * m.__mtl_at(11) +
-            m.__mtl_at(4) * m.__mtl_at(3) * m.__mtl_at(10) +
-            m.__mtl_at(8) * m.__mtl_at(2) * m.__mtl_at(7) -
-            m.__mtl_at(8) * m.__mtl_at(3) * m.__mtl_at(6),
+        m.__vml_at(0) * m.__vml_at(6) * m.__vml_at(11) -
+            m.__vml_at(0) * m.__vml_at(7) * m.__vml_at(10) -
+            m.__vml_at(4) * m.__vml_at(2) * m.__vml_at(11) +
+            m.__vml_at(4) * m.__vml_at(3) * m.__vml_at(10) +
+            m.__vml_at(8) * m.__vml_at(2) * m.__vml_at(7) -
+            m.__vml_at(8) * m.__vml_at(3) * m.__vml_at(6),
 
-        m.__mtl_at(4) * m.__mtl_at(9) * m.__mtl_at(15) -
-            m.__mtl_at(4) * m.__mtl_at(11) * m.__mtl_at(13) -
-            m.__mtl_at(8) * m.__mtl_at(5) * m.__mtl_at(15) +
-            m.__mtl_at(8) * m.__mtl_at(7) * m.__mtl_at(13) +
-            m.__mtl_at(12) * m.__mtl_at(5) * m.__mtl_at(11) -
-            m.__mtl_at(12) * m.__mtl_at(7) * m.__mtl_at(9),
+        m.__vml_at(4) * m.__vml_at(9) * m.__vml_at(15) -
+            m.__vml_at(4) * m.__vml_at(11) * m.__vml_at(13) -
+            m.__vml_at(8) * m.__vml_at(5) * m.__vml_at(15) +
+            m.__vml_at(8) * m.__vml_at(7) * m.__vml_at(13) +
+            m.__vml_at(12) * m.__vml_at(5) * m.__vml_at(11) -
+            m.__vml_at(12) * m.__vml_at(7) * m.__vml_at(9),
 
-        -m.__mtl_at(0) * m.__mtl_at(9) * m.__mtl_at(15) +
-            m.__mtl_at(0) * m.__mtl_at(11) * m.__mtl_at(13) +
-            m.__mtl_at(8) * m.__mtl_at(1) * m.__mtl_at(15) -
-            m.__mtl_at(8) * m.__mtl_at(3) * m.__mtl_at(13) -
-            m.__mtl_at(12) * m.__mtl_at(1) * m.__mtl_at(11) +
-            m.__mtl_at(12) * m.__mtl_at(3) * m.__mtl_at(9),
+        -m.__vml_at(0) * m.__vml_at(9) * m.__vml_at(15) +
+            m.__vml_at(0) * m.__vml_at(11) * m.__vml_at(13) +
+            m.__vml_at(8) * m.__vml_at(1) * m.__vml_at(15) -
+            m.__vml_at(8) * m.__vml_at(3) * m.__vml_at(13) -
+            m.__vml_at(12) * m.__vml_at(1) * m.__vml_at(11) +
+            m.__vml_at(12) * m.__vml_at(3) * m.__vml_at(9),
 
-        m.__mtl_at(0) * m.__mtl_at(5) * m.__mtl_at(15) -
-            m.__mtl_at(0) * m.__mtl_at(7) * m.__mtl_at(13) -
-            m.__mtl_at(4) * m.__mtl_at(1) * m.__mtl_at(15) +
-            m.__mtl_at(4) * m.__mtl_at(3) * m.__mtl_at(13) +
-            m.__mtl_at(12) * m.__mtl_at(1) * m.__mtl_at(7) -
-            m.__mtl_at(12) * m.__mtl_at(3) * m.__mtl_at(5),
+        m.__vml_at(0) * m.__vml_at(5) * m.__vml_at(15) -
+            m.__vml_at(0) * m.__vml_at(7) * m.__vml_at(13) -
+            m.__vml_at(4) * m.__vml_at(1) * m.__vml_at(15) +
+            m.__vml_at(4) * m.__vml_at(3) * m.__vml_at(13) +
+            m.__vml_at(12) * m.__vml_at(1) * m.__vml_at(7) -
+            m.__vml_at(12) * m.__vml_at(3) * m.__vml_at(5),
 
-        -m.__mtl_at(0) * m.__mtl_at(5) * m.__mtl_at(11) +
-            m.__mtl_at(0) * m.__mtl_at(7) * m.__mtl_at(9) +
-            m.__mtl_at(4) * m.__mtl_at(1) * m.__mtl_at(11) -
-            m.__mtl_at(4) * m.__mtl_at(3) * m.__mtl_at(9) -
-            m.__mtl_at(8) * m.__mtl_at(1) * m.__mtl_at(7) +
-            m.__mtl_at(8) * m.__mtl_at(3) * m.__mtl_at(5),
+        -m.__vml_at(0) * m.__vml_at(5) * m.__vml_at(11) +
+            m.__vml_at(0) * m.__vml_at(7) * m.__vml_at(9) +
+            m.__vml_at(4) * m.__vml_at(1) * m.__vml_at(11) -
+            m.__vml_at(4) * m.__vml_at(3) * m.__vml_at(9) -
+            m.__vml_at(8) * m.__vml_at(1) * m.__vml_at(7) +
+            m.__vml_at(8) * m.__vml_at(3) * m.__vml_at(5),
 
-        -m.__mtl_at(4) * m.__mtl_at(9) * m.__mtl_at(14) +
-            m.__mtl_at(4) * m.__mtl_at(10) * m.__mtl_at(13) +
-            m.__mtl_at(8) * m.__mtl_at(5) * m.__mtl_at(14) -
-            m.__mtl_at(8) * m.__mtl_at(6) * m.__mtl_at(13) -
-            m.__mtl_at(12) * m.__mtl_at(5) * m.__mtl_at(10) +
-            m.__mtl_at(12) * m.__mtl_at(6) * m.__mtl_at(9),
+        -m.__vml_at(4) * m.__vml_at(9) * m.__vml_at(14) +
+            m.__vml_at(4) * m.__vml_at(10) * m.__vml_at(13) +
+            m.__vml_at(8) * m.__vml_at(5) * m.__vml_at(14) -
+            m.__vml_at(8) * m.__vml_at(6) * m.__vml_at(13) -
+            m.__vml_at(12) * m.__vml_at(5) * m.__vml_at(10) +
+            m.__vml_at(12) * m.__vml_at(6) * m.__vml_at(9),
 
-        m.__mtl_at(0) * m.__mtl_at(9) * m.__mtl_at(14) -
-            m.__mtl_at(0) * m.__mtl_at(10) * m.__mtl_at(13) -
-            m.__mtl_at(8) * m.__mtl_at(1) * m.__mtl_at(14) +
-            m.__mtl_at(8) * m.__mtl_at(2) * m.__mtl_at(13) +
-            m.__mtl_at(12) * m.__mtl_at(1) * m.__mtl_at(10) -
-            m.__mtl_at(12) * m.__mtl_at(2) * m.__mtl_at(9),
+        m.__vml_at(0) * m.__vml_at(9) * m.__vml_at(14) -
+            m.__vml_at(0) * m.__vml_at(10) * m.__vml_at(13) -
+            m.__vml_at(8) * m.__vml_at(1) * m.__vml_at(14) +
+            m.__vml_at(8) * m.__vml_at(2) * m.__vml_at(13) +
+            m.__vml_at(12) * m.__vml_at(1) * m.__vml_at(10) -
+            m.__vml_at(12) * m.__vml_at(2) * m.__vml_at(9),
 
-        -m.__mtl_at(0) * m.__mtl_at(5) * m.__mtl_at(14) +
-            m.__mtl_at(0) * m.__mtl_at(6) * m.__mtl_at(13) +
-            m.__mtl_at(4) * m.__mtl_at(1) * m.__mtl_at(14) -
-            m.__mtl_at(4) * m.__mtl_at(2) * m.__mtl_at(13) -
-            m.__mtl_at(12) * m.__mtl_at(1) * m.__mtl_at(6) +
-            m.__mtl_at(12) * m.__mtl_at(2) * m.__mtl_at(5),
+        -m.__vml_at(0) * m.__vml_at(5) * m.__vml_at(14) +
+            m.__vml_at(0) * m.__vml_at(6) * m.__vml_at(13) +
+            m.__vml_at(4) * m.__vml_at(1) * m.__vml_at(14) -
+            m.__vml_at(4) * m.__vml_at(2) * m.__vml_at(13) -
+            m.__vml_at(12) * m.__vml_at(1) * m.__vml_at(6) +
+            m.__vml_at(12) * m.__vml_at(2) * m.__vml_at(5),
 
-        m.__mtl_at(0) * m.__mtl_at(5) * m.__mtl_at(10) -
-            m.__mtl_at(0) * m.__mtl_at(6) * m.__mtl_at(9) -
-            m.__mtl_at(4) * m.__mtl_at(1) * m.__mtl_at(10) +
-            m.__mtl_at(4) * m.__mtl_at(2) * m.__mtl_at(9) +
-            m.__mtl_at(8) * m.__mtl_at(1) * m.__mtl_at(6) -
-            m.__mtl_at(8) * m.__mtl_at(2) * m.__mtl_at(5)
+        m.__vml_at(0) * m.__vml_at(5) * m.__vml_at(10) -
+            m.__vml_at(0) * m.__vml_at(6) * m.__vml_at(9) -
+            m.__vml_at(4) * m.__vml_at(1) * m.__vml_at(10) +
+            m.__vml_at(4) * m.__vml_at(2) * m.__vml_at(9) +
+            m.__vml_at(8) * m.__vml_at(1) * m.__vml_at(6) -
+            m.__vml_at(8) * m.__vml_at(2) * m.__vml_at(5)
     };
 
-    T const d = m.__mtl_at(0) * int_result.__mtl_at(0) +
-                m.__mtl_at(1) * int_result.__mtl_at(4) +
-                m.__mtl_at(2) * int_result.__mtl_at(8) +
-                m.__mtl_at(3) * int_result.__mtl_at(12);
+    T const d = m.__vml_at(0) * int_result.__vml_at(0) +
+                m.__vml_at(1) * int_result.__vml_at(4) +
+                m.__vml_at(2) * int_result.__vml_at(8) +
+                m.__vml_at(3) * int_result.__vml_at(12);
 
-    __mtl_expect(__mtl_is_unit(d));
+    __vml_expect(__vml_is_unit(d));
 
     return int_result / d;
 }
 template <scalar T, vector_options O>
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<__vml_floatify(T),
                                                               O>
     inverse(matrix4x4<T, O> const& m) {
     if constexpr (std::is_floating_point_v<T>) {
-        return __mtl_inverse(m);
+        return __vml_inverse(m);
     }
     else {
-        return __mtl_inverse(type_cast<__mtl_floatify(T)>(m));
+        return __vml_inverse(type_cast<__vml_floatify(T)>(m));
     }
 }
 template <typename T, vector_options O>
     requires(std::is_integral_v<T>)
-__mtl_mathfunction __mtl_interface_export constexpr matrix4x4<__mtl_floatify(T),
+__vml_mathfunction __vml_interface_export constexpr matrix4x4<__vml_floatify(T),
                                                               O>
     integral_inverse(matrix4x4<T, O> const& m) {
-    return __mtl_inverse(m);
+    return __vml_inverse(m);
 }
 
-} // namespace _VMTL
+} // namespace _VVML
 
-#endif // __MTL_MATRIX_HPP_INCLUDED__
+#endif // __VML_MATRIX_HPP_INCLUDED__

@@ -1,5 +1,5 @@
-#ifndef __MTL_COMMON_HPP_INCLUDED__
-#define __MTL_COMMON_HPP_INCLUDED__
+#ifndef __VML_COMMON_HPP_INCLUDED__
+#define __VML_COMMON_HPP_INCLUDED__
 
 #include <cmath>
 #include <concepts>
@@ -9,7 +9,7 @@
 #include "__base.hpp"
 #include "__fwd.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 /// Just so it exists
 inline namespace literals {}
@@ -232,10 +232,10 @@ struct get_vector_options<vector<T, N, O> const volatile> {
 };
 
 template <typename...>
-struct __mtl_template_true_type: std::true_type {};
+struct __vml_template_true_type: std::true_type {};
 
 template <typename...>
-struct __mtl_template_false_type: std::false_type {};
+struct __vml_template_false_type: std::false_type {};
 
 /// MARK: Tuple Size
 template <typename T, std::size_t = sizeof(T)>
@@ -274,7 +274,7 @@ template <typename T>
 concept scalar = is_scalar<T>::value;
 
 template <typename T, typename U, typename... V>
-concept __mtl_any_of = (std::same_as<T, U> || (std::same_as<T, V> || ...));
+concept __vml_any_of = (std::same_as<T, U> || (std::same_as<T, V> || ...));
 
 template <class F, class R, class... Args>
 concept invocable_r = /*invocable<F, Args...> && */ std::convertible_to<
@@ -283,156 +283,156 @@ concept invocable_r = /*invocable<F, Args...> && */ std::convertible_to<
 template <class R, class F, class... Args>
 concept regular_invocable_r = invocable_r<R, F, Args...>;
 
-#define __mtl_floatify(__type) __mtl_to_float_t<__type>
+#define __vml_floatify(__type) __vml_to_float_t<__type>
 
 template <typename>
-struct __mtl_to_float;
+struct __vml_to_float;
 
 template <typename T>
-using __mtl_to_float_t = typename __mtl_to_float<T>::type;
+using __vml_to_float_t = typename __vml_to_float<T>::type;
 
 template <typename T>
     requires std::is_arithmetic_v<T>
-struct __mtl_to_float<T> {
+struct __vml_to_float<T> {
     using type = double;
 };
 template <>
-struct __mtl_to_float<float> {
+struct __vml_to_float<float> {
     using type = float;
 };
 template <>
-struct __mtl_to_float<long double> {
+struct __vml_to_float<long double> {
     using type = long double;
 };
 
 template <typename T>
-struct __mtl_to_float<complex<T>> {
-    using type = complex<__mtl_to_float_t<T>>;
+struct __vml_to_float<complex<T>> {
+    using type = complex<__vml_to_float_t<T>>;
 };
 
 template <typename T>
-struct __mtl_to_float<quaternion<T>> {
-    using type = quaternion<__mtl_to_float_t<T>>;
+struct __vml_to_float<quaternion<T>> {
+    using type = quaternion<__vml_to_float_t<T>>;
 };
 
 template <typename>
-struct __mtl_to_complex;
+struct __vml_to_complex;
 
 template <typename T>
-using __mtl_to_complex_t = typename __mtl_to_complex<T>::type;
+using __vml_to_complex_t = typename __vml_to_complex<T>::type;
 
 template <typename T>
     requires std::is_arithmetic_v<T>
-struct __mtl_to_complex<T> {
+struct __vml_to_complex<T> {
     using type = complex<T>;
 };
 
 template <typename T>
-struct __mtl_to_complex<complex<T>> {
+struct __vml_to_complex<complex<T>> {
     using type = complex<T>;
 };
 
-#define __mtl_decltype_stripped(...) std::decay_t<decltype(__VA_ARGS__)>
+#define __vml_decltype_stripped(...) std::decay_t<decltype(__VA_ARGS__)>
 
-#define __mtl_promote(...) ::std::common_type_t<__VA_ARGS__>
+#define __vml_promote(...) ::std::common_type_t<__VA_ARGS__>
 
-} // namespace _VMTL
+} // namespace _VVML
 
 /// Promote Complex Numbers
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::complex<T>, _VMTL::complex<U>> {
-    using type = _VMTL::complex<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::complex<T>, _VVML::complex<U>> {
+    using type = _VVML::complex<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::complex<T>, U> {
-    using type = _VMTL::complex<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::complex<T>, U> {
+    using type = _VVML::complex<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<T, _VMTL::complex<U>> {
-    using type = _VMTL::complex<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<T, _VVML::complex<U>> {
+    using type = _VVML::complex<typename std::common_type<T, U>::type>;
 };
 
 /// Promote Quaternions
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::quaternion<T>, _VMTL::quaternion<U>> {
-    using type = _VMTL::quaternion<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::quaternion<T>, _VVML::quaternion<U>> {
+    using type = _VVML::quaternion<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::quaternion<T>, _VMTL::complex<U>> {
-    using type = _VMTL::quaternion<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::quaternion<T>, _VVML::complex<U>> {
+    using type = _VVML::quaternion<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::quaternion<T>, U> {
-    using type = _VMTL::quaternion<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::quaternion<T>, U> {
+    using type = _VVML::quaternion<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<_VMTL::complex<T>, _VMTL::quaternion<U>> {
-    using type = _VMTL::quaternion<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<_VVML::complex<T>, _VVML::quaternion<U>> {
+    using type = _VVML::quaternion<typename std::common_type<T, U>::type>;
 };
-template <_VMTL::real_scalar T, _VMTL::real_scalar U>
-struct std::common_type<T, _VMTL::quaternion<U>> {
-    using type = _VMTL::quaternion<typename std::common_type<T, U>::type>;
+template <_VVML::real_scalar T, _VVML::real_scalar U>
+struct std::common_type<T, _VVML::quaternion<U>> {
+    using type = _VVML::quaternion<typename std::common_type<T, U>::type>;
 };
 
 /// Promote Vectors
-template <typename T, typename U, std::size_t Size, _VMTL::vector_options O>
-struct std::common_type<_VMTL::vector<T, Size, O>, U> {
-    using type = _VMTL::vector<typename std::common_type<T, U>::type, Size, O>;
+template <typename T, typename U, std::size_t Size, _VVML::vector_options O>
+struct std::common_type<_VVML::vector<T, Size, O>, U> {
+    using type = _VVML::vector<typename std::common_type<T, U>::type, Size, O>;
 };
-template <typename T, typename U, std::size_t Size, _VMTL::vector_options O>
-struct std::common_type<T, _VMTL::vector<U, Size, O>> {
-    using type = _VMTL::vector<typename std::common_type<T, U>::type, Size, O>;
+template <typename T, typename U, std::size_t Size, _VVML::vector_options O>
+struct std::common_type<T, _VVML::vector<U, Size, O>> {
+    using type = _VVML::vector<typename std::common_type<T, U>::type, Size, O>;
 };
-template <typename T, typename U, std::size_t Size, _VMTL::vector_options O,
-          _VMTL::vector_options P>
-struct std::common_type<_VMTL::vector<T, Size, O>, _VMTL::vector<U, Size, P>> {
-    using type = _VMTL::vector<typename std::common_type<T, U>::type, Size,
+template <typename T, typename U, std::size_t Size, _VVML::vector_options O,
+          _VVML::vector_options P>
+struct std::common_type<_VVML::vector<T, Size, O>, _VVML::vector<U, Size, P>> {
+    using type = _VVML::vector<typename std::common_type<T, U>::type, Size,
                                combine(O, P)>;
 };
 template <typename T, typename U, std::size_t S1, std::size_t S2,
-          _VMTL::vector_options O, _VMTL::vector_options P>
-struct std::common_type<_VMTL::vector<T, S1, O>,
-                        _VMTL::vector<U, S2, P>>; /// Can't promote these
+          _VVML::vector_options O, _VVML::vector_options P>
+struct std::common_type<_VVML::vector<T, S1, O>,
+                        _VVML::vector<U, S2, P>>; /// Can't promote these
 
 /// Promote Matrices
 template <typename T, typename U, std::size_t Rows, std::size_t Columns,
-          _VMTL::vector_options O>
-struct std::common_type<_VMTL::matrix<T, Rows, Columns, O>, U> {
+          _VVML::vector_options O>
+struct std::common_type<_VVML::matrix<T, Rows, Columns, O>, U> {
     using type =
-        _VMTL::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
+        _VVML::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
 };
 template <typename T, typename U, std::size_t Rows, std::size_t Columns,
-          _VMTL::vector_options O>
-struct std::common_type<T, _VMTL::matrix<U, Rows, Columns, O>> {
+          _VVML::vector_options O>
+struct std::common_type<T, _VVML::matrix<U, Rows, Columns, O>> {
     using type =
-        _VMTL::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
+        _VVML::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
 };
 template <typename T, typename U, std::size_t Rows, std::size_t Columns,
-          _VMTL::vector_options O, _VMTL::vector_options P>
-struct std::common_type<_VMTL::matrix<T, Rows, Columns, O>,
-                        _VMTL::matrix<U, Rows, Columns, P>> {
-    using type = _VMTL::matrix<typename std::common_type<T, U>::type, Rows,
+          _VVML::vector_options O, _VVML::vector_options P>
+struct std::common_type<_VVML::matrix<T, Rows, Columns, O>,
+                        _VVML::matrix<U, Rows, Columns, P>> {
+    using type = _VVML::matrix<typename std::common_type<T, U>::type, Rows,
                                Columns, combine(O, P)>;
 };
 template <typename T, typename U,
           std::size_t Rows1, // std::size_t Columns1,
-          std::size_t Rows2, std::size_t Columns2, _VMTL::vector_options O,
-          _VMTL::vector_options P>
-struct std::common_type<_VMTL::matrix<T, Rows1, Columns2, O>,
-                        _VMTL::matrix<U, Rows2, Columns2, P>> {
+          std::size_t Rows2, std::size_t Columns2, _VVML::vector_options O,
+          _VVML::vector_options P>
+struct std::common_type<_VVML::matrix<T, Rows1, Columns2, O>,
+                        _VVML::matrix<U, Rows2, Columns2, P>> {
 }; /// Can't promote two matrices of different dimensions
 template <typename T, typename U, std::size_t Size, std::size_t Rows,
-          std::size_t Columns, _VMTL::vector_options O, _VMTL::vector_options P>
-struct std::common_type<_VMTL::matrix<T, Rows, Columns, O>,
-                        _VMTL::vector<U, Size, P>> {
+          std::size_t Columns, _VVML::vector_options O, _VVML::vector_options P>
+struct std::common_type<_VVML::matrix<T, Rows, Columns, O>,
+                        _VVML::vector<U, Size, P>> {
 }; /// Can't promote matrices with vectors
 template <typename T, typename U, std::size_t Size, std::size_t Rows,
-          std::size_t Columns, _VMTL::vector_options O, _VMTL::vector_options P>
-struct std::common_type<_VMTL::vector<T, Size, P>,
-                        _VMTL::matrix<U, Rows, Columns, O>> {
+          std::size_t Columns, _VVML::vector_options O, _VVML::vector_options P>
+struct std::common_type<_VVML::vector<T, Size, P>,
+                        _VVML::matrix<U, Rows, Columns, O>> {
 }; /// Can't promote vectors with matrices
 
-namespace mtl {
+namespace vml {
 
 /// MARK: - enum struct handedness
 enum struct handedness { left_handed, right_handed };
@@ -496,26 +496,26 @@ constexpr T& min(T& a, std::same_as<T> auto& b, std::same_as<T> auto&... c) {
 }
 
 template <typename T>
-std::size_t __mtl_hash_combine(std::size_t seed, T const& v) {
+std::size_t __vml_hash_combine(std::size_t seed, T const& v) {
     std::hash<T> const hash;
     return seed ^ hash(v) + 0x9e37'79b9'43e3'f411 + (seed << 6) + (seed >> 2);
 }
 
-constexpr std::size_t __mtl_hash_seed = 0x5f23'ef3b'34b5'e321;
+constexpr std::size_t __vml_hash_seed = 0x5f23'ef3b'34b5'e321;
 
-#define __mtl_forward(...) ::std::forward<decltype(__VA_ARGS__)>(__VA_ARGS__)
+#define __vml_forward(...) ::std::forward<decltype(__VA_ARGS__)>(__VA_ARGS__)
 
-// __mtl_with_index_sequence
-#define __MTL_PRIV_WIS_FT(I, S) <std::size_t... I>
-#define __MTL_PRIV_WIS_FP(I, S) (::std::index_sequence<I...>)
-#define __MTL_PRIV_WIS_FI(I, S) (::std::make_index_sequence<S>{})
-#define __mtl_with_index_sequence(Index, ...)                                  \
-    [&] __MTL_PRIV_WIS_FT Index __MTL_PRIV_WIS_FP Index                        \
-        -> decltype(auto) __VA_ARGS__ __MTL_PRIV_WIS_FI Index
+// __vml_with_index_sequence
+#define __VML_PRIV_WIS_FT(I, S) <std::size_t... I>
+#define __VML_PRIV_WIS_FP(I, S) (::std::index_sequence<I...>)
+#define __VML_PRIV_WIS_FI(I, S) (::std::make_index_sequence<S>{})
+#define __vml_with_index_sequence(Index, ...)                                  \
+    [&] __VML_PRIV_WIS_FT Index __VML_PRIV_WIS_FP Index                        \
+        -> decltype(auto) __VA_ARGS__ __VML_PRIV_WIS_FI Index
 
 template <typename T>
-__mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
-    __mtl_is_unit(T const& x) {
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
+    __vml_is_unit(T const& x) {
     if constexpr (std::is_floating_point_v<T>) {
         return x != 0;
     }
@@ -523,48 +523,48 @@ __mtl_mathfunction __mtl_always_inline __mtl_interface_export constexpr bool
         return x == 1 || x == -1;
     }
     else {
-        static_assert(!__mtl_template_true_type<T>::value);
+        static_assert(!__vml_template_true_type<T>::value);
     }
 }
 
 template <std::size_t... I>
-using __mtl_index_sequence = std::index_sequence<I...>;
+using __vml_index_sequence = std::index_sequence<I...>;
 
 template <std::size_t N>
-using __mtl_make_index_sequence = std::make_index_sequence<N>;
+using __vml_make_index_sequence = std::make_index_sequence<N>;
 
 template <typename... T>
-struct __mtl_type_sequence {};
+struct __vml_type_sequence {};
 
 template <typename T, std::size_t N, typename... R>
-struct __mtl_make_type_sequence_impl {
+struct __vml_make_type_sequence_impl {
     using type =
-        typename __mtl_make_type_sequence_impl<T, N - 1, R..., T>::type;
+        typename __vml_make_type_sequence_impl<T, N - 1, R..., T>::type;
 };
 
 template <typename T, typename... R>
-struct __mtl_make_type_sequence_impl<T, 0, R...> {
-    using type = __mtl_type_sequence<R...>;
+struct __vml_make_type_sequence_impl<T, 0, R...> {
+    using type = __vml_type_sequence<R...>;
 };
 
 template <typename T, std::size_t N>
-using __mtl_make_type_sequence =
-    typename __mtl_make_type_sequence_impl<T, N>::type;
+using __vml_make_type_sequence =
+    typename __vml_make_type_sequence_impl<T, N>::type;
 
 /// MARK: - class approx
 template <typename T>
-inline constexpr T __mtl_float_threshold = 0;
+inline constexpr T __vml_float_threshold = 0;
 template <>
-inline constexpr float __mtl_float_threshold<float> = 0.000000000000001f;
+inline constexpr float __vml_float_threshold<float> = 0.000000000000001f;
 template <>
-inline constexpr double __mtl_float_threshold<double> = 0.000000000000001;
+inline constexpr double __vml_float_threshold<double> = 0.000000000000001;
 template <>
-inline constexpr long double __mtl_float_threshold<long double> =
+inline constexpr long double __vml_float_threshold<long double> =
     0.000000000000001;
 
 template <typename T>
     requires std::is_floating_point_v<T>
-bool __mtl_nearly_equal(T a, T b, T epsilon = __mtl_float_threshold<T>) {
+bool __vml_nearly_equal(T a, T b, T epsilon = __vml_float_threshold<T>) {
     T const absA = std::abs(a);
     T const absB = std::abs(b);
     T const diff = std::abs(a - b);
@@ -580,7 +580,7 @@ bool __mtl_nearly_equal(T a, T b, T epsilon = __mtl_float_threshold<T>) {
         // return diff < (epsilon * std::numeric_limits<T>::min());
     }
     else { // use relative error
-        return diff / _VMTL::min((absA + absB), std::numeric_limits<T>::max()) <
+        return diff / _VVML::min((absA + absB), std::numeric_limits<T>::max()) <
                epsilon;
     }
 }
@@ -594,12 +594,12 @@ class approx {
     using U = typename get_underlying_type_r<T>::type;
 
 public:
-    approx(T const& z, U epsilon = __mtl_float_threshold<U>):
+    approx(T const& z, U epsilon = __vml_float_threshold<U>):
         _value(z), _epsilon(epsilon) {}
 
-    bool __mtl_comp_eq(T rhs) const {
+    bool __vml_comp_eq(T rhs) const {
         if constexpr (std::is_floating_point_v<T>) {
-            return __mtl_nearly_equal(_value, rhs, _epsilon);
+            return __vml_nearly_equal(_value, rhs, _epsilon);
         }
         else if constexpr (std::is_integral_v<T>) {
             return _value == rhs;
@@ -634,17 +634,17 @@ private:
 
 template <typename T, typename U>
 bool operator==(approx<T> const& r, U const& l) {
-    return r.__mtl_comp_eq(l);
+    return r.__vml_comp_eq(l);
 }
 template <typename T, typename U>
 bool operator==(U const& r, approx<T> const& l) {
-    return l.__mtl_comp_eq(r);
+    return l.__vml_comp_eq(r);
 }
 
 /// MARK: - Helpers
 template <real_scalar T>
-constexpr __mtl_floatify(T) to_radians(T degrees) {
-    using F = __mtl_floatify(T);
+constexpr __vml_floatify(T) to_radians(T degrees) {
+    using F = __vml_floatify(T);
     return degrees * constants<F>::pi / 180;
 }
 
@@ -654,24 +654,24 @@ constexpr T to_degrees(T radians) {
 }
 
 /// MARK: - Functions on Builtins
-__mtl_pure __mtl_always_inline inline constexpr std::uint32_t __mtl_byte_swap(
+__vml_pure __vml_always_inline inline constexpr std::uint32_t __vml_byte_swap(
     std::uint32_t val) {
     val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
     return (val << 16) | (val >> 16);
 }
 
-__mtl_pure __mtl_always_inline inline /*constexpr*/ float __mtl_fract(float f) {
+__vml_pure __vml_always_inline inline /*constexpr*/ float __vml_fract(float f) {
     float i;
     float result = std::modf(f, &i);
     return (result < 0.0f) + result;
 }
-__mtl_pure __mtl_always_inline inline /*constexpr*/ double __mtl_fract(
+__vml_pure __vml_always_inline inline /*constexpr*/ double __vml_fract(
     double f) {
     double i;
     double result = std::modf(f, &i);
     return (result < 0.0) + result;
 }
-__mtl_pure __mtl_always_inline inline /*constexpr*/ long double __mtl_fract(
+__vml_pure __vml_always_inline inline /*constexpr*/ long double __vml_fract(
     long double f) {
     long double i;
     long double result = std::modf(f, &i);
@@ -680,12 +680,12 @@ __mtl_pure __mtl_always_inline inline /*constexpr*/ long double __mtl_fract(
 
 template <typename T, typename U = T>
     requires std::is_integral_v<T> && std::is_integral_v<U>
-__mtl_pure __mtl_always_inline constexpr __mtl_promote(T, U)
-    __mtl_ceil_divide(T a, U b) {
+__vml_pure __vml_always_inline constexpr __vml_promote(T, U)
+    __vml_ceil_divide(T a, U b) {
     return (a / b) + !!(a % b);
 }
 
-#define MTL_FOR_EACH_BUILTIN_TYPE(F)                                           \
+#define VML_FOR_EACH_BUILTIN_TYPE(F)                                           \
     F(signed char);                                                            \
     F(unsigned char);                                                          \
     F(signed short);                                                           \
@@ -700,7 +700,7 @@ __mtl_pure __mtl_always_inline constexpr __mtl_promote(T, U)
     F(double);                                                                 \
     F(long double)
 
-#define MTL_FOR_EACH_BUILTIN_ARITHMETIC_TYPE(F)                                \
+#define VML_FOR_EACH_BUILTIN_ARITHMETIC_TYPE(F)                                \
     F(signed int);                                                             \
     F(unsigned int);                                                           \
     F(signed long);                                                            \
@@ -711,143 +711,143 @@ __mtl_pure __mtl_always_inline constexpr __mtl_promote(T, U)
     F(double);                                                                 \
     F(long double)
 
-#define MTL_LENGTH_SQUARED(T)                                                  \
-    __mtl_mathfunction __mtl_pure __mtl_always_inline inline constexpr T       \
+#define VML_LENGTH_SQUARED(T)                                                  \
+    __vml_mathfunction __vml_pure __vml_always_inline inline constexpr T       \
         norm_squared(T x) {                                                    \
         return x * x;                                                          \
     }                                                                          \
-    __mtl_mathfunction __mtl_pure __mtl_always_inline inline constexpr T       \
+    __vml_mathfunction __vml_pure __vml_always_inline inline constexpr T       \
         length_squared(T x) {                                                  \
         return norm_squared(x);                                                \
     }
-MTL_FOR_EACH_BUILTIN_TYPE(MTL_LENGTH_SQUARED);
-#undef MTL_LENGTH_SQUARED
+VML_FOR_EACH_BUILTIN_TYPE(VML_LENGTH_SQUARED);
+#undef VML_LENGTH_SQUARED
 
-#define MTL_SQR(T)                                                             \
-    __mtl_mathfunction __mtl_pure __mtl_always_inline constexpr inline T       \
-        __mtl_sqr(T x) {                                                       \
+#define VML_SQR(T)                                                             \
+    __vml_mathfunction __vml_pure __vml_always_inline constexpr inline T       \
+        __vml_sqr(T x) {                                                       \
         return x * x;                                                          \
     }
-MTL_FOR_EACH_BUILTIN_TYPE(MTL_SQR);
-#undef MTL_SQR
+VML_FOR_EACH_BUILTIN_TYPE(VML_SQR);
+#undef VML_SQR
 
-#define MTL_CONJ(T)                                                            \
-    __mtl_mathfunction __mtl_pure __mtl_always_inline inline constexpr T conj( \
+#define VML_CONJ(T)                                                            \
+    __vml_mathfunction __vml_pure __vml_always_inline inline constexpr T conj( \
         T x) {                                                                 \
         return x;                                                              \
     }
-MTL_FOR_EACH_BUILTIN_TYPE(MTL_CONJ);
-#undef MTL_CONJ
+VML_FOR_EACH_BUILTIN_TYPE(VML_CONJ);
+#undef VML_CONJ
 
-#define MTL_IPOW(T)                                                            \
-    __mtl_mathfunction __mtl_pure constexpr inline T __mtl_ipow(T x, int i) {  \
-        __mtl_expect(i >= 0);                                                  \
+#define VML_IPOW(T)                                                            \
+    __vml_mathfunction __vml_pure constexpr inline T __vml_ipow(T x, int i) {  \
+        __vml_expect(i >= 0);                                                  \
         if (i == 1) return x;                                                  \
         if (i == 0) return 1;                                                  \
-        if (i % 2 == 0) return __mtl_ipow(x * x, i / 2);                       \
-        return x * __mtl_ipow(x * x, i / 2);                                   \
+        if (i % 2 == 0) return __vml_ipow(x * x, i / 2);                       \
+        return x * __vml_ipow(x * x, i / 2);                                   \
     }
-MTL_FOR_EACH_BUILTIN_ARITHMETIC_TYPE(MTL_IPOW);
-#undef MTL_IPOW
+VML_FOR_EACH_BUILTIN_ARITHMETIC_TYPE(VML_IPOW);
+#undef VML_IPOW
 
-#undef MTL_FOR_EACH_BUILTIN_ARITHMETIC_TYPE
-#undef MTL_FOR_EACH_BUILTIN_TYPE
+#undef VML_FOR_EACH_BUILTIN_ARITHMETIC_TYPE
+#undef VML_FOR_EACH_BUILTIN_TYPE
 
 // MARK: - Hypot
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T fast_hypot(T a,
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T fast_hypot(T a,
                                                   std::same_as<T> auto... b) {
     return std::sqrt(((a * a) + ... + (b * b)));
 }
 
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T __mtl_safe_hypot(
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T __vml_safe_hypot(
     T a, std::same_as<T> auto b) {
     return std::hypot(a, b);
 }
 
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T __mtl_safe_hypot(
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T __vml_safe_hypot(
     T a, std::same_as<T> auto... b) {
     /// Make all arguments positive ...
     a = std::abs(a);
     ((b = std::abs(b)), ...);
     /// ... put the biggest argument into a ...
-    std::swap(a, _VMTL::max(a, b...));
+    std::swap(a, _VVML::max(a, b...));
     /// ... and do the math:
     /// b / a <= 1 for all b, so the square of b / a is also <= 1,
     /// so the argument to std::sqrt is <= count of arguments, so no  overflow
     /// can occur. Overflow can only occur if the actual result overflows.
-    return a * std::sqrt((T(1.0) + ... + __mtl_sqr(b / a)));
+    return a * std::sqrt((T(1.0) + ... + __vml_sqr(b / a)));
 }
 
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure __mtl_always_inline
-    __mtl_interface_export inline T
-    __mtl_hypot(T a) {
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure __vml_always_inline
+    __vml_interface_export inline T
+    __vml_hypot(T a) {
     return std::abs(a);
 }
 
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T __mtl_hypot(T a,
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T __vml_hypot(T a,
                                                    std::same_as<T> auto... b) {
     T sum_of_squares = ((a * a) + ... + (b * b));
-    /// Only use __mtl_safe_hypot if necessary. This is about 5 times faster on
+    /// Only use __vml_safe_hypot if necessary. This is about 5 times faster on
     /// non-overflowing inputs and about 10% slower on always-overflowing inputs
-    __mtl_safe_math_if(isinf(sum_of_squares)) {
-        return __mtl_safe_hypot(a, b...);
+    __vml_safe_math_if(isinf(sum_of_squares)) {
+        return __vml_safe_hypot(a, b...);
     }
     return std::sqrt(sum_of_squares);
 }
 
 /// Interface
 template <scalar T, scalar... U>
-__mtl_mathfunction __mtl_pure __mtl_always_inline
-    __mtl_interface_export inline auto
+__vml_mathfunction __vml_pure __vml_always_inline
+    __vml_interface_export inline auto
     hypot(T a, U... b) {
-    using F = __mtl_floatify(__mtl_promote(T, U...));
-    return __mtl_hypot((F)a, (F)b...);
+    using F = __vml_floatify(__vml_promote(T, U...));
+    return __vml_hypot((F)a, (F)b...);
 }
 
 // MARK: - pHypot
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T __mtl_safe_phypot(
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T __vml_safe_phypot(
     T p, T a, std::same_as<T> auto... b) {
     a = std::abs(a);
     ((b = std::abs(b)), ...);
-    std::swap(a, _VMTL::max(a, b...));
+    std::swap(a, _VVML::max(a, b...));
     return a * std::pow((1.0 + ... + std::pow(b / a, p)), T(1) / p);
 }
 
 template <scalar T>
-__mtl_mathfunction __mtl_pure __mtl_always_inline
-    __mtl_interface_export inline T
-    __mtl_phypot(T p, T a) {
+__vml_mathfunction __vml_pure __vml_always_inline
+    __vml_interface_export inline T
+    __vml_phypot(T p, T a) {
     return std::abs(a);
 }
 
-template <_VMTL::__mtl_any_of<float, double, long double> T>
-__mtl_mathfunction __mtl_pure inline T __mtl_phypot(T p, T a,
+template <_VVML::__vml_any_of<float, double, long double> T>
+__vml_mathfunction __vml_pure inline T __vml_phypot(T p, T a,
                                                     std::same_as<T> auto... b) {
     T sum_of_powers =
         ((std::pow(std::abs(a), p) + ... + (std::pow(std::abs(b), p))));
-    __mtl_safe_math_if(isinf(sum_of_powers)) {
-        return __mtl_safe_phypot(p, a, b...);
+    __vml_safe_math_if(isinf(sum_of_powers)) {
+        return __vml_safe_phypot(p, a, b...);
     }
     return std::pow(sum_of_powers, T(1) / p);
 }
 
 /// Interface
 template <scalar T, scalar... U>
-__mtl_mathfunction __mtl_pure __mtl_always_inline
-    __mtl_interface_export inline auto
+__vml_mathfunction __vml_pure __vml_always_inline
+    __vml_interface_export inline auto
     phypot(scalar auto p, T a, U... b) {
-    using F = __mtl_floatify(__mtl_promote(T, U...));
-    return __mtl_phypot((F)p, (F)a, (F)b...);
+    using F = __vml_floatify(__vml_promote(T, U...));
+    return __vml_phypot((F)p, (F)a, (F)b...);
 }
 
 // MARK: - Basic Function Objects
-#define _MTL_FUNCOBJ_DEF_(NAME, PARAMS, EXPR)                                  \
+#define _VML_FUNCOBJ_DEF_(NAME, PARAMS, EXPR)                                  \
     struct NAME##_t {                                                          \
         constexpr auto operator() PARAMS const                                 \
             requires requires { EXPR; }                                        \
@@ -856,7 +856,7 @@ __mtl_mathfunction __mtl_pure __mtl_always_inline
         }                                                                      \
     } inline constexpr NAME {}
 
-struct __mtl_plus_t {
+struct __vml_plus_t {
     constexpr auto operator()(auto const& a) const
         requires requires { +a; }
     {
@@ -867,9 +867,9 @@ struct __mtl_plus_t {
     {
         return a + b;
     }
-} inline constexpr __mtl_plus{};
+} inline constexpr __vml_plus{};
 
-struct __mtl_minus_t {
+struct __vml_minus_t {
     constexpr auto operator()(auto const& a) const
         requires requires { -a; }
     {
@@ -880,38 +880,38 @@ struct __mtl_minus_t {
     {
         return a - b;
     }
-} inline constexpr __mtl_minus{};
+} inline constexpr __vml_minus{};
 
-_MTL_FUNCOBJ_DEF_(__mtl_multiplies, (auto const& a, auto const& b), a* b);
-_MTL_FUNCOBJ_DEF_(__mtl_divides, (auto const& a, auto const& b), a / b);
-_MTL_FUNCOBJ_DEF_(__mtl_modulo, (auto const& a, auto const& b), a % b);
-_MTL_FUNCOBJ_DEF_(__mtl_and, (auto const& a, auto const& b), a& b);
-_MTL_FUNCOBJ_DEF_(__mtl_or, (auto const& a, auto const& b), a | b);
-_MTL_FUNCOBJ_DEF_(__mtl_xor, (auto const& a, auto const& b), a ^ b);
-_MTL_FUNCOBJ_DEF_(__mtl_not, (auto const& a), ~a);
-_MTL_FUNCOBJ_DEF_(__mtl_equals, (auto const& a, auto const& b), a == b);
-_MTL_FUNCOBJ_DEF_(__mtl_less, (auto const& a, auto const& b), a < b);
-_MTL_FUNCOBJ_DEF_(__mtl_less_eq, (auto const& a, auto const& b), a <= b);
-_MTL_FUNCOBJ_DEF_(__mtl_greater, (auto const& a, auto const& b), a > b);
-_MTL_FUNCOBJ_DEF_(__mtl_greater_eq, (auto const& a, auto const& b), a >= b);
-_MTL_FUNCOBJ_DEF_(__mtl_logical_and, (auto const& a, auto const& b), a&& b);
-_MTL_FUNCOBJ_DEF_(__mtl_logical_or, (auto const& a, auto const& b), a || b);
-_MTL_FUNCOBJ_DEF_(__mtl_logical_not, (auto const& a), !a);
+_VML_FUNCOBJ_DEF_(__vml_multiplies, (auto const& a, auto const& b), a* b);
+_VML_FUNCOBJ_DEF_(__vml_divides, (auto const& a, auto const& b), a / b);
+_VML_FUNCOBJ_DEF_(__vml_modulo, (auto const& a, auto const& b), a % b);
+_VML_FUNCOBJ_DEF_(__vml_and, (auto const& a, auto const& b), a& b);
+_VML_FUNCOBJ_DEF_(__vml_or, (auto const& a, auto const& b), a | b);
+_VML_FUNCOBJ_DEF_(__vml_xor, (auto const& a, auto const& b), a ^ b);
+_VML_FUNCOBJ_DEF_(__vml_not, (auto const& a), ~a);
+_VML_FUNCOBJ_DEF_(__vml_equals, (auto const& a, auto const& b), a == b);
+_VML_FUNCOBJ_DEF_(__vml_less, (auto const& a, auto const& b), a < b);
+_VML_FUNCOBJ_DEF_(__vml_less_eq, (auto const& a, auto const& b), a <= b);
+_VML_FUNCOBJ_DEF_(__vml_greater, (auto const& a, auto const& b), a > b);
+_VML_FUNCOBJ_DEF_(__vml_greater_eq, (auto const& a, auto const& b), a >= b);
+_VML_FUNCOBJ_DEF_(__vml_logical_and, (auto const& a, auto const& b), a&& b);
+_VML_FUNCOBJ_DEF_(__vml_logical_or, (auto const& a, auto const& b), a || b);
+_VML_FUNCOBJ_DEF_(__vml_logical_not, (auto const& a), !a);
 
-struct __mtl_abs_t {
+struct __vml_abs_t {
     constexpr auto operator()(auto const& a) const {
         using std::abs;
         return abs(a);
     }
-} inline constexpr __mtl_abs{};
+} inline constexpr __vml_abs{};
 
-struct __mtl_sqrt_t {
+struct __vml_sqrt_t {
     constexpr auto operator()(auto const& a) const {
         using std::sqrt;
         return sqrt(a);
     }
-} inline constexpr __mtl_sqrt{};
+} inline constexpr __vml_sqrt{};
 
-} // namespace mtl
+} // namespace vml
 
-#endif // __MTL_COMMON_HPP_INCLUDED__
+#endif // __VML_COMMON_HPP_INCLUDED__

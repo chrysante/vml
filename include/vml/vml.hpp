@@ -1,5 +1,5 @@
-#ifndef __MTL_MTL_HPP_INCLUDED__
-#define __MTL_MTL_HPP_INCLUDED__
+#ifndef __VML_VML_HPP_INCLUDED__
+#define __VML_VML_HPP_INCLUDED__
 
 #include "__complex.hpp"
 #include "__ext.hpp"
@@ -10,7 +10,7 @@
 
 #include "__undef.hpp"
 
-#endif // __MTL_MTL_HPP_INCLUDED__
+#endif // __VML_VML_HPP_INCLUDED__
 
 /// MARK: Memory Layout
 ///
@@ -37,7 +37,7 @@
 ///     +------------------------------+-----------------+--------+
 ///     | Macro                        | Possible Values | Default|
 ///     +------------------------------+-----------------+--------+
-///     | MTL_DEBUG_LEVEL              |              0  |       0|  On Debug
+///     | VML_DEBUG_LEVEL              |              0  |       0|  On Debug
 ///     Level 0 all assertions and API validations | |                 | |  are
 ///     disabled. |                              |                 |        |
 ///     Most (small) functions are forced inline. | |                 |        |
@@ -53,13 +53,13 @@
 ///     No functions are forced inline. |                              | | |
 ///     Debug symbols are generated for all functions. | |                 | |
 ///     +------------------------------+-----------------+--------+
-///     | MTL_SAFE_MATH                |              0, |       1|  If disabled
+///     | VML_SAFE_MATH                |              0, |       1|  If disabled
 ///     some math operations like exp(complex), |                              |
 ///     1  |        |  sin(complex) and norm(vector) don't handle overflow | |
 ///     |        |  correctly. Disabling this will speed up these | | |        |
 ///     operations.
 ///     +------------------------------+-----------------+--------+
-///     | MTL_DEFAULT_PACKED           |              0, |       0|  If enabled
+///     | VML_DEFAULT_PACKED           |              0, |       0|  If enabled
 ///     vectors and matrices use 'Packed' memory | |              1  |        |
 ///     layout by default. Otherwise memory layout is 'Aligned'. | | |        |
 ///     Regardless of what is specified here, the typedefs | |                 |
@@ -67,11 +67,11 @@
 ///     also be specified in the vector_options template | |                 |
 ///     |  parameter.
 ///     +------------------------------+-----------------+--------+
-///     | MTL_NAMESPACE_NAME           |            Any  |     mtl|  Change the
-///     name of the 'mtl' namespace. Can be useful | |                 | |  to
+///     | VML_NAMESPACE_NAME           |            Any  |     vml|  Change the
+///     name of the 'vml' namespace. Can be useful | |                 | |  to
 ///     share code between C++ and shader header files.
 ///     +------------------------------+-----------------+--------+
-///     | MTL_UNICODE_MATH_PARANTHESES |              0, |       1|
+///     | VML_UNICODE_MATH_PARANTHESES |              0, |       1|
 ///     |                              |              1  |        |
 ///     +------------------------------+-----------------+--------+
 ///

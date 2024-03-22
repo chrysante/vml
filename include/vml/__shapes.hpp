@@ -1,5 +1,5 @@
-#ifndef __MTL_SHAPES_HPP_INCLUDED__
-#define __MTL_SHAPES_HPP_INCLUDED__
+#ifndef __VML_SHAPES_HPP_INCLUDED__
+#define __VML_SHAPES_HPP_INCLUDED__
 
 #include <algorithm>
 #include <iosfwd>
@@ -7,7 +7,7 @@
 #include "__base.hpp"
 #include "__vector.hpp"
 
-namespace _VMTL {
+namespace _VVML {
 
 /// MARK: - AABB
 template <typename T = double, std::size_t Dim = 3,
@@ -17,8 +17,8 @@ public:
     AABB(vector<T, Dim, O> const& lower_bound = 0,
          vector<T, Dim, O> const& size = 0):
         _origin(lower_bound), _size(size) {
-        __mtl_expect(
-            map(size, [](auto x) { return x >= 0; }).fold(__mtl_logical_and));
+        __vml_expect(
+            map(size, [](auto x) { return x >= 0; }).fold(__vml_logical_and));
     }
 
     vector<T, Dim, O> lower_bound() const { return _origin; };
@@ -49,13 +49,13 @@ std::ostream& operator<<(std::ostream& str, AABB<T, Dim, O> const& aabb) {
 }
 
 template <typename... T, std::size_t Dim, vector_options... O>
-constexpr AABB<__mtl_promote(T...), Dim, combine(O...)> enclosing(
+constexpr AABB<__vml_promote(T...), Dim, combine(O...)> enclosing(
     AABB<T, Dim, O> const&... aabb) {
     auto const lower_bound = map(aabb.lower_bound()..., [](auto&&... bl) {
-        return _VMTL::min(bl...);
+        return _VVML::min(bl...);
     });
     auto const upper_bound = map(aabb.upper_bound()..., [](auto&&... tr) {
-        return _VMTL::max(tr...);
+        return _VVML::max(tr...);
     });
     return { lower_bound, upper_bound - lower_bound };
 }
@@ -66,10 +66,10 @@ constexpr bool encloses(AABB<T, Dim, O> const& bigger,
     return map(bigger.lower_bound(), smaller.lower_bound(),
                [](auto b, auto s) {
         return b - T(0.001) <= s;
-    }).fold(__mtl_logical_and) &&
+    }).fold(__vml_logical_and) &&
            map(bigger.upper_bound(), smaller.upper_bound(), [](auto b, auto s) {
         return b + T(0.001) >= s;
-    }).fold(__mtl_logical_and);
+    }).fold(__vml_logical_and);
 }
 
 template <typename T = double, vector_options O = vector_options{}>
@@ -83,7 +83,7 @@ constexpr bool operator==(AABB<T, Dim, O> r, AABB<U, Dim, P> s) {
 
 template <typename T, std::size_t Dim, vector_options O>
 constexpr T volume(AABB<T, Dim, O> const& b) {
-    return fold(b.size(), _VMTL::__mtl_multiplies);
+    return fold(b.size(), _VVML::__vml_multiplies);
 }
 
 template <typename T, std::size_t Dim, vector_options O>
@@ -148,16 +148,16 @@ constexpr bool operator==(sphere<T, Dim, O> const& r,
 template <typename T, std::size_t Dim, vector_options O>
 constexpr T volume(sphere<T, Dim, O> const& s) {
     if constexpr (Dim == 2) {
-        return constants<T>::pi * __mtl_sqr(s.radius(), 2);
+        return constants<T>::pi * __vml_sqr(s.radius(), 2);
     }
     else if constexpr (Dim == 3) {
-        return T(4.0 / 3.0) * constants<T>::pi * __mtl_sqr(s.radius()) *
+        return T(4.0 / 3.0) * constants<T>::pi * __vml_sqr(s.radius()) *
                s.radius();
     }
     else {
         static_assert(Dim == 4);
-        return T(0.5) * __mtl_sqr(constants<T>::pi) *
-               __mtl_sqr(__mtl_sqr(s.radius()));
+        return T(0.5) * __vml_sqr(constants<T>::pi) *
+               __vml_sqr(__vml_sqr(s.radius()));
     }
 }
 
@@ -176,7 +176,7 @@ public:
     }
 
     vector<T, Dim, O> const& operator[](std::size_t index) const {
-        __mtl_bounds_check(index, 0, 3);
+        __vml_bounds_check(index, 0, 3);
         return _points[index];
     }
 
@@ -213,7 +213,7 @@ template <typename T, typename U, std::size_t Dim, vector_options O,
           vector_options P>
 auto distance(line_segment<T, Dim, O> const& l, vector<U, Dim, P> const& p) {
     // Return minimum distance between line segment l and point p
-    using V = __mtl_promote(T, U);
+    using V = __vml_promote(T, U);
 
     auto const l2 =
         distance_squared(l.begin(), l.end()); // i.e. |w-v|^2 -  avoid a sqrt
@@ -245,7 +245,7 @@ template <typename T, std::size_t Dim, vector_options O, typename U,
 constexpr bool do_intersect(AABB<T, Dim, O> r, vector<U, Dim, P> const& p) {
     return map(r.lower_bound(), r.size(), p, [](auto o, auto e, auto p) {
         return p >= o && p <= o + e;
-    }).fold(_VMTL::__mtl_logical_and);
+    }).fold(_VVML::__vml_logical_and);
 }
 
 /// Point - Box
@@ -263,7 +263,7 @@ constexpr bool do_intersect(AABB<T, Dim, O> const& a,
     return map(a.lower_bound(), a.upper_bound(), b.lower_bound(),
                b.upper_bound(), [](auto aMin, auto aMax, auto bMin, auto bMax) {
         return aMin <= bMax && aMax >= bMin;
-    }).fold(__mtl_logical_and);
+    }).fold(__vml_logical_and);
 }
 
 /// Sphere - Point
@@ -311,6 +311,6 @@ constexpr bool do_intersect(AABB<U, Dim, P> a, sphere<T, Dim, O> b) {
     return do_intersect(b, a);
 }
 
-} // namespace _VMTL
+} // namespace _VVML
 
-#endif // __MTL_SHAPES_HPP_INCLUDED__
+#endif // __VML_SHAPES_HPP_INCLUDED__
