@@ -20,7 +20,7 @@ The primary class template of this library are
 
 Many typedefs for common use cases are defined, like `float2`, `double3`, 
 `int4`, `short3x3`, `ulong3x4` etc. Specifically there are typedefs for
-dimensions 2-4 and all builtin element types (float, double, long double 
+dimensions 2-4 and all builtin element types (`float`, `double`, `long double` 
 and integer types). 
 
 The `vector` and `matrix` templates can be instantiated for any type or dimension.
