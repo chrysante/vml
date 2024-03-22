@@ -1,4 +1,4 @@
-#include <vml/__matrix.hpp>
+#include <vml/matrix.hpp>
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
@@ -21,8 +21,7 @@
 
 #define MATRIX_TEST_CASE(...)                                                  \
     TEMPLATE_TEST_CASE_SIG(__VA_ARGS__,                                        \
-                           ((typename T, std::size_t Rows,                     \
-                             std::size_t Columns,                              \
+                           ((typename T, size_t Rows, size_t Columns,          \
                              vml::vector_options Options),                     \
                             T, Rows, Columns, Options),                        \
                            TYPE_LIST(vml::vector_options{}),                   \
@@ -63,8 +62,8 @@ MATRIX_TEST_CASE("matrix offsets", "[matrix][matrix_data]") {
 MATRIX_TEST_CASE("matrix single value constructor", "[matrix]") {
     T const value = (T)GENERATE(0, 1, -1, 5321);
     vml::matrix<T, Rows, Columns, Options> const m = value;
-    for (std::size_t i = 0; i < Rows; ++i) {
-        for (std::size_t j = 0; j < Columns; ++j) {
+    for (size_t i = 0; i < Rows; ++i) {
+        for (size_t j = 0; j < Columns; ++j) {
             if (i == j) {
                 CHECK(m(i, j) == value);
             }
@@ -94,8 +93,8 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
     SECTION("3") {
         m = M([&](auto i, auto j) { return values[i * 4 + j]; });
 
-        for (std::size_t i = 0; i < Rows; ++i) {
-            for (std::size_t j = 0; j < Columns; ++j) {
+        for (size_t i = 0; i < Rows; ++i) {
+            for (size_t j = 0; j < Columns; ++j) {
                 CHECK(m(i, j) == values[i * 4 + j]);
             }
         }
@@ -107,8 +106,8 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
                             RowType([&](int i) { return values[8 + i]; }),
                             RowType([&](int i) { return values[12 + i]; }) };
         m = M(vml::rows, [&](int i) { return rows[i]; });
-        for (std::size_t i = 0; i < Rows; ++i) {
-            for (std::size_t j = 0; j < Columns; ++j) {
+        for (size_t i = 0; i < Rows; ++i) {
+            for (size_t j = 0; j < Columns; ++j) {
                 CHECK(m(i, j) == values[i * 4 + j]);
             }
         }
@@ -122,8 +121,8 @@ MATRIX_TEST_CASE("matrix functional constructor", "[matrix]") {
             ColumnType([&](int i) { return values[i * 4 + 3]; })
         };
         m = M(vml::columns, [&](int i) { return columns[i]; });
-        for (std::size_t i = 0; i < Rows; ++i) {
-            for (std::size_t j = 0; j < Columns; ++j) {
+        for (size_t i = 0; i < Rows; ++i) {
+            for (size_t j = 0; j < Columns; ++j) {
                 CHECK(m(i, j) == values[i * 4 + j]);
             }
         }

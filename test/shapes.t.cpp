@@ -1,4 +1,4 @@
-#include <vml/__shapes.hpp>
+#include <vml/shapes.hpp>
 
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>

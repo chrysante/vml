@@ -4,10 +4,9 @@
 #include <cmath>
 #include <iosfwd>
 
-#include "__base.hpp"
-#include "__common.hpp"
-#include "__fwd.hpp"
-#include "__vector.hpp"
+#include "common.hpp"
+#include "fwd.hpp"
+#include "vector.hpp"
 
 namespace _VVML {
 
@@ -663,19 +662,19 @@ complex<__vml_floatify(T)> atan(complex<T> const& z) {
 /// MARK: - Decomposition
 namespace _VVML {
 
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 T const& get(complex<T> const& v) {
     return v.__vml_at(I);
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 T& get(complex<T>& v) {
     return v.__vml_at(I);
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 T&& get(complex<T>&& v) {
     return std::move(v).__vml_at(I);
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 T const&& get(complex<T> const&& v) {
     return std::move(v).__vml_at(I);
 }
@@ -683,10 +682,9 @@ T const&& get(complex<T> const&& v) {
 } // namespace _VVML
 
 template <typename T>
-struct std::tuple_size<_VVML::complex<T>>:
-    std::integral_constant<std::size_t, 2> {};
+struct std::tuple_size<_VVML::complex<T>>: std::integral_constant<size_t, 2> {};
 
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 struct std::tuple_element<I, _VVML::complex<T>> {
     using type = T;
 };

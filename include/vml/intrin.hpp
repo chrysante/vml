@@ -5,14 +5,14 @@
 
 #include <immintrin.h>
 
-#include "__common.hpp"
+#include "common.hpp"
 
 namespace vml {
 
-template <typename T, std::size_t Size, bool Packed>
+template <typename T, size_t Size, bool Packed>
 struct __simd_type {
     using type = T[Size];
-    static T get(type const& array, std::size_t index) { return array[index]; }
+    static T get(type const& array, size_t index) { return array[index]; }
 
     static void mul(type& a, type const& b) {
         for (int i = 0; i < Size; ++i) {
@@ -26,14 +26,14 @@ struct __simd_type {
     }
 };
 
-template <typename T, std::size_t Size, bool Packed>
+template <typename T, size_t Size, bool Packed>
 using __simd_type_t = typename __simd_type<T, Size, Packed>::type;
 
 template <>
 struct __simd_type<float, 4, false> {
     using type = __m128;
 
-    static float get(type const& array, std::size_t index) {
+    static float get(type const& array, size_t index) {
 #if defined(_MSC_VER)
         return array.m128_f32[index];
 #else
@@ -50,7 +50,7 @@ template <>
 struct __simd_type<double, 4, false> {
     using type = __m256d;
 
-    static double get(type const& array, std::size_t index) {
+    static double get(type const& array, size_t index) {
 #if defined(_MSC_VER)
         return array.m256d_f64[index];
 #else

@@ -4,11 +4,10 @@
 #include <cmath>
 #include <iosfwd>
 
-#include "__base.hpp"
-#include "__common.hpp"
-#include "__complex.hpp"
-#include "__fwd.hpp"
-#include "__vector.hpp"
+#include "common.hpp"
+#include "complex.hpp"
+#include "fwd.hpp"
+#include "vector.hpp"
 
 namespace _VVML {
 
@@ -675,7 +674,7 @@ constexpr vector3<__vml_floatify(__vml_promote(T, U)), O> rotate(
 /// MARK: - Decomposition
 namespace _VVML {
 
-template <std::size_t I, typename T>
+template <size_t I, typename T>
     requires(I < 2)
 auto const& get(quaternion<T> const& v) {
     if constexpr (I == 0) {
@@ -685,7 +684,7 @@ auto const& get(quaternion<T> const& v) {
         return v.imag;
     }
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
     requires(I < 2)
 auto& get(quaternion<T>& v) {
     if constexpr (I == 0) {
@@ -695,11 +694,11 @@ auto& get(quaternion<T>& v) {
         return v.imag;
     }
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 auto&& get(quaternion<T>&& v) {
     return std::move(get<I>(v));
 }
-template <std::size_t I, typename T>
+template <size_t I, typename T>
 auto&& get(quaternion<T> const&& v) {
     return std::move(get<I>(v));
 }
@@ -708,7 +707,7 @@ auto&& get(quaternion<T> const&& v) {
 
 template <typename T>
 struct std::tuple_size<_VVML::quaternion<T>>:
-    std::integral_constant<std::size_t, 2> {};
+    std::integral_constant<size_t, 2> {};
 
 template <typename T>
 struct std::tuple_element<0, _VVML::quaternion<T>> {

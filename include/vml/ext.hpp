@@ -5,12 +5,11 @@
 #include <concepts>
 #include <cstring>
 
-#include "__base.hpp"
-#include "__common.hpp"
-#include "__fwd.hpp"
-#include "__matrix.hpp"
-#include "__quaternion.hpp"
-#include "__vector.hpp"
+#include "common.hpp"
+#include "fwd.hpp"
+#include "matrix.hpp"
+#include "quaternion.hpp"
+#include "vector.hpp"
 
 namespace _VVML {
 
@@ -508,24 +507,23 @@ namespace utl {
 template <typename>
 class iota;
 
-template <typename T, std::size_t N, _VVML::vector_options O>
+template <typename T, size_t N, _VVML::vector_options O>
     requires std::is_integral_v<T>
 iota(_VVML::vector<T, N, O>) -> iota<_VVML::vector<T, N, O>>;
 
-template <typename T, typename U, std::size_t N, _VVML::vector_options O,
+template <typename T, typename U, size_t N, _VVML::vector_options O,
           _VVML::vector_options P>
     requires std::is_integral_v<T> && std::is_integral_v<U>
 iota(_VVML::vector<T, N, O>, _VVML::vector<U, N, P>)
     -> iota<_VVML::vector<__vml_promote(T, U), N, combine(O, P)>>;
 
-template <typename T, std::size_t N, _VVML::vector_options O>
+template <typename T, size_t N, _VVML::vector_options O>
     requires std::is_integral_v<T>
 class iota<_VVML::vector<T, N, O>> {
 public:
     using value_type = _VVML::vector<T, N, O>;
     using size_type = _VVML::vector<
-        std::conditional_t<std::is_signed_v<T>, std::ptrdiff_t, std::size_t>, N,
-        O>;
+        std::conditional_t<std::is_signed_v<T>, std::ptrdiff_t, size_t>, N, O>;
 
 public:
     class iterator {
@@ -538,7 +536,7 @@ public:
             return _current;
         }
         __vml_interface_export constexpr iterator& operator++() {
-            for (std::size_t i = N - 1;;) {
+            for (size_t i = N - 1;;) {
                 if (++_current[i] != _last[i]) {
                     break;
                 }

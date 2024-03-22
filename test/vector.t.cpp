@@ -1,5 +1,5 @@
-#include <vml/__quaternion.hpp>
-#include <vml/__vector.hpp>
+#include <vml/quaternion.hpp>
+#include <vml/vector.hpp>
 
 #include <array>
 #include <tuple>
@@ -18,7 +18,7 @@ using namespace vml::short_types;
 
 #define VECTOR_TEST_CASE(...)                                                  \
     TEMPLATE_TEST_CASE_SIG(__VA_ARGS__,                                        \
-                           ((typename T, std::size_t Size,                     \
+                           ((typename T, size_t Size,                          \
                              vml::vector_options Options),                     \
                             T, Size, Options),                                 \
                            TYPE_LIST(vml::vector_options{}),                   \
@@ -105,7 +105,7 @@ VECTOR_TEST_CASE("vector conversion", "[vector]") {
     }
 }
 
-template <typename, std::size_t>
+template <typename, size_t>
 struct Vec;
 
 template <typename T>

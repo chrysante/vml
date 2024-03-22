@@ -4,13 +4,13 @@
 #include <algorithm>
 #include <iosfwd>
 
-#include "__base.hpp"
-#include "__vector.hpp"
+#include "fwd.hpp"
+#include "vector.hpp"
 
 namespace _VVML {
 
 /// MARK: - AABB
-template <typename T = double, std::size_t Dim = 3,
+template <typename T = double, size_t Dim = 3,
           vector_options O = vector_options{}>
 class AABB {
 public:
@@ -40,7 +40,7 @@ private:
     vector<T, Dim, O> _size;
 };
 
-template <typename T, std::size_t Dim, vector_options O>
+template <typename T, size_t Dim, vector_options O>
 std::ostream& operator<<(std::ostream& str, AABB<T, Dim, O> const& aabb) {
     return [](auto& x) -> auto& { return x; }(str)
                               << "AABB{ .lower_bound = " << aabb.lower_bound()
@@ -48,7 +48,7 @@ std::ostream& operator<<(std::ostream& str, AABB<T, Dim, O> const& aabb) {
                               << " }";
 }
 
-template <typename... T, std::size_t Dim, vector_options... O>
+template <typename... T, size_t Dim, vector_options... O>
 constexpr AABB<__vml_promote(T...), Dim, combine(O...)> enclosing(
     AABB<T, Dim, O> const&... aabb) {
     auto const lower_bound = map(aabb.lower_bound()..., [](auto&&... bl) {
@@ -60,7 +60,7 @@ constexpr AABB<__vml_promote(T...), Dim, combine(O...)> enclosing(
     return { lower_bound, upper_bound - lower_bound };
 }
 
-template <typename T, std::size_t Dim, vector_options O>
+template <typename T, size_t Dim, vector_options O>
 constexpr bool encloses(AABB<T, Dim, O> const& bigger,
                         AABB<T, Dim, O> const& smaller) {
     return map(bigger.lower_bound(), smaller.lower_bound(),
@@ -75,18 +75,18 @@ constexpr bool encloses(AABB<T, Dim, O> const& bigger,
 template <typename T = double, vector_options O = vector_options{}>
 using rectangle = AABB<T, 2, O>;
 
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool operator==(AABB<T, Dim, O> r, AABB<U, Dim, P> s) {
     return r.lower_bound() == s.lower_bound() && r.size() == s.size();
 }
 
-template <typename T, std::size_t Dim, vector_options O>
+template <typename T, size_t Dim, vector_options O>
 constexpr T volume(AABB<T, Dim, O> const& b) {
     return fold(b.size(), _VVML::__vml_multiplies);
 }
 
-template <typename T, std::size_t Dim, vector_options O>
+template <typename T, size_t Dim, vector_options O>
 constexpr T surface_area(AABB<T, Dim, O> const& b) {
     static_assert(Dim >= 1 && Dim <= 3,
                   "Too lazy to implement higher dimensions");
@@ -115,7 +115,7 @@ constexpr T circumference(rectangle<T, O> const& r) {
 }
 
 /// MARK: Sphere
-template <typename T = double, std::size_t Dim = 3,
+template <typename T = double, size_t Dim = 3,
           vector_options O = vector_options{}.packed(true)>
 struct sphere {
     static_assert(std::is_floating_point<T>::value,
@@ -138,14 +138,14 @@ private:
 template <typename T = double, vector_options O = vector_options{}.packed(true)>
 using disk = sphere<T, 2, O>;
 
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool operator==(sphere<T, Dim, O> const& r,
                           sphere<U, Dim, P> const& s) {
     return r.origin() == s.origin() && r.radius() == s.radius();
 }
 
-template <typename T, std::size_t Dim, vector_options O>
+template <typename T, size_t Dim, vector_options O>
 constexpr T volume(sphere<T, Dim, O> const& s) {
     if constexpr (Dim == 2) {
         return constants<T>::pi * __vml_sqr(s.radius(), 2);
@@ -167,15 +167,15 @@ constexpr T area(sphere<T, 2, O> const& r) {
 }
 
 /// MARK: - Triangle
-template <typename T, std::size_t Dim = 3, vector_options O = vector_options{}>
+template <typename T, size_t Dim = 3, vector_options O = vector_options{}>
 class triangle {
 public:
-    vector<T, Dim, O>& operator[](std::size_t index) {
+    vector<T, Dim, O>& operator[](size_t index) {
         return const_cast<vector<T, Dim, O>&>(
             const_cast<triangle const*>(this)->operator[](index));
     }
 
-    vector<T, Dim, O> const& operator[](std::size_t index) const {
+    vector<T, Dim, O> const& operator[](size_t index) const {
         __vml_bounds_check(index, 0, 3);
         return _points[index];
     }
@@ -185,7 +185,7 @@ private:
 };
 
 /// MARK: - Line Segment
-template <typename T, std::size_t Dim, vector_options O = vector_options{}>
+template <typename T, size_t Dim, vector_options O = vector_options{}>
 class line_segment {
 public:
     line_segment(vector<T, Dim, O> const& begin, vector<T, Dim, O> const& end):
@@ -209,7 +209,7 @@ using line_segment_2D = line_segment<T, 2, O>;
 template <typename T = double, vector_options O = vector_options{}>
 using line_segment_3D = line_segment<T, 3, O>;
 
-template <typename T, typename U, std::size_t Dim, vector_options O,
+template <typename T, typename U, size_t Dim, vector_options O,
           vector_options P>
 auto distance(line_segment<T, Dim, O> const& l, vector<U, Dim, P> const& p) {
     // Return minimum distance between line segment l and point p
@@ -232,7 +232,7 @@ auto distance(line_segment<T, Dim, O> const& l, vector<U, Dim, P> const& p) {
     return distance(p, projection);
 }
 
-template <typename T, typename U, std::size_t Dim, vector_options O,
+template <typename T, typename U, size_t Dim, vector_options O,
           vector_options P>
 auto distance(vector<U, Dim, P> const& p, line_segment<T, Dim, O> const& l) {
     return distance(l, p);
@@ -240,7 +240,7 @@ auto distance(vector<U, Dim, P> const& p, line_segment<T, Dim, O> const& l) {
 
 /// MARK: - Intersections
 /// Box - Point
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(AABB<T, Dim, O> r, vector<U, Dim, P> const& p) {
     return map(r.lower_bound(), r.size(), p, [](auto o, auto e, auto p) {
@@ -249,14 +249,14 @@ constexpr bool do_intersect(AABB<T, Dim, O> r, vector<U, Dim, P> const& p) {
 }
 
 /// Point - Box
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(vector<U, Dim, P> const& p, AABB<T, Dim, O> r) {
     return do_intersect(r, p);
 }
 
 /// Box - Box
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(AABB<T, Dim, O> const& a,
                             AABB<U, Dim, P> const& b) {
@@ -267,7 +267,7 @@ constexpr bool do_intersect(AABB<T, Dim, O> const& a,
 }
 
 /// Sphere - Point
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(sphere<T, Dim, O> const& r,
                             vector<U, Dim, P> const& p) {
@@ -275,7 +275,7 @@ constexpr bool do_intersect(sphere<T, Dim, O> const& r,
 }
 
 /// Point - Sphere
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(vector<U, Dim, P> const& p,
                             sphere<T, Dim, O> const& r) {
@@ -283,7 +283,7 @@ constexpr bool do_intersect(vector<U, Dim, P> const& p,
 }
 
 /// Sphere - Sphere
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(sphere<T, Dim, O> const& a,
                             sphere<U, Dim, P> const& b) {
@@ -291,7 +291,7 @@ constexpr bool do_intersect(sphere<T, Dim, O> const& a,
 }
 
 /// Sphere - Box
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(sphere<T, Dim, O> const& sphere,
                             AABB<U, Dim, P> const& box) {
@@ -305,7 +305,7 @@ constexpr bool do_intersect(sphere<T, Dim, O> const& sphere,
 }
 
 /// Box - Sphere
-template <typename T, std::size_t Dim, vector_options O, typename U,
+template <typename T, size_t Dim, vector_options O, typename U,
           vector_options P>
 constexpr bool do_intersect(AABB<U, Dim, P> a, sphere<T, Dim, O> b) {
     return do_intersect(b, a);

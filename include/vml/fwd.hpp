@@ -5,37 +5,134 @@
 
 #include <cstdint>
 
-#include "__base.hpp"
+/// # Check Compiler Compatibility
+
+#if !(__clang__ || __GNUC__ || _MSC_VER)
+#error Unsupported Compiler
+#endif
+
+/// # Customization Points
+
+#ifndef VML_DEBUG_LEVEL
+#ifdef NDEBUG
+#define VML_DEBUG_LEVEL 0
+#else
+#define VML_DEBUG_LEVEL 1
+#endif
+#endif
+
+#ifndef VML_SAFE_MATH
+#define VML_SAFE_MATH 1
+#endif
+
+#ifndef VML_DEFAULT_PACKED
+#define VML_DEFAULT_PACKED 0
+#endif
+
+#ifndef VML_AVX
+#define VML_AVX 0
+#endif
+
+#ifndef VML_NAMESPACE_NAME
+#define VML_NAMESPACE_NAME vml
+#endif
+
+#ifndef VML_UNICODE_MATH_PARANTHESES
+#if defined(__APPLE__)
+#define VML_UNICODE_MATH_PARANTHESES 1
+#else
+#define VML_UNICODE_MATH_PARANTHESES 0
+#endif
+#endif
+
+/// # Attributes
+
+#if defined(__GNUC__) || defined(__clang__)
+
+#define __vml_pure         __attribute__((const))
+#define __vml_nodiscard    [[nodiscard]]
+#define __vml_mathfunction __vml_nodiscard
+#if VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_always_inline __attribute__((always_inline))
+#endif // VML_DEBUG_LEVEL > 1
+
+#define __vml_noinline __attribute__((noinline))
+#if VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_interface_export __attribute__((nodebug))
+#endif // VML_DEBUG_LEVEL > 1
+
+#else
+
+#define __vml_pure
+#define __vml_nodiscard
+#define __vml_mathfunction
+#if VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_always_inline
+#endif // VML_DEBUG_LEVEL > 1
+
+#define __vml_noinline
+#if VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_interface_export
+#endif // VML_DEBUG_LEVEL > 1
+
+#endif
+
+/// # Debug
+
+#if VML_DEBUG_LEVEL > 0
+#define __vml_assert(COND)                                                     \
+    (!(COND) ? (__vml_debugbreak("Assertion Failed"), (void)0) : (void)0)
+#else // VML_DEBUG_LEVEL > 0
+#define __vml_assert(COND) (void)0
+#endif // VML_DEBUG_LEVEL > 0
+
+#if VML_DEBUG_LEVEL > 1
+#define __vml_assert_audit(COND) __vml_assert(COND)
+#else // VML_DEBUG_LEVEL > 1
+#define __vml_assert_audit(COND) (void)0
+#endif // VML_DEBUG_LEVEL > 1
+
+#define __vml_expect(COND) __vml_assert(COND)
+#define __vml_ensure(COND) __vml_assert(COND)
+
+#if defined(__clang__)
+#define __vml_debugbreak(msg) __builtin_debugtrap()
+#elif defined(__GNUC__)
+#define __vml_debugbreak(msg) __builtin_trap()
+#elif defined(_MSC_VER)
+#define __vml_debugbreak(msg) __debugbreak()
+#else
+#error
+#endif
+
+#define __vml_bounds_check(index, lower, upper)                                \
+    (__vml_expect(lower <= index), __vml_expect(index < upper))
+
+/// # Namespace
+
+#ifdef _VVML
+#error We need this macro name _VVML
+#else
+#define _VVML VML_NAMESPACE_NAME
+#endif
+
+/// # Safe Arithmetic
+
+#if VML_SAFE_MATH
+#define __vml_safe_math_if(...) if (__VA_ARGS__)
+#else
+#define __vml_safe_math_if(...) if constexpr ((0))
+#endif
 
 namespace _VVML {
-
-struct vector_options {
-    constexpr bool packed() const { return __packed; }
-    constexpr vector_options packed(bool b) const {
-        auto result = *this;
-        result.__packed = b;
-        return result;
-    }
-
-    bool __packed = VML_DEFAULT_PACKED;
-
-    friend constexpr vector_options combine(
-        std::same_as<vector_options> auto const&... o) {
-        return { .__packed = (o.packed() && ...) };
-    }
-};
-
-template <typename>
-struct complex;
-
-template <typename>
-struct quaternion;
-
-template <typename, std::size_t, vector_options = vector_options{}>
-struct vector;
-
-template <typename, std::size_t, std::size_t, vector_options = vector_options{}>
-struct matrix;
 
 /**
  These exist so I can conditionally declare 'namespace metal = vml' in shared
@@ -53,8 +150,37 @@ using std::uint64_t;
 using std::uint8_t;
 
 using std::size_t;
-using usize = std::size_t;
+using usize = size_t;
 using isize = std::ptrdiff_t;
+
+struct vector_options {
+    constexpr bool packed() const { return __packed; }
+    constexpr vector_options packed(bool b) const {
+        auto result = *this;
+        result.__packed = b;
+        return result;
+    }
+
+    bool __packed = VML_DEFAULT_PACKED;
+
+    friend constexpr vector_options combine(
+        std::same_as<vector_options> auto const&... o) {
+        return { .__packed = (o.packed() && ...) };
+    }
+};
+
+template <typename T, size_t Dim, vector_options Options = vector_options{}>
+struct vector;
+
+template <typename T, size_t Rows, size_t,
+          vector_options Options = vector_options{}>
+struct matrix;
+
+template <typename T>
+struct complex;
+
+template <typename T>
+struct quaternion;
 
 inline namespace short_types {
 
@@ -91,13 +217,13 @@ using vector4 = vector<T, 4, O>;
 
 inline namespace short_types {
 
-using size2 = vector2<std::size_t>;
-using size3 = vector3<std::size_t>;
-using size4 = vector4<std::size_t>;
+using size2 = vector2<size_t>;
+using size3 = vector3<size_t>;
+using size4 = vector4<size_t>;
 
-using usize2 = vector2<std::size_t>;
-using usize3 = vector3<std::size_t>;
-using usize4 = vector4<std::size_t>;
+using usize2 = vector2<size_t>;
+using usize3 = vector3<size_t>;
+using usize4 = vector4<size_t>;
 
 using isize2 = vector2<std::ptrdiff_t>;
 using isize3 = vector3<std::ptrdiff_t>;

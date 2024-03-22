@@ -20,19 +20,17 @@ add_library(vml INTERFACE)
 target_include_directories(vml INTERFACE include)
 target_sources(vml
   PRIVATE
-    include/vml/__arithmetic.hpp
-    include/vml/__base.hpp
-    include/vml/__common.hpp
-    include/vml/__complex.hpp
-    include/vml/__ext.hpp
-    include/vml/__intrin.hpp
-    include/vml/__matrix.hpp
-    include/vml/__polynomial.hpp
-    include/vml/__quaternion.hpp
-    include/vml/__shapes.hpp
-    include/vml/__typedefs.hpp
-    include/vml/__undef.hpp
-    include/vml/__vector.hpp
+    include/vml/arithmetic.hpp
+    include/vml/common.hpp
+    include/vml/complex.hpp
+    include/vml/ext.hpp
+    include/vml/fwd.hpp
+    include/vml/intrin.hpp
+    include/vml/matrix.hpp
+    include/vml/quaternion.hpp
+    include/vml/shapes.hpp
+    include/vml/undef.hpp
+    include/vml/vector.hpp
     include/vml/core.hpp
     include/vml/vml.hpp
 )
@@ -57,7 +55,6 @@ target_sources(test
     test/complex.t.cpp
     test/ext.t.cpp
     test/matrix.t.cpp
-    test/polynomial.t.cpp
     test/quaternion.t.cpp
     test/shapes.t.cpp
     test/vector.t.cpp

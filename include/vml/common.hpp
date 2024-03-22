@@ -6,8 +6,7 @@
 #include <iosfwd>
 #include <utility>
 
-#include "__base.hpp"
-#include "__fwd.hpp"
+#include "fwd.hpp"
 
 namespace _VVML {
 
@@ -51,24 +50,24 @@ struct is_quaternion<quaternion<T> const volatile>: std::true_type {};
 
 template <typename T>
 struct is_vector: std::false_type {};
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct is_vector<vector<T, N, O>>: std::true_type {};
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct is_vector<vector<T, N, O> const>: std::true_type {};
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct is_vector<vector<T, N, O> volatile>: std::true_type {};
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct is_vector<vector<T, N, O> const volatile>: std::true_type {};
 
 template <typename T>
 struct is_matrix: std::false_type {};
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct is_matrix<matrix<T, R, C, O>>: std::true_type {};
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct is_matrix<matrix<T, R, C, O> const>: std::true_type {};
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct is_matrix<matrix<T, R, C, O> volatile>: std::true_type {};
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct is_matrix<matrix<T, R, C, O> const volatile>: std::true_type {};
 
 template <typename T>
@@ -84,16 +83,16 @@ struct __is_foreign_type: __is_foreign_type_impl<std::decay_t<T>> {};
 template <typename T>
 concept __foreign_type = __is_foreign_type<T>::value;
 
-template <typename Vector, typename ValueType, std::size_t N,
+template <typename Vector, typename ValueType, size_t N,
           typename = std::make_index_sequence<N>>
 constexpr bool __is_vector_type_v = false;
 
-template <typename Vector, typename ValueType, std::size_t N, std::size_t... I>
+template <typename Vector, typename ValueType, size_t N, size_t... I>
 constexpr bool
     __is_vector_type_v<Vector, ValueType, N, std::index_sequence<I...>> =
         requires(ValueType&& t) { Vector{ (I, t)... }; };
 
-template <typename V, typename T, std::size_t N>
+template <typename V, typename T, size_t N>
 concept __foreign_vector_type =
     __foreign_type<V> && __is_vector_type_v<V, T, N>;
 
@@ -143,36 +142,36 @@ struct get_underlying_type<quaternion<T> const volatile> {
     using type = T const volatile;
 };
 
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_underlying_type<vector<T, N, O>> {
     using type = T;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_underlying_type<vector<T, N, O> const> {
     using type = T const;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_underlying_type<vector<T, N, O> volatile> {
     using type = T volatile;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_underlying_type<vector<T, N, O> const volatile> {
     using type = T const volatile;
 };
 
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct get_underlying_type<matrix<T, R, C, O>> {
     using type = T;
 };
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct get_underlying_type<matrix<T, R, C, O> const> {
     using type = T const;
 };
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct get_underlying_type<matrix<T, R, C, O> volatile> {
     using type = T volatile;
 };
-template <typename T, std::size_t R, std::size_t C, vector_options O>
+template <typename T, size_t R, size_t C, vector_options O>
 struct get_underlying_type<matrix<T, R, C, O> const volatile> {
     using type = T const volatile;
 };
@@ -191,20 +190,19 @@ template <typename>
 struct get_vector_size;
 
 template <typename T>
-struct get_vector_size: std::integral_constant<std::size_t, 1> {};
+struct get_vector_size: std::integral_constant<size_t, 1> {};
 
-template <typename T, std::size_t N, vector_options O>
-struct get_vector_size<vector<T, N, O>>:
-    std::integral_constant<std::size_t, N> {};
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
+struct get_vector_size<vector<T, N, O>>: std::integral_constant<size_t, N> {};
+template <typename T, size_t N, vector_options O>
 struct get_vector_size<vector<T, N, O> const>:
-    std::integral_constant<std::size_t, N> {};
-template <typename T, std::size_t N, vector_options O>
+    std::integral_constant<size_t, N> {};
+template <typename T, size_t N, vector_options O>
 struct get_vector_size<vector<T, N, O> volatile>:
-    std::integral_constant<std::size_t, N> {};
-template <typename T, std::size_t N, vector_options O>
+    std::integral_constant<size_t, N> {};
+template <typename T, size_t N, vector_options O>
 struct get_vector_size<vector<T, N, O> const volatile>:
-    std::integral_constant<std::size_t, N> {};
+    std::integral_constant<size_t, N> {};
 
 template <typename>
 struct get_vector_options;
@@ -214,19 +212,19 @@ struct get_vector_options {
     static constexpr vector_options value = {};
 };
 
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_vector_options<vector<T, N, O>> {
     static constexpr vector_options value = O;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_vector_options<vector<T, N, O> const> {
     static constexpr vector_options value = O;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_vector_options<vector<T, N, O> volatile> {
     static constexpr vector_options value = O;
 };
-template <typename T, std::size_t N, vector_options O>
+template <typename T, size_t N, vector_options O>
 struct get_vector_options<vector<T, N, O> const volatile> {
     static constexpr vector_options value = O;
 };
@@ -238,14 +236,14 @@ template <typename...>
 struct __vml_template_false_type: std::false_type {};
 
 /// MARK: Tuple Size
-template <typename T, std::size_t = sizeof(T)>
+template <typename T, size_t = sizeof(T)>
 std::true_type __is_defined_impl(T*);
 std::false_type __is_defined_impl(...);
 
 template <typename T>
 using __is_defined = decltype(__is_defined_impl(std::declval<T*>()));
 
-template <typename T, std::size_t N>
+template <typename T, size_t N>
 concept __tuple_of_size =
     __is_defined<std::tuple_size<std::decay_t<T>>>::value &&
     (std::tuple_size<std::decay_t<T>>::value == N);
@@ -253,7 +251,7 @@ concept __tuple_of_size =
 template <typename, typename, typename...>
 struct __tuple_conversion_test;
 
-template <typename T, typename... Args, std::size_t... I>
+template <typename T, typename... Args, size_t... I>
 struct __tuple_conversion_test<T, std::index_sequence<I...>, Args...> {
     static constexpr bool value = (requires(T&& t) {
         {
@@ -375,39 +373,39 @@ struct std::common_type<T, _VVML::quaternion<U>> {
 };
 
 /// Promote Vectors
-template <typename T, typename U, std::size_t Size, _VVML::vector_options O>
+template <typename T, typename U, size_t Size, _VVML::vector_options O>
 struct std::common_type<_VVML::vector<T, Size, O>, U> {
     using type = _VVML::vector<typename std::common_type<T, U>::type, Size, O>;
 };
-template <typename T, typename U, std::size_t Size, _VVML::vector_options O>
+template <typename T, typename U, size_t Size, _VVML::vector_options O>
 struct std::common_type<T, _VVML::vector<U, Size, O>> {
     using type = _VVML::vector<typename std::common_type<T, U>::type, Size, O>;
 };
-template <typename T, typename U, std::size_t Size, _VVML::vector_options O,
+template <typename T, typename U, size_t Size, _VVML::vector_options O,
           _VVML::vector_options P>
 struct std::common_type<_VVML::vector<T, Size, O>, _VVML::vector<U, Size, P>> {
     using type = _VVML::vector<typename std::common_type<T, U>::type, Size,
                                combine(O, P)>;
 };
-template <typename T, typename U, std::size_t S1, std::size_t S2,
-          _VVML::vector_options O, _VVML::vector_options P>
+template <typename T, typename U, size_t S1, size_t S2, _VVML::vector_options O,
+          _VVML::vector_options P>
 struct std::common_type<_VVML::vector<T, S1, O>,
                         _VVML::vector<U, S2, P>>; /// Can't promote these
 
 /// Promote Matrices
-template <typename T, typename U, std::size_t Rows, std::size_t Columns,
+template <typename T, typename U, size_t Rows, size_t Columns,
           _VVML::vector_options O>
 struct std::common_type<_VVML::matrix<T, Rows, Columns, O>, U> {
     using type =
         _VVML::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
 };
-template <typename T, typename U, std::size_t Rows, std::size_t Columns,
+template <typename T, typename U, size_t Rows, size_t Columns,
           _VVML::vector_options O>
 struct std::common_type<T, _VVML::matrix<U, Rows, Columns, O>> {
     using type =
         _VVML::matrix<typename std::common_type<T, U>::type, Rows, Columns, O>;
 };
-template <typename T, typename U, std::size_t Rows, std::size_t Columns,
+template <typename T, typename U, size_t Rows, size_t Columns,
           _VVML::vector_options O, _VVML::vector_options P>
 struct std::common_type<_VVML::matrix<T, Rows, Columns, O>,
                         _VVML::matrix<U, Rows, Columns, P>> {
@@ -415,19 +413,19 @@ struct std::common_type<_VVML::matrix<T, Rows, Columns, O>,
                                Columns, combine(O, P)>;
 };
 template <typename T, typename U,
-          std::size_t Rows1, // std::size_t Columns1,
-          std::size_t Rows2, std::size_t Columns2, _VVML::vector_options O,
+          size_t Rows1, // size_t Columns1,
+          size_t Rows2, size_t Columns2, _VVML::vector_options O,
           _VVML::vector_options P>
 struct std::common_type<_VVML::matrix<T, Rows1, Columns2, O>,
                         _VVML::matrix<U, Rows2, Columns2, P>> {
 }; /// Can't promote two matrices of different dimensions
-template <typename T, typename U, std::size_t Size, std::size_t Rows,
-          std::size_t Columns, _VVML::vector_options O, _VVML::vector_options P>
+template <typename T, typename U, size_t Size, size_t Rows, size_t Columns,
+          _VVML::vector_options O, _VVML::vector_options P>
 struct std::common_type<_VVML::matrix<T, Rows, Columns, O>,
                         _VVML::vector<U, Size, P>> {
 }; /// Can't promote matrices with vectors
-template <typename T, typename U, std::size_t Size, std::size_t Rows,
-          std::size_t Columns, _VVML::vector_options O, _VVML::vector_options P>
+template <typename T, typename U, size_t Size, size_t Rows, size_t Columns,
+          _VVML::vector_options O, _VVML::vector_options P>
 struct std::common_type<_VVML::vector<T, Size, P>,
                         _VVML::matrix<U, Rows, Columns, O>> {
 }; /// Can't promote vectors with matrices
@@ -496,17 +494,17 @@ constexpr T& min(T& a, std::same_as<T> auto& b, std::same_as<T> auto&... c) {
 }
 
 template <typename T>
-std::size_t __vml_hash_combine(std::size_t seed, T const& v) {
+size_t __vml_hash_combine(size_t seed, T const& v) {
     std::hash<T> const hash;
     return seed ^ hash(v) + 0x9e37'79b9'43e3'f411 + (seed << 6) + (seed >> 2);
 }
 
-constexpr std::size_t __vml_hash_seed = 0x5f23'ef3b'34b5'e321;
+constexpr size_t __vml_hash_seed = 0x5f23'ef3b'34b5'e321;
 
 #define __vml_forward(...) ::std::forward<decltype(__VA_ARGS__)>(__VA_ARGS__)
 
 // __vml_with_index_sequence
-#define __VML_PRIV_WIS_FT(I, S) <std::size_t... I>
+#define __VML_PRIV_WIS_FT(I, S) <size_t... I>
 #define __VML_PRIV_WIS_FP(I, S) (::std::index_sequence<I...>)
 #define __VML_PRIV_WIS_FI(I, S) (::std::make_index_sequence<S>{})
 #define __vml_with_index_sequence(Index, ...)                                  \
@@ -527,16 +525,16 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     }
 }
 
-template <std::size_t... I>
+template <size_t... I>
 using __vml_index_sequence = std::index_sequence<I...>;
 
-template <std::size_t N>
+template <size_t N>
 using __vml_make_index_sequence = std::make_index_sequence<N>;
 
 template <typename... T>
 struct __vml_type_sequence {};
 
-template <typename T, std::size_t N, typename... R>
+template <typename T, size_t N, typename... R>
 struct __vml_make_type_sequence_impl {
     using type =
         typename __vml_make_type_sequence_impl<T, N - 1, R..., T>::type;
@@ -547,7 +545,7 @@ struct __vml_make_type_sequence_impl<T, 0, R...> {
     using type = __vml_type_sequence<R...>;
 };
 
-template <typename T, std::size_t N>
+template <typename T, size_t N>
 using __vml_make_type_sequence =
     typename __vml_make_type_sequence_impl<T, N>::type;
 

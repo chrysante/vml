@@ -1,14 +1,14 @@
 #ifndef __VML_VML_HPP_INCLUDED__
 #define __VML_VML_HPP_INCLUDED__
 
-#include "__complex.hpp"
-#include "__ext.hpp"
-#include "__matrix.hpp"
-#include "__quaternion.hpp"
-#include "__shapes.hpp"
-#include "__vector.hpp"
+#include "complex.hpp"
+#include "ext.hpp"
+#include "matrix.hpp"
+#include "quaternion.hpp"
+#include "shapes.hpp"
+#include "vector.hpp"
 
-#include "__undef.hpp"
+#include "undef.hpp"
 
 #endif // __VML_VML_HPP_INCLUDED__
 

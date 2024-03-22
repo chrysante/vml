@@ -1,9 +1,9 @@
 #ifndef __VML_ARITHMETIC_HPP_INCLUDED__
 #define __VML_ARITHMETIC_HPP_INCLUDED__
 
-#include "__base.hpp"
-#include "__common.hpp"
-#include "__intrin.hpp"
+#include "common.hpp"
+#include "fwd.hpp"
+#include "intrin.hpp"
 
 namespace _VVML {
 
@@ -21,7 +21,7 @@ using __vml_get_simd_type =
 
 /// MARK: Plus
 /// Unary Plus(Vector)
-template <scalar T, std::size_t Size, vector_options O>
+template <scalar T, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator+(vector<T, Size, O> const& v) {
@@ -29,8 +29,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Add Vector to Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
     operator+(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
@@ -38,7 +37,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Add Scalar to Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator+(vector<T, Size, O> const& a, U const& b) {
@@ -46,7 +45,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Add Vector to Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator+(T const& a, vector<U, Size, O> const& b) {
@@ -55,7 +54,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Minus
 /// Negate Vector
-template <scalar T, std::size_t Size, vector_options O>
+template <scalar T, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator-(vector<T, Size, O> const& v) {
@@ -63,8 +62,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Subract Vector from Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
     operator-(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
@@ -72,7 +70,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Subract Scalar from Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator-(vector<T, Size, O> const& a, U const& b) {
@@ -80,7 +78,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Subract Vector from Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator-(T const& a, vector<U, Size, O> const& b) {
@@ -89,8 +87,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Multiply
 /// Multiply Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
     operator*(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
@@ -108,7 +105,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Multiply Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator*(vector<T, Size, O> const& a, U const& b) {
@@ -117,7 +114,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Multiply Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator*(T const& a, vector<U, Size, O> const& b) {
@@ -127,8 +124,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Divide
 /// Divide Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
     operator/(vector<T, Size, O> const& a, vector<U, Size, P> const& b) {
@@ -146,7 +142,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Divide Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator/(vector<T, Size, O> const& a, U const& b) {
@@ -155,7 +151,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Divide Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
     operator/(T const& a, vector<U, Size, O> const& b) {
@@ -165,8 +161,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Modulo
 /// Modulo divide Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
     requires requires(T&& t, U&& u) { t % u; }
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
@@ -175,7 +170,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Modulo divide Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t % u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -184,7 +179,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Modulo divide Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t % u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -194,8 +189,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Bitwise And
 /// Bitwise and Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
     requires requires(T&& t, U&& u) { t & u; }
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
@@ -204,7 +198,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Bitwise and Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t & u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -213,7 +207,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Bitwise and Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t & u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -223,8 +217,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Bitwise Or
 /// Bitwise or Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
     requires requires(T&& t, U&& u) { t | u; }
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
@@ -233,7 +226,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Bitwise and Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t | u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -242,7 +235,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Bitwise and Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t | u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -252,8 +245,7 @@ __vml_mathfunction __vml_always_inline
 
 /// MARK: Bitwise Xor
 /// Bitwise xor Vector by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O,
-          vector_options P>
+template <scalar T, scalar U, size_t Size, vector_options O, vector_options P>
     requires requires(T&& t, U&& u) { t ^ u; }
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     __vml_promote(T, U), Size, combine(O, P)>
@@ -262,7 +254,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
 }
 
 /// Bitwise and Vector by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t ^ u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -271,7 +263,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Bitwise and Scalar by Vector (element-wise)
-template <scalar T, scalar U, std::size_t Size, vector_options O>
+template <scalar T, scalar U, size_t Size, vector_options O>
     requires requires(T&& t, U&& u) { t ^ u; }
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<__vml_promote(T, U), Size, O>
@@ -280,7 +272,7 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// MARK: Unary Bitwise Not
-template <typename T, std::size_t Size, vector_options O>
+template <typename T, size_t Size, vector_options O>
     requires requires(T&& t) { ~t; }
 __vml_always_inline __vml_interface_export constexpr auto operator~(
     vector<T, Size, O> const& a) {
@@ -288,7 +280,7 @@ __vml_always_inline __vml_interface_export constexpr auto operator~(
 }
 
 /// MARK: Unary Logical Not
-template <typename T, std::size_t Size, vector_options O>
+template <typename T, size_t Size, vector_options O>
     requires requires(T&& t) { !t; }
 __vml_always_inline __vml_interface_export constexpr auto operator!(
     vector<T, Size, O> const& a) {
@@ -296,7 +288,7 @@ __vml_always_inline __vml_interface_export constexpr auto operator!(
 }
 
 /// Bitshift Vector by Vector (element-wise)
-template <std::integral T, std::integral U, std::size_t Size, vector_options O,
+template <std::integral T, std::integral U, size_t Size, vector_options O,
           vector_options P>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
@@ -304,7 +296,7 @@ __vml_mathfunction __vml_always_inline
     return map(a, b, [](T t, U u) { return t << u; });
 }
 
-template <std::integral T, std::integral U, std::size_t Size, vector_options O,
+template <std::integral T, std::integral U, size_t Size, vector_options O,
           vector_options P>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
@@ -313,14 +305,14 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Bitshift Vector by Scalar (element-wise)
-template <std::integral T, std::integral U, std::size_t Size, vector_options O>
+template <std::integral T, std::integral U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator<<(vector<T, Size, O> const& a, U b) {
     return a.map([b](T t) { return t << b; });
 }
 
-template <std::integral T, std::integral U, std::size_t Size, vector_options O>
+template <std::integral T, std::integral U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator>>(vector<T, Size, O> const& a, U b) {
@@ -328,14 +320,14 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Bitshift Scalar by Vector (element-wise)
-template <std::integral T, std::integral U, std::size_t Size, vector_options O>
+template <std::integral T, std::integral U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator<<(T a, vector<U, Size, O> const& b) {
     return b.map([a](U u) { return a << u; });
 }
 
-template <std::integral T, std::integral U, std::size_t Size, vector_options O>
+template <std::integral T, std::integral U, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr vector<T, Size, O>
     operator>>(T a, vector<U, Size, O> const& b) {
@@ -348,7 +340,7 @@ __vml_mathfunction __vml_always_inline
 ///
 /// MARK: Plus
 /// Unary Plus(Matrix)
-template <scalar T, std::size_t Rows, std::size_t Columns, vector_options O>
+template <scalar T, size_t Rows, size_t Columns, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr matrix<T, Rows, Columns, O>
     operator+(matrix<T, Rows, Columns, O> const& v) {
@@ -356,8 +348,8 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Add Matrix to Matrix
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O, vector_options P>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O,
+          vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, combine(O, P)>
     operator+(matrix<T, Rows, Columns, O> const& a,
@@ -367,7 +359,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
 
 /// MARK: Minus
 /// Negate Matrix
-template <scalar T, std::size_t Rows, std::size_t Columns, vector_options O>
+template <scalar T, size_t Rows, size_t Columns, vector_options O>
 __vml_mathfunction __vml_always_inline
     __vml_interface_export constexpr matrix<T, Rows, Columns, O>
     operator-(matrix<T, Rows, Columns, O> const& v) {
@@ -375,8 +367,8 @@ __vml_mathfunction __vml_always_inline
 }
 
 /// Subtract Matrix from Matrix
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O, vector_options P>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O,
+          vector_options P>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, combine(O, P)>
     operator-(matrix<T, Rows, Columns, O> const& a,
@@ -386,8 +378,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
 
 /// MARK: Multiply
 /// Multiply Matrix by Scalar
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, O>
     operator*(matrix<T, Rows, Columns, O> const& a, U const& b) {
@@ -395,8 +386,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
 }
 
 /// Multiply Scalar by Matrix
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, O>
     operator*(T const& a, matrix<U, Rows, Columns, O> const& b) {
@@ -404,14 +394,14 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
 }
 
 /// Multiply Matrix by Matrix
-template <scalar T, scalar U, std::size_t RowsA, std::size_t ColumnsA,
-          std::size_t ColumnsB, vector_options O, vector_options P>
+template <scalar T, scalar U, size_t RowsA, size_t ColumnsA, size_t ColumnsB,
+          vector_options O, vector_options P>
 __vml_mathfunction __vml_interface_export constexpr matrix<
     __vml_promote(T, U), RowsA, ColumnsB, combine(O, P)>
     operator*(matrix<T, RowsA, ColumnsA, O> const& A,
               matrix<U, ColumnsA, ColumnsB, P> const& B) {
     return matrix<__vml_promote(T, U), RowsA, ColumnsB, combine(O, P)>(
-        [&](std::size_t i, std::size_t j) {
+        [&](size_t i, size_t j) {
         return __vml_with_index_sequence((K, ColumnsA), {
             return ((A.__vml_at(i, K) * B.__vml_at(K, j)) + ...);
         });
@@ -419,14 +409,13 @@ __vml_mathfunction __vml_interface_export constexpr matrix<
 }
 
 /// Multiply Matrix by Vector
-template <scalar T, scalar U, std::size_t RowsA, std::size_t ColumnsA,
-          vector_options O, vector_options P>
+template <scalar T, scalar U, size_t RowsA, size_t ColumnsA, vector_options O,
+          vector_options P>
 __vml_mathfunction __vml_interface_export constexpr vector<__vml_promote(T, U),
                                                            RowsA, combine(O, P)>
     operator*(matrix<T, RowsA, ColumnsA, O> const& A,
               vector<U, ColumnsA, P> const& v) {
-    return vector<__vml_promote(T, U), RowsA, combine(O, P)>(
-        [&](std::size_t i) {
+    return vector<__vml_promote(T, U), RowsA, combine(O, P)>([&](size_t i) {
         return __vml_with_index_sequence((K, ColumnsA), {
             return ((A.__vml_at(i, K) * v.__vml_at(K)) + ...);
         });
@@ -434,14 +423,13 @@ __vml_mathfunction __vml_interface_export constexpr vector<__vml_promote(T, U),
 }
 
 /// Multiply Vector by Matrix
-template <scalar T, scalar U, std::size_t ColumnsA, std::size_t ColumnsB,
+template <scalar T, scalar U, size_t ColumnsA, size_t ColumnsB,
           vector_options O, vector_options P>
 __vml_mathfunction __vml_interface_export constexpr vector<
     __vml_promote(T, U), ColumnsB, combine(O, P)>
     operator*(vector<T, ColumnsA, O> const& v,
               matrix<U, ColumnsA, ColumnsB, P> const& A) {
-    return vector<__vml_promote(T, U), ColumnsB, combine(O, P)>(
-        [&](std::size_t j) {
+    return vector<__vml_promote(T, U), ColumnsB, combine(O, P)>([&](size_t j) {
         return __vml_with_index_sequence((K, ColumnsA), {
             return ((v.__vml_at(K) * A.__vml_at(K, j)) + ...);
         });
@@ -450,8 +438,7 @@ __vml_mathfunction __vml_interface_export constexpr vector<
 
 /// MARK: Divide
 /// Divide Matrix by Scalar
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, O>
     operator/(matrix<T, Rows, Columns, O> const& a, U const& b) {
@@ -460,8 +447,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
 
 /// MARK: Modulo
 /// Modulo divide Matrix by Scalar (element-wise)
-template <scalar T, scalar U, std::size_t Rows, std::size_t Columns,
-          vector_options O>
+template <scalar T, scalar U, size_t Rows, size_t Columns, vector_options O>
     requires requires(T&& t, U&& u) { t % u; }
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr matrix<
     __vml_promote(T, U), Rows, Columns, O>

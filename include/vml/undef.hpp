@@ -1,5 +1,8 @@
-#ifndef __VML_UNDEF_HPP_INCLUDED__
-#define __VML_UNDEF_HPP_INCLUDED__
+/// Undefines all macros defined by the library.
+/// This file is included by "core.hpp" and "vml.hpp"
+///
+/// We have no include guard so including this file can act as a command to
+/// undefine all macros
 
 #ifndef __VML_NO_UNDEF__
 
@@ -44,5 +47,3 @@
 #undef VML_STDLIB_HAS_CONCEPTS
 
 #endif // __VML_NO_UNDEF__
-
-#endif // __VML_UNDEF_HPP_INCLUDED__
