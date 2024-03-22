@@ -1,8 +1,8 @@
+#include <vml/__matrix.hpp>
+
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
-
-#include <vml/__matrix.hpp>
 
 #define TYPE_LIST(O)                                                           \
     (int, 2, 2, O), (int, 3, 2, O), (int, 4, 2, O), (int, 2, 3, O),            \

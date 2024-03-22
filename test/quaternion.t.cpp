@@ -1,7 +1,7 @@
+#include <vml/__quaternion.hpp>
+
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
-
-#include <vml/vml.hpp>
 
 TEST_CASE("quaternion multiplication") {
     mtl::quaternion<int> const a = { 1, 2, 3, 4 };

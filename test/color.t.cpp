@@ -1,7 +1,7 @@
+#include <vml/vml.hpp>
+
 #include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
-
-#include <vml/vml.hpp>
 
 TEST_CASE("rgb_to_hsv") {
     CHECK(mtl::rgb_to_hsv(mtl::float3(1, 0, 0)) == mtl::float3(0, 1, 1));

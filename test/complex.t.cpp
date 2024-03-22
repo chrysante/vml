@@ -1,9 +1,9 @@
+#include <vml/__complex.hpp>
+
 #include <complex>
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
-
-#include <vml/__complex.hpp>
 
 TEMPLATE_TEST_CASE("complex math function", "[complex]", float, double,
                    long double) {

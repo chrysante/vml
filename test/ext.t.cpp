@@ -1,6 +1,6 @@
-#include <catch2/catch_test_macros.hpp>
-
 #include <vml/vml.hpp>
+
+#include <catch2/catch_test_macros.hpp>
 
 using namespace mtl::short_types;
 
@@ -44,7 +44,7 @@ TEST_CASE("vector ext", "[vector]") {
         // fails because libc++'s implementation of hypot(x, y, z) is the naive
         // sqrt(x*x+y*y+z*z)
         //		CHECK(mtl::hypot(x, x / 2, x / 3) == std::hypot(x, x / 2, x /
-        //3));
+        // 3));
     }
 
     // pnorm without potential intermediate overflow

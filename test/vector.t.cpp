@@ -1,11 +1,12 @@
+#include <vml/__quaternion.hpp>
+#include <vml/__vector.hpp>
+
 #include <array>
 #include <tuple>
 
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
-
-#include <vml/vml.hpp>
 
 using namespace mtl::short_types;
 

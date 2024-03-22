@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <concepts>
-#include <functional>
 #include <iosfwd>
 #include <utility>
 

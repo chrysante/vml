@@ -11,101 +11,6 @@
 #include "__common.hpp"
 #include "__vector.hpp"
 
-/// MARK: - Synopsis
-/*
-
- namespace mtl {
-
-    struct rows_tag{}    inline constexpr rows{};
-    struct columns_tag{} inline constexpr columns{};
-
-    template <typename T, std::size_t Rows, std::size_t Columns, vector_options
- Options> class matrix {
-        // type information:
-        value_type  = T
-        rows_type   = vector<T, Columns, Options>
-        column_type = vector<T, Rows, Options>
-        size()     -> std::size_t    // Rows * Columns
-        rows()     -> std::size_t    // Rows
-        columns()  -> std::size_t    // Columns
-        options()  -> vector_options // Options
-
-        // value constructors:
-        matrix() = default;
-        matrix(T value);                                      -> // diag(value)
-        matrix(T value0, T value1, ...);                      -> // matrix{
- value0, value1, ... } matrix(rows_tag,    row_type...); matrix(columns_tag,
- column_type...);
-
-        // functional constructors:
-        matrix(f: () -> T);                                   -> // matrix{ f(),
- f(), ... } matrix(f: (std::size_t) -> T);                        -> // matrix{
- f(0), f(1), ... } matrix(f: (std::size_t, std::size_t) -> T);           -> //
- matrix{ f(0, 0), f(1, 0), ... f(1, 0), f(1, 1), ...
-                                                                            ...,
- ...,     ... } matrix(rows_tag,    f: (std::size_t) -> row_type);    -> //
- matrix(rows,    f(0), f(1), ...) matrix(columns_tag, f: (std::size_t) ->
- column_type); -> // matrix(columns, f(0), f(1), ...)
-
-        // operator[]:
-        operator[](std::size_t) -> T&
-        operator[](std::size_t) const -> T const&
-
-        // operator(): (double index subscript)
-        operator()(std::size_t, std::size_t) -> T&
-        operator()(std::size_t, std::size_t) const -> T const&
-
-        // row, column:
-        row(std::size_t) const;
-        column(std::size_t) const;
-        set_row(std::size_t, row_type);
-        set_column(std::size_t, column_type);
-
-        // begin, end:
-        begin(), end()               -> iterator
-        begin() const, end() const   -> const_iterator
-        cbegin() const, cend() const -> const_iterator
-
-        // swizzle:
-        row_swizzle(std::size_t i0, ...) -> matrix<T, N, Columns, Options>
-        column_swizzle(std::size_t i0, ...) -> matrix<T, Rows, N, Options>
-
-        // map:
-        map(f: (T) -> Any) const -> matrix<{ deduced type }, Rows, Columns,
- Options>
-
-        // fold: (in data layout order / row major)
-        fold(f: (T, T) -> T) const -> T
-        left_fold(f: (T, T) -> T) const -> T
-        right_fold(f: (T, T) -> T) const -> T
-
-
-        // statics
-        unit(std::size_t row, std::size_t column, T value = 1) -> matrix<T,
- Rows, Columns, Options>
-                // matrix{ 0..., value [at position [row, column]], 0... }
-        diag(T value) -> matrix<T, Rows, Colums, Options>
-    };
-
-    operator==(matrix, matrix) -> bool
-    operator!=(matrix, matrix) -> bool (synthesized)
-    map(matrix<Ts, Rows, Columns>..., f: (Ts...) -> fResult) -> matrix<fResult,
- Rows, Columns>
-
-    // fold: (all in data layout order / row major)
-    fold(matrix<T, Rows, Columns> m, f: (T, T) -> T) -> T       // left_fold(m,
- f) left_fold(matrix<T, Rows, Columns> m, f: (T, T) -> T) -> T  //
- ...f(f(f(m[0], m[1]), m[2]),  ...) right_fold(matrix<T, Rows, Columns> m, f:
- (T, T) -> T) -> T // f(...f(..., f(m[N-2], m[N-1])))
-
-    // transpose:
-    transpose(matrix<T, Rows, Columns, Options>) -> matrix<T, Columns, Rows,
- Options>
-
- }
-
- */
-
 namespace _VMTL {
 
 /// Tag type to select matrix row constructor
@@ -974,7 +879,7 @@ __mtl_interface_export std::basic_ostream<CharT>& operator<<(
         bool first = true;
         for (std::size_t j = 0; j < Columns; ++j) {
             str << (first ? ((void)(first = false), "") : "  ")
-                << std::setw(len[j]) << m(i, j);
+                << std::setw((int)len[j]) << m(i, j);
         }
         str << right_bracket[i] << (i == Rows - 1 ? "" : "\n");
     }

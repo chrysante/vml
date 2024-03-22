@@ -9,68 +9,6 @@
 #include "__fwd.hpp"
 #include "__intrin.hpp"
 
-/// Synopsis
-///
-///     namespace mtl {
-///
-///     template <typename T, std::size_t Size, vector_options Options>
-///     class vector {
-///         // Type introspection:
-///         value_type = T
-///         size()      -> std::size_t    // Size
-///         data_size() -> std::size_t    // Size including padding
-///         options()   -> vector_options // Options
-///
-///         // Data members:
-///         T x, y, ...;
-///         T r, g, ...;
-///
-///         // Contructors:
-///         vector() = default;
-///         vector(T value);                 -> // vector{ value, value, ... }
-///         vector(T value0, T value1, ...); -> // vector{ value, value, ... }
-///         vector(f: () -> T);              -> // vector{ f(), f(), ... }
-///         vector(f: (std::size_t) -> T);   -> // vector{ f(0), f(1), ... }
-///
-///         // operator[]:
-///         operator[](std::size_t) -> T&
-///         operator[](std::size_t) const -> T const&
-///
-///         // begin, end:
-///         begin(), end()               -> T*
-///         begin() const, end() const   -> T const*
-///         cbegin() const, cend() const -> T const*
-///
-///         // data:
-///         data() -> T*
-///         data() const -> T const*
-///
-///         // functional operations:
-///         swizzle(std::size_t i0, ...) -> vector<T, N, Options> // vector{
-///         (*this)[i0], ... }
-///
-///         map(f: (T) -> Any) const -> vector<{ deduced type }, Size, Options>
-///
-///         fold(f: (T, T) -> T) const -> T
-///         left_fold(f: (T, T) -> T) const -> T
-///         right_fold(f: (T, T) -> T) const -> T
-///
-///
-///         // statics
-///         unit(std::size_t index, T value = 1) -> vector<T, Size, Options> //
-///         vector{ 0..., value [at position 'index'], 0... }
-///     };
-///
-///     operator==(vector, vector) -> bool
-///     map(vector<Ts, Size>..., f: (Ts...) -> fResult) -> vector<fResult, Size>
-///     fold(vector<T, Size> v, f: (T, T) -> T) -> T       // left_fold(v, f)
-///     left_fold(vector<T, Size> v, f: (T, T) -> T) -> T  // ...f(f(f(v[0],
-///     v[1]), v[2]),  ...) right_fold(vector<T, Size> v, f: (T, T) -> T) -> T
-///     // f(...f(..., f(v[N-2], v[N-1])))
-///
-///     } // namespace mtl
-///
-
 namespace _VMTL {
 
 template <typename... T, std::size_t S, vector_options... O,
