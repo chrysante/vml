@@ -3,7 +3,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("quaternion multiplication") {
+TEST_CASE("quaternion multiplication", "[quaternion]") {
     vml::quaternion<int> const a = { 1, 2, 3, 4 };
     SECTION("quaternion * quaternion") {
         vml::quaternion<int> const b = { 2, 3, 4, 1 };
@@ -20,6 +20,10 @@ TEST_CASE("quaternion multiplication") {
         vml::quaternion<int> const ref = { -4, 7, -6, 17 };
         CHECK(b * a == ref);
     }
+}
+
+TEST_CASE("Construct from vector", "[quaternion]") {
+    CHECK(vml::quaternion_int(vml::double4(1, 2, 3, 4)) == vml::quaternion_int(1, 2, 3, 4));
 }
 
 TEMPLATE_TEST_CASE("quaternion math function", "[quaternion]", float, double,
