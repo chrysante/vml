@@ -7,6 +7,7 @@
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
+#include <catch2/catch_approx.hpp>
 
 using namespace vml::short_types;
 
@@ -260,4 +261,12 @@ TEST_CASE("vector<bool>", "[vector]") {
     CHECK((i > f).all());
     float3 const g = { 1.1, .2, .3 };
     CHECK((i < g).any());
+}
+
+TEST_CASE("fmod", "[vector]") {
+    auto v = fmod(float3{ 1, 5.5, 3.3 }, 3.0);
+    using namespace Catch::literals;
+    CHECK(v.x == 1_a);
+    CHECK(v.y == 2.5_a);
+    CHECK(v.z == 0.3_a);
 }

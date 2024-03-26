@@ -1,6 +1,7 @@
 #ifndef __VML_VECTOR_HPP_INCLUDED__
 #define __VML_VECTOR_HPP_INCLUDED__
 
+#include <cmath>
 #include <iosfwd>
 
 #include "arithmetic.hpp"
@@ -1257,6 +1258,21 @@ template <typename T, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     fract(vector<T, Size, O> const& a) {
     return a.map([](auto&& x) { return _VVML::__vml_fract(x); });
+}
+
+template <typename T, typename U = T, size_t Size, vector_options O,
+          vector_options P = O>
+    requires std::is_floating_point_v<T> && std::is_floating_point_v<U>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
+    fmod(vector<T, Size, O> const& x, vector<U, Size, P> const& y) {
+    return map(x, y, [](auto x, auto y) { return std::fmod(x, y); });
+}
+
+template <typename T, typename U = T, size_t Size, vector_options O>
+    requires std::is_floating_point_v<T> && _VVML::is_scalar<U>::value
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
+    fmod(vector<T, Size, O> const& x, U y) {
+    return map(x, [&](auto x) { return std::fmod(x, y); });
 }
 
 template <typename T, size_t Size, vector_options O>

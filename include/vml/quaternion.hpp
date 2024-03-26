@@ -41,7 +41,8 @@ public:
     template <std::convertible_to<T> U>
     constexpr quaternion(complex<U> const& z):
         quaternion(z.__vml_at(0), z.__vml_at(1), 0, 0) {}
-    template <std::convertible_to<T> U = T, vector_options P = __vml_quaternion_vector_options>
+    template <std::convertible_to<T> U = T,
+              vector_options P = __vml_quaternion_vector_options>
     constexpr quaternion(_VVML::vector<U, 4, P> const& v): __vml_base(v) {}
 
     /// Conversion Constructor
