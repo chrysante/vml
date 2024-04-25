@@ -127,13 +127,12 @@ TEST_CASE("matrix determinant", "[matrix]") {
 }
 
 TEST_CASE("AABB") {
-
-    vml::AABB<float, 2> a = { { 0, 1 }, { 2, 3 } };
+    vml::AABB<float, 2> a = { float2{ 0, 1 }, float2{ 2, 4 } };
 
     CHECK(a.lower_bound() == vml::float2{ 0, 1 });
     CHECK(a.size() == vml::float2{ 2, 3 });
 
-    vml::AABB<float, 2> b = { { -2, -2 }, { 2, 3 } };
+    vml::AABB<float, 2> b = { float2{ -2, -2 }, float2{ 0, 1 } };
 
     CHECK(b.lower_bound() == vml::float2{ -2, -2 });
     CHECK(b.size() == vml::float2{ 2, 3 });

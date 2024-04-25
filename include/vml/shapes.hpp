@@ -14,24 +14,19 @@ template <typename T = double, size_t Dim = 3,
           vector_options O = vector_options{}>
 class AABB {
 public:
-    AABB(vector<T, Dim, O> const& lower_bound = 0,
-         vector<T, Dim, O> const& size = 0):
-        _origin(lower_bound), _size(size) {
-        __vml_expect(
-            map(size, [](auto x) { return x >= 0; }).fold(__vml_logical_and));
-    }
+    /// Constructs an AABB located at the origin with size zero
+    AABB(): _origin({}), _size({}) {}
+
+    /// Construct the smallest AABB enclosing the points \p p...
+    template <typename... U, vector_options... P>
+    AABB(vector<U, Dim, P> const&... p):
+        _origin(vml::min(p...)), _size(map(p..., [](auto... x) {
+            return std::max({ x... }) - std::min({ x... });
+        })) {}
 
     vector<T, Dim, O> lower_bound() const { return _origin; };
-    vector<T, Dim, O> upper_bound() const { return _origin + _size; };
 
-    [[deprecated("Replaced by lower_bound()")]] vector<T, Dim, O> bottom_left()
-        const {
-        return lower_bound();
-    };
-    [[deprecated("Replaced by upper_bound()")]] vector<T, Dim, O> top_right()
-        const {
-        return upper_bound();
-    };
+    vector<T, Dim, O> upper_bound() const { return _origin + _size; };
 
     vector<T, Dim, O> size() const { return _size; };
 
@@ -51,13 +46,7 @@ std::ostream& operator<<(std::ostream& str, AABB<T, Dim, O> const& aabb) {
 template <typename... T, size_t Dim, vector_options... O>
 constexpr AABB<__vml_promote(T...), Dim, combine(O...)> enclosing(
     AABB<T, Dim, O> const&... aabb) {
-    auto const lower_bound = map(aabb.lower_bound()..., [](auto&&... bl) {
-        return _VVML::min(bl...);
-    });
-    auto const upper_bound = map(aabb.upper_bound()..., [](auto&&... tr) {
-        return _VVML::max(tr...);
-    });
-    return { lower_bound, upper_bound - lower_bound };
+    return { aabb.lower_bound()..., aabb.upper_bound()... };
 }
 
 template <typename T, size_t Dim, vector_options O>

@@ -835,19 +835,9 @@ __vml_interface_export std::basic_ostream<CharT>& operator<<(
     });
     constexpr CharT const* brackets[6] = {
 #if VML_UNICODE_MATH_PARANTHESES
-        "⎛",
-        "⎜",
-        "⎝",
-        "⎞",
-        "⎥",
-        "⎠"
+        "⎛", "⎜", "⎝", "⎞", "⎥", "⎠"
 #else  // VML_UNICODE_MATH_PARANTHESES
-        "|",
-        "|",
-        "|",
-        "|",
-        "|",
-        "|"
+        "|", "|", "|", "|", "|", "|"
 #endif // VML_UNICODE_MATH_PARANTHESES
     };
     vector<CharT const*, Rows> left_bracket = brackets[1];

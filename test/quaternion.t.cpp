@@ -23,7 +23,8 @@ TEST_CASE("quaternion multiplication", "[quaternion]") {
 }
 
 TEST_CASE("Construct from vector", "[quaternion]") {
-    CHECK(vml::quaternion_int(vml::double4(1, 2, 3, 4)) == vml::quaternion_int(1, 2, 3, 4));
+    CHECK(vml::quaternion_int(vml::double4(1, 2, 3, 4)) ==
+          vml::quaternion_int(1, 2, 3, 4));
 }
 
 TEMPLATE_TEST_CASE("quaternion math function", "[quaternion]", float, double,
