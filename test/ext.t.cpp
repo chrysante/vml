@@ -147,9 +147,11 @@ TEST_CASE("slerp", "[quaternion]") {
     quaternion_double b = vml::make_rotation(1.5, double3{ 0, 1, 0 });
     REQUIRE(vml::norm(a) == 1.0_a);
     REQUIRE(vml::norm(b) == 1.0_a);
-    for (double t = 0.0; t < 1.0; t += 0.1) {
+    for (double t = 0.0; t <= 1.0; t += 0.125) {
         CHECK(vml::norm(vml::slerp(a, b, t)) == 1.0_a);
     }
+    CHECK(vml::slerp(a, b, 0.0) == vml::approx{ a });
+    CHECK(vml::slerp(a, b, 1.0) == vml::approx{ b });
 }
 
 TEST_CASE("slerp", "[vector]") {
@@ -157,10 +159,12 @@ TEST_CASE("slerp", "[vector]") {
     double3 a = { 1, 0, 0 };
     double3 b = vml::normalize(double3{ 0, 1, 1 });
     double angle = std::acos(vml::dot(a, b));
-    for (double t = 0.0; t < 1.0; t += 0.1) {
+    for (double t = 0.0; t <= 1.0; t += 0.125) {
         double3 s = vml::slerp(a, b, t);
         CHECK(vml::norm(s) == 1.0_a);
         double sAngle = std::acos(vml::dot(a, s));
         CHECK(sAngle == Catch::Approx(t * angle));
     }
+    CHECK(vml::slerp(a, b, 0.0) == vml::approx{ a });
+    CHECK(vml::slerp(a, b, 1.0) == vml::approx{ b });
 }

@@ -500,7 +500,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export
     quaternion<__vml_floatify(T)>
     exp(quaternion<T> const& z) {
     auto const r_exp = std::exp(real(z));
-    if (z.vector == 0) {
+    if (z.vector == vector3<T>{}) {
         return r_exp;
     }
     auto const _vnorm = norm(z.vector);
@@ -514,7 +514,7 @@ __vml_mathfunction __vml_always_inline __vml_interface_export
     log(quaternion<T> const& z) {
     __vml_expect(z != 0);
     auto const _norm = _VVML::norm(z);
-    if (z.vector == 0) {
+    if (z.vector == vector3<T>{}) {
         return { std::log(_norm), 0, 0, 0 };
     }
     auto const _vnorm = norm(z.vector);

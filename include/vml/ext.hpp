@@ -370,7 +370,7 @@ template <std::floating_point T, std::floating_point U, real_scalar V>
 __vml_mathfunction __vml_interface_export constexpr quaternion<
     __vml_promote(T, U, V)>
     slerp(quaternion<T> const& a, quaternion<U> const& b, V t) {
-    return pow(a * inverse(b), t) * b;
+    return pow(b * inverse(a), t) * a;
 }
 
 /// MARK: - Color

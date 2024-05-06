@@ -818,29 +818,6 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
                        _VVML::__vml_logical_and);
 }
 
-template <typename T, typename U, size_t Size, vector_options O>
-    requires requires(T&& t, U&& u) {
-        {
-            t == u
-        } -> std::convertible_to<bool>;
-    }
-__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
-    operator==(vector<T, Size, O> const& v, U const& w) {
-    return _VVML::fold(_VVML::map(v, [&](auto i) { return i == w; }),
-                       _VVML::__vml_logical_and);
-}
-
-template <typename T, typename U, size_t Size, vector_options O>
-    requires requires(T&& t, U&& u) {
-        {
-            t == u
-        } -> std::convertible_to<bool>;
-    }
-__vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
-    operator==(U const& w, vector<T, Size, O> const& v) {
-    return v == w;
-}
-
 template <typename CharT, typename T, size_t Size, vector_options O>
 __vml_interface_export std::basic_ostream<CharT>& operator<<(
     std::basic_ostream<CharT>& str, vector<T, Size, O> const& v) {
