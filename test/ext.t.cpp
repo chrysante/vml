@@ -1,5 +1,6 @@
 #include <vml/vml.hpp>
 
+#include <catch2/catch_approx.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 using namespace vml::short_types;
@@ -116,13 +117,11 @@ TEST_CASE("matrix inverse") {
 
 TEST_CASE("submatrix") {
     int4x4 const A = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 4, 5, 6, 7 };
-
     CHECK(vml::submatrix(A, 2, 1) == int3x3{ 1, 3, 4, 5, 7, 8, 4, 6, 7 });
 }
 
 TEST_CASE("matrix determinant", "[matrix]") {
     ldouble4x4 const A = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 0, 5, 6 };
-
     CHECK(vml::det(A) == 160);
 }
 
@@ -140,4 +139,28 @@ TEST_CASE("AABB") {
     auto c = vml::enclosing(a, b);
     CHECK(c.lower_bound() == vml::float2{ -2, -2 });
     CHECK(c.size() == vml::float2{ 4, 6 });
+}
+
+TEST_CASE("slerp", "[quaternion]") {
+    using namespace Catch::literals;
+    quaternion_double a = vml::make_rotation(0.5, double3{ 1, 0, 0 });
+    quaternion_double b = vml::make_rotation(1.5, double3{ 0, 1, 0 });
+    REQUIRE(vml::norm(a) == 1.0_a);
+    REQUIRE(vml::norm(b) == 1.0_a);
+    for (double t = 0.0; t < 1.0; t += 0.1) {
+        CHECK(vml::norm(vml::slerp(a, b, t)) == 1.0_a);
+    }
+}
+
+TEST_CASE("slerp", "[vector]") {
+    using namespace Catch::literals;
+    double3 a = { 1, 0, 0 };
+    double3 b = vml::normalize(double3{ 0, 1, 1 });
+    double angle = std::acos(vml::dot(a, b));
+    for (double t = 0.0; t < 1.0; t += 0.1) {
+        double3 s = vml::slerp(a, b, t);
+        CHECK(vml::norm(s) == 1.0_a);
+        double sAngle = std::acos(vml::dot(a, s));
+        CHECK(sAngle == Catch::Approx(t * angle));
+    }
 }

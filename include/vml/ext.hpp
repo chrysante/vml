@@ -348,6 +348,31 @@ __vml_mathfunction __vml_interface_export constexpr std::tuple<
     return { translation, decompose_rotation(dimension_cast<3, 3>(t)), scale };
 }
 
+template <std::size_t Dim, std::floating_point T, vector_options O,
+          std::floating_point U, vector_options P, real_scalar V>
+__vml_mathfunction __vml_interface_export constexpr vector<
+    __vml_promote(T, U, V), Dim, combine(O, P)>
+    lerp(vector<T, Dim, O> const& a, vector<U, Dim, P> const& b, V t) {
+    return (V(1) - t) * a + t * b;
+}
+
+template <std::size_t Dim, std::floating_point T, vector_options O,
+          std::floating_point U, vector_options P, real_scalar V>
+__vml_mathfunction __vml_interface_export constexpr vector<
+    __vml_promote(T, U, V), Dim, combine(O, P)>
+    slerp(vector<T, Dim, O> const& a, vector<U, Dim, P> const& b, V t) {
+    auto omega = std::acos(dot(a, b));
+    return (std::sin((V(1) - t) * omega) * a + std::sin(t * omega) * b) /
+           std::sin(omega);
+}
+
+template <std::floating_point T, std::floating_point U, real_scalar V>
+__vml_mathfunction __vml_interface_export constexpr quaternion<
+    __vml_promote(T, U, V)>
+    slerp(quaternion<T> const& a, quaternion<U> const& b, V t) {
+    return pow(a * inverse(b), t) * b;
+}
+
 /// MARK: - Color
 template <typename = double4>
 struct colors;
