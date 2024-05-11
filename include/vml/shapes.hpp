@@ -15,20 +15,25 @@ template <typename T = double, size_t Dim = 3,
 class AABB {
 public:
     /// Constructs an AABB located at the origin with size zero
-    AABB(): _origin({}), _size({}) {}
+    constexpr AABB(): _origin({}), _size({}) {}
 
     /// Construct the smallest AABB enclosing the points \p p...
     template <typename... U, vector_options... P>
-    AABB(vector<U, Dim, P> const&... p):
+    constexpr AABB(vector<U, Dim, P> const&... p):
         _origin(vml::min(p...)), _size(map(p..., [](auto... x) {
             return std::max({ x... }) - std::min({ x... });
         })) {}
 
-    vector<T, Dim, O> lower_bound() const { return _origin; };
+    static constexpr AABB from_size(vector<T, Dim, O> const& position,
+                                    vector<T, Dim, O> const& size) {
+        return AABB(position, position + size);
+    }
 
-    vector<T, Dim, O> upper_bound() const { return _origin + _size; };
+    constexpr vector<T, Dim, O> lower_bound() const { return _origin; };
 
-    vector<T, Dim, O> size() const { return _size; };
+    constexpr vector<T, Dim, O> upper_bound() const { return _origin + _size; };
+
+    constexpr vector<T, Dim, O> size() const { return _size; };
 
 private:
     vector<T, Dim, O> _origin;

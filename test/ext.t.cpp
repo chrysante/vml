@@ -141,6 +141,12 @@ TEST_CASE("AABB") {
     CHECK(c.size() == vml::float2{ 4, 6 });
 }
 
+TEST_CASE("AABB from size") {
+    auto rect = vml::AABB<float, 2>::from_size({ 0, 1 }, { 2, 4 });
+    CHECK(rect.lower_bound() == vml::float2{ 0, 1 });
+    CHECK(rect.size() == vml::float2{ 2, 4 });
+}
+
 TEST_CASE("slerp", "[quaternion]") {
     using namespace Catch::literals;
     quaternion_double a = vml::make_rotation(0.5, double3{ 1, 0, 0 });
