@@ -174,3 +174,11 @@ TEST_CASE("slerp", "[vector]") {
     CHECK(vml::slerp(a, b, 0.0) == vml::approx{ a });
     CHECK(vml::slerp(a, b, 1.0) == vml::approx{ b });
 }
+
+TEST_CASE("quaternion to euler", "[quaternion]") {
+    auto q = vml::make_rotation(vml::constants<>::pi, { 0, 0, 1 });
+    auto euler = vml::to_euler(q);
+    CHECK(euler.x == 0);
+    CHECK(euler.y == 0);
+    CHECK(euler.z == vml::constants<>::pi);
+}
