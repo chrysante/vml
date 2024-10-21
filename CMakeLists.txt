@@ -46,6 +46,7 @@ target_include_directories(test
     test
     ${Catch2_SOURCE_DIR}/src
 )
+target_compile_definitions(test PRIVATE VML_DEBUG_LEVEL=2)
 target_link_libraries(test PRIVATE vml Catch2::Catch2WithMain)
 target_sources(test
   PRIVATE

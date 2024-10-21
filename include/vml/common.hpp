@@ -24,6 +24,30 @@ struct constants {
         1.4142135623730950488016887242096980785696718753769480731766797379;
 };
 
+template <size_t... I>
+using __vml_index_sequence = std::index_sequence<I...>;
+
+template <size_t N>
+using __vml_make_index_sequence = std::make_index_sequence<N>;
+
+template <typename... T>
+struct __vml_type_sequence {};
+
+template <typename T, size_t N, typename... R>
+struct __vml_make_type_sequence_impl {
+    using type =
+        typename __vml_make_type_sequence_impl<T, N - 1, R..., T>::type;
+};
+
+template <typename T, typename... R>
+struct __vml_make_type_sequence_impl<T, 0, R...> {
+    using type = __vml_type_sequence<R...>;
+};
+
+template <typename T, size_t N>
+using __vml_make_type_sequence =
+    typename __vml_make_type_sequence_impl<T, N>::type;
+
 template <typename T>
 struct is_real_scalar: std::is_arithmetic<T> {};
 
@@ -91,6 +115,51 @@ template <typename Vector, typename ValueType, size_t N, size_t... I>
 constexpr bool
     __is_vector_type_v<Vector, ValueType, N, std::index_sequence<I...>> =
         requires(ValueType&& t) { Vector{ (I, t)... }; };
+
+template <typename Vector, typename ValueType, size_t... I>
+constexpr bool
+    __is_vector_type_v<Vector, ValueType, 2, std::index_sequence<I...>> =
+        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+            {
+                v.x
+            } -> std::convertible_to<ValueType>;
+            {
+                v.y
+            } -> std::convertible_to<ValueType>;
+        };
+
+template <typename Vector, typename ValueType, size_t... I>
+constexpr bool
+    __is_vector_type_v<Vector, ValueType, 3, std::index_sequence<I...>> =
+        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+            {
+                v.x
+            } -> std::convertible_to<ValueType>;
+            {
+                v.y
+            } -> std::convertible_to<ValueType>;
+            {
+                v.z
+            } -> std::convertible_to<ValueType>;
+        };
+
+template <typename Vector, typename ValueType, size_t... I>
+constexpr bool
+    __is_vector_type_v<Vector, ValueType, 4, std::index_sequence<I...>> =
+        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+            {
+                v.x
+            } -> std::convertible_to<ValueType>;
+            {
+                v.y
+            } -> std::convertible_to<ValueType>;
+            {
+                v.z
+            } -> std::convertible_to<ValueType>;
+            {
+                v.w
+            } -> std::convertible_to<ValueType>;
+        };
 
 template <typename V, typename T, size_t N>
 concept __foreign_vector_type =
@@ -266,47 +335,21 @@ concept __tuple_of_types =
     __tuple_conversion_test<T, std::index_sequence_for<Args...>,
                             Args...>::value;
 
-template <typename V, typename T>
-concept __foreign_vec2_type = (!__tuple_of_types<V, T, T>) &&
-                              __is_foreign_type<V>::value && requires(V v) {
-                                  {
-                                      v.x
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.y
-                                  } -> std::convertible_to<T>;
-                              };
+template <typename Tuple, typename ValueType, size_t N,
+          typename Ts = __vml_make_type_sequence<ValueType, N>>
+inline constexpr bool __tuple_of_n_impl = false;
 
-template <typename V, typename T>
-concept __foreign_vec3_type = (!__tuple_of_types<V, T, T, T>) &&
-                              __is_foreign_type<V>::value && requires(V v) {
-                                  {
-                                      v.x
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.y
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.z
-                                  } -> std::convertible_to<T>;
-                              };
+template <typename Tuple, typename ValueType, size_t N, typename... Ts>
+inline constexpr bool
+    __tuple_of_n_impl<Tuple, ValueType, N, __vml_type_sequence<Ts...>> =
+        __tuple_of_types<Tuple, Ts...>;
 
-template <typename V, typename T>
-concept __foreign_vec4_type = (!__tuple_of_types<V, T, T, T, T>) &&
-                              __is_foreign_type<V>::value && requires(V v) {
-                                  {
-                                      v.x
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.y
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.z
-                                  } -> std::convertible_to<T>;
-                                  {
-                                      v.w
-                                  } -> std::convertible_to<T>;
-                              };
+template <typename Tuple, typename ValueType, size_t N>
+concept __tuple_of_n = __tuple_of_n_impl<Tuple, ValueType, N>;
+
+template <typename V, typename T, size_t N>
+concept __foreign_vector_type_no_tuple =
+    (!__tuple_of_n<V, T, N>) && __foreign_vector_type<V, T, N>;
 
 template <typename T>
 concept real_scalar = is_real_scalar<T>::value;
@@ -567,30 +610,6 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr bool
     }
 }
 
-template <size_t... I>
-using __vml_index_sequence = std::index_sequence<I...>;
-
-template <size_t N>
-using __vml_make_index_sequence = std::make_index_sequence<N>;
-
-template <typename... T>
-struct __vml_type_sequence {};
-
-template <typename T, size_t N, typename... R>
-struct __vml_make_type_sequence_impl {
-    using type =
-        typename __vml_make_type_sequence_impl<T, N - 1, R..., T>::type;
-};
-
-template <typename T, typename... R>
-struct __vml_make_type_sequence_impl<T, 0, R...> {
-    using type = __vml_type_sequence<R...>;
-};
-
-template <typename T, size_t N>
-using __vml_make_type_sequence =
-    typename __vml_make_type_sequence_impl<T, N>::type;
-
 /// MARK: - class approx
 template <typename T>
 inline constexpr T __vml_float_threshold = 0;
@@ -634,7 +653,7 @@ class approx {
     using U = typename get_underlying_type_r<T>::type;
 
 public:
-    approx(T const& z, U epsilon = __vml_float_threshold<U>):
+    explicit approx(T const& z, U epsilon = __vml_float_threshold<U>):
         _value(z), _epsilon(epsilon) {}
 
     bool __vml_comp_eq(T rhs) const {

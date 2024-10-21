@@ -422,31 +422,35 @@ public:
     template <__tuple_of_types<AllT...> Tuple>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         Tuple&& t)
-        requires(_VVML::__is_foreign_type<Tuple>::value)
+        requires _VVML::__is_foreign_type<Tuple>::value
         : __vml_base{ get<I>(t)... } {}
 
     /// Construct from foreign vector type
-    template <__foreign_vec2_type<T> VectorType>
+    template <__foreign_vector_type_no_tuple<T, 2> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 2)
         : __vml_base{ v.x, v.y } {}
-    template <__foreign_vec3_type<T> VectorType>
+    template <__foreign_vector_type_no_tuple<T, 3> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 3)
         : __vml_base{ v.x, v.y, v.z } {}
-    template <__foreign_vec4_type<T> VectorType>
+    template <__foreign_vector_type_no_tuple<T, 4> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
         requires(Size == 4)
         : __vml_base{ v.x, v.y, v.z, v.w } {}
 
-    /// Convert to foreign vector type
-    template <__foreign_vector_type<T, Size> VectorType>
-    constexpr operator VectorType() {
-        return const_cast<__vector_base const&>(*this).operator VectorType();
+    /// Convert to foreign tuple type
+    template <__tuple_of_types<AllT...> Tuple>
+        requires _VVML::__is_foreign_type<Tuple>::value &&
+                 (!__foreign_vector_type<Tuple, T, Size>)
+    constexpr operator Tuple() const {
+        return Tuple{ this->__data[I]... };
     }
+
+    /// Convert to foreign vector type
     template <__foreign_vector_type<T, Size> VectorType>
     constexpr operator VectorType() const {
         return VectorType{ this->__data[I]... };

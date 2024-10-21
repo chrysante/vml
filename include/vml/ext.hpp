@@ -331,8 +331,8 @@ __vml_mathfunction __vml_interface_export constexpr quaternion<T>
     }
 }
 
-/// Deompose a 4x4 affine (what about shearing?) transform matrix into
-/// translation, orientation and scale
+/// Decompose a 4x4 affine transform matrix into translation, orientation and
+/// scale
 template <std::floating_point T, vector_options O>
 __vml_mathfunction __vml_interface_export constexpr std::tuple<
     vector3<T, O>, quaternion<T>, vector3<T, O>>
@@ -371,6 +371,27 @@ __vml_mathfunction __vml_interface_export constexpr quaternion<
     __vml_promote(T, U, V)>
     slerp(quaternion<T> const& a, quaternion<U> const& b, V t) {
     return pow(b * inverse(a), t) * a;
+}
+
+/// MARK: - 2D Transforms
+
+template <vector_options O = vector_options{}, real_scalar S>
+__vml_mathfunction __vml_interface_export constexpr matrix<__vml_floatify(S), 2,
+                                                           2, O>
+    make_rotation2x2(S angle) {
+    return {
+        std::cos(angle),
+        std::sin(angle),
+        -std::sin(angle),
+        std::cos(angle),
+    };
+}
+
+template <typename T, vector_options O, real_scalar S>
+__vml_mathfunction __vml_interface_export constexpr vector2<
+    __vml_floatify(__vml_promote(T, S)), O>
+    rotate(vml::vector<T, 2, O> const& v, S angle) {
+    return make_rotation2x2(angle) * v;
 }
 
 /// MARK: - Color

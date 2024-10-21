@@ -182,3 +182,10 @@ TEST_CASE("quaternion to euler", "[quaternion]") {
     CHECK(euler.y == 0);
     CHECK(euler.z == vml::constants<>::pi);
 }
+
+TEST_CASE("2D Transforms", "[vector][matrix]") {
+    auto m = vml::make_rotation2x2(vml::constants<>::pi / 2);
+    CHECK(m == vml::approx(float2x2{ 0, 1, -1, 0 }));
+    CHECK(vml::rotate(float2{ 2, 1 }, vml::constants<>::pi) ==
+          vml::approx(vml::float2{ -2, -1 }));
+}
