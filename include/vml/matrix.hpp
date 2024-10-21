@@ -739,15 +739,14 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
     /// this % Scalar
     __vml_always_inline __vml_interface_export constexpr matrix& operator%=(
         T const& rhs) &
-        requires(std::is_integral_v<T>)
-    {
-        *this = *this % rhs;
-        return *this;
-    }
+        requires(std::is_integral_v<T>) {
+            *this = *this % rhs;
+            return *this;
+        }
 
-    /// MARK: Matrix<bool> Members
-    __vml_always_inline __vml_interface_export constexpr bool all() const
-        requires std::convertible_to<T, bool>
+        /// MARK: Matrix<bool> Members
+        __vml_always_inline __vml_interface_export constexpr bool all() const
+            requires std::convertible_to<T, bool>
     {
         return fold(__vml_logical_and);
     }
