@@ -1222,6 +1222,14 @@ __vml_mathfunction __vml_interface_export constexpr matrix4x4<__vml_floatify(T),
     return __vml_inverse(m);
 }
 
+template <scalar T, scalar U, vector_options O, vector_options P, size_t N>
+__vml_mathfunction __vml_interface_export constexpr matrix<__vml_promote(T, U),
+                                                           N, N, combine(O, P)>
+    dyadic_product(vector<T, N, O> const& v, vector<U, N, P> const& w) {
+    return matrix<__vml_promote(T, U), N, N, combine(O, P)>(
+        [&](size_t i, size_t j) { return v.__vml_at(i) * w.__vml_at(j); });
+}
+
 } // namespace _VVML
 
 #endif // __VML_MATRIX_HPP_INCLUDED__

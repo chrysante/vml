@@ -233,27 +233,27 @@ TEST_CASE("vector deduction guide", "[vector]") {
     static_assert(!decltype(v)::options().packed());
 }
 
-/// Disables because we don't have function objects
-#if 0
+static constexpr auto Plus = [](auto... a) { return (... + a); };
+
+static constexpr auto Mul = [](auto... a) { return (... * a); };
 
 TEST_CASE("map(vector)", "[vector]") {
-	auto const m = vml::map(float3{ 0.1f, 0.2f, 0.3f }, int3{ 1, 2, 3 }, packed_int3{}, utl::plus);
-	static_assert(std::is_same_v<decltype(m)::value_type, float>);
-	static_assert(!decltype(m)::options().packed());
-	CHECK(m == float3{ 1.1f, 2.2f, 3.3f });
+    auto const m = vml::map(float3{ 0.1f, 0.2f, 0.3f }, int3{ 1, 2, 3 },
+                            packed_int3{}, Plus);
+    static_assert(std::is_same_v<decltype(m)::value_type, float>);
+    static_assert(!decltype(m)::options().packed());
+    CHECK(m == float3{ 1.1f, 2.2f, 3.3f });
 }
 
 TEST_CASE("fold(vector)", "[vector]") {
-	double const x = 1e30, y = -1e30, z = 1;
-	auto const lf = vml::left_fold(double3{ x, y, z }, utl::plus);
-	auto const rf = vml::right_fold(double3{ x, y, z }, utl::plus);
-	CHECK(lf == 1);
-	CHECK(rf == 0);
-	static_assert(std::is_same_v<decltype(lf), double const>);
-	static_assert(std::is_same_v<decltype(rf), double const>);
+    double const x = 1e30, y = -1e30, z = 1;
+    auto const lf = vml::left_fold(double3{ x, y, z }, Plus);
+    auto const rf = vml::right_fold(double3{ x, y, z }, Plus);
+    CHECK(lf == 1);
+    CHECK(rf == 0);
+    static_assert(std::is_same_v<decltype(lf), double const>);
+    static_assert(std::is_same_v<decltype(rf), double const>);
 }
-
-#endif
 
 TEST_CASE("vector<bool>", "[vector]") {
     int3 const i = { 1, 2, 3 };
@@ -269,4 +269,28 @@ TEST_CASE("fmod", "[vector]") {
     CHECK(v.x == 1_a);
     CHECK(v.y == 2.5_a);
     CHECK(v.z == 0.3_a);
+}
+
+namespace {
+
+struct MyVec2 {
+    float x, y;
+};
+
+template <size_t I>
+float get(MyVec2 v) {
+    return ((float*)&v)[I];
+}
+
+} // namespace
+
+template <>
+struct std::tuple_size<MyVec2>: std::integral_constant<size_t, 2> {};
+
+TEST_CASE("Conversion from foreign vector and tuple type") {
+    float2 v = MyVec2{ 1, 2 };
+    CHECK(v == float2{ 1, 2 });
+    MyVec2 w = v;
+    CHECK(w.x == 1);
+    CHECK(w.y == 2);
 }

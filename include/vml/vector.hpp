@@ -426,53 +426,20 @@ public:
         : __vml_base{ get<I>(t)... } {}
 
     /// Construct from foreign vector type
-    template <typename VectorType>
+    template <__foreign_vec2_type<T> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
-        requires(Size == 2) &&
-                requires {
-                    {
-                        v.x
-                    } -> std::convertible_to<T>;
-                    {
-                        v.y
-                    } -> std::convertible_to<T>;
-                } && (_VVML::__is_foreign_type<VectorType>::value)
+        requires(Size == 2)
         : __vml_base{ v.x, v.y } {}
-    template <typename VectorType>
+    template <__foreign_vec3_type<T> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
-        requires(Size == 3) &&
-                requires {
-                    {
-                        v.x
-                    } -> std::convertible_to<T>;
-                    {
-                        v.y
-                    } -> std::convertible_to<T>;
-                    {
-                        v.z
-                    } -> std::convertible_to<T>;
-                } && (_VVML::__is_foreign_type<VectorType>::value)
+        requires(Size == 3)
         : __vml_base{ v.x, v.y, v.z } {}
-    template <typename VectorType>
+    template <__foreign_vec4_type<T> VectorType>
     __vml_always_inline __vml_interface_export constexpr __vector_base(
         VectorType&& v)
-        requires(Size == 4) &&
-                requires {
-                    {
-                        v.x
-                    } -> std::convertible_to<T>;
-                    {
-                        v.y
-                    } -> std::convertible_to<T>;
-                    {
-                        v.z
-                    } -> std::convertible_to<T>;
-                    {
-                        v.w
-                    } -> std::convertible_to<T>;
-                } && (_VVML::__is_foreign_type<VectorType>::value)
+        requires(Size == 4)
         : __vml_base{ v.x, v.y, v.z, v.w } {}
 
     /// Convert to foreign vector type

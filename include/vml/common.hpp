@@ -266,6 +266,48 @@ concept __tuple_of_types =
     __tuple_conversion_test<T, std::index_sequence_for<Args...>,
                             Args...>::value;
 
+template <typename V, typename T>
+concept __foreign_vec2_type = (!__tuple_of_types<V, T, T>) &&
+                              __is_foreign_type<V>::value && requires(V v) {
+                                  {
+                                      v.x
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.y
+                                  } -> std::convertible_to<T>;
+                              };
+
+template <typename V, typename T>
+concept __foreign_vec3_type = (!__tuple_of_types<V, T, T, T>) &&
+                              __is_foreign_type<V>::value && requires(V v) {
+                                  {
+                                      v.x
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.y
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.z
+                                  } -> std::convertible_to<T>;
+                              };
+
+template <typename V, typename T>
+concept __foreign_vec4_type = (!__tuple_of_types<V, T, T, T, T>) &&
+                              __is_foreign_type<V>::value && requires(V v) {
+                                  {
+                                      v.x
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.y
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.z
+                                  } -> std::convertible_to<T>;
+                                  {
+                                      v.w
+                                  } -> std::convertible_to<T>;
+                              };
+
 template <typename T>
 concept real_scalar = is_real_scalar<T>::value;
 template <typename T>

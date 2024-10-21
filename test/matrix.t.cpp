@@ -162,39 +162,39 @@ TEST_CASE("matrix::diag", "[matrix]") {
     CHECK(m == 0);
 }
 
-/// Disables because we don't have function objects
-#if 0
+static constexpr auto Plus = [](auto... a) { return (... + a); };
+
+static constexpr auto Mul = [](auto... a) { return (... * a); };
 
 TEST_CASE("map(matrix)", "[matrix]") {
-	auto const m = vml::map(float3x4::diag(0.1f, 0.2f, 0.3f), int3x4::diag(1, 2, 3), packed_int3x4{}, utl::plus);
-	static_assert(std::is_same_v<decltype(m)::value_type, float>);
-	static_assert(!decltype(m)::options().packed());
-	CHECK(m == float3x4::diag(1.1f, 2.2f, 3.3f));
+    auto const m = vml::map(float3x4::diag(0.1f, 0.2f, 0.3f),
+                            int3x4::diag(1, 2, 3), packed_int3x4{}, Plus);
+    static_assert(std::is_same_v<decltype(m)::value_type, float>);
+    static_assert(!decltype(m)::options().packed());
+    CHECK(m == float3x4::diag(1.1f, 2.2f, 3.3f));
 }
 
 TEST_CASE("fold(matrix)", "[matrix]") {
-	SECTION("1 / associativity") {
-		double const x = 1e30, y = -1e30, z = 1;
-		auto const A = double3x3::diag(x, y, z);
-		auto const lf = vml::left_fold(A, utl::plus);
-		auto const rf = vml::right_fold(A, utl::plus);
-		static_assert(std::is_same_v<decltype(lf), double const>);
-		static_assert(std::is_same_v<decltype(rf), double const>);
-		CHECK(lf == (x + y) + z);
-		CHECK(rf == x + (y + z));
-	}
-	SECTION("2") {
-		int2x3 const A = { 1, 1, 1, 1, 1, 1 };
-		auto const lf = vml::left_fold(A, utl::multiplies);
-		auto const rf = vml::right_fold(A, utl::multiplies);
-		static_assert(std::is_same_v<decltype(lf), int const>);
-		static_assert(std::is_same_v<decltype(rf), int const>);
-		CHECK(lf == 1);
-		CHECK(rf == 1);
-	}
+    SECTION("1 / associativity") {
+        double const x = 1e30, y = -1e30, z = 1;
+        auto const A = double3x3::diag(x, y, z);
+        auto const lf = vml::left_fold(A, Plus);
+        auto const rf = vml::right_fold(A, Plus);
+        static_assert(std::is_same_v<decltype(lf), double const>);
+        static_assert(std::is_same_v<decltype(rf), double const>);
+        CHECK(lf == (x + y) + z);
+        CHECK(rf == x + (y + z));
+    }
+    SECTION("2") {
+        int2x3 const A = { 1, 1, 1, 1, 1, 1 };
+        auto const lf = vml::left_fold(A, Mul);
+        auto const rf = vml::right_fold(A, Mul);
+        static_assert(std::is_same_v<decltype(lf), int const>);
+        static_assert(std::is_same_v<decltype(rf), int const>);
+        CHECK(lf == 1);
+        CHECK(rf == 1);
+    }
 }
-
-#endif
 
 TEST_CASE("matrix::swizzle", "[matrix]") {
     int3x4 const A = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2 };
@@ -207,4 +207,9 @@ TEST_CASE("matrix::swizzle", "[matrix]") {
         CHECK(A.column_swizzle(2, 3, 1) == int3x3{ 3, 4, 2, 7, 8, 6, 1, 2, 0 });
         CHECK(A.column_swizzle(2, 3) == int3x2{ 3, 4, 7, 8, 1, 2 });
     }
+}
+
+TEST_CASE("dyadic_product", "[matrix]") {
+    int2 v = { 1, 2 }, w = { 2, 3 };
+    CHECK(dyadic_product(v, w) == int2x2{ 2, 3, 4, 6 });
 }
