@@ -107,19 +107,24 @@ struct __is_foreign_type: __is_foreign_type_impl<std::decay_t<T>> {};
 template <typename T>
 concept __foreign_type = __is_foreign_type<T>::value;
 
-template <typename Vector, typename ValueType, size_t N,
-          typename = std::make_index_sequence<N>>
-constexpr bool __is_vector_type_v = false;
+template <typename Vector, typename ValueType, size_t N, typename Indices>
+constexpr bool __is_vector_type_impl = false;
+
+template <typename Vector, typename T, size_t... I>
+constexpr bool __is_vector_type_constructible = requires(T&& t) {
+    Vector{ (I, (T&&)t)... };
+} || requires(ValueType&& t) { Vector((I, (T&&)t)...); };
 
 template <typename Vector, typename ValueType, size_t N, size_t... I>
 constexpr bool
-    __is_vector_type_v<Vector, ValueType, N, std::index_sequence<I...>> =
-        requires(ValueType&& t) { Vector{ (I, t)... }; };
+    __is_vector_type_impl<Vector, ValueType, N, std::index_sequence<I...>> =
+        __is_vector_type_constructible<Vector, ValueType, I...>;
 
 template <typename Vector, typename ValueType, size_t... I>
 constexpr bool
-    __is_vector_type_v<Vector, ValueType, 2, std::index_sequence<I...>> =
-        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+    __is_vector_type_impl<Vector, ValueType, 2, std::index_sequence<I...>> =
+        __is_vector_type_constructible<Vector, ValueType, I...> &&
+        requires(Vector v) {
             {
                 v.x
             } -> std::convertible_to<ValueType>;
@@ -130,8 +135,9 @@ constexpr bool
 
 template <typename Vector, typename ValueType, size_t... I>
 constexpr bool
-    __is_vector_type_v<Vector, ValueType, 3, std::index_sequence<I...>> =
-        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+    __is_vector_type_impl<Vector, ValueType, 3, std::index_sequence<I...>> =
+        __is_vector_type_constructible<Vector, ValueType, I...> &&
+        requires(Vector v) {
             {
                 v.x
             } -> std::convertible_to<ValueType>;
@@ -145,8 +151,9 @@ constexpr bool
 
 template <typename Vector, typename ValueType, size_t... I>
 constexpr bool
-    __is_vector_type_v<Vector, ValueType, 4, std::index_sequence<I...>> =
-        requires(ValueType&& t) { Vector{ (I, t)... }; } && requires(Vector v) {
+    __is_vector_type_impl<Vector, ValueType, 4, std::index_sequence<I...>> =
+        __is_vector_type_constructible<Vector, ValueType, I...> &&
+        requires(Vector v) {
             {
                 v.x
             } -> std::convertible_to<ValueType>;
@@ -160,6 +167,11 @@ constexpr bool
                 v.w
             } -> std::convertible_to<ValueType>;
         };
+
+template <typename Vector, typename ValueType, size_t N>
+constexpr bool __is_vector_type_v =
+    __is_vector_type_impl<std::remove_cvref_t<Vector>, ValueType, N,
+                          std::make_index_sequence<N>>;
 
 template <typename V, typename T, size_t N>
 concept __foreign_vector_type =
