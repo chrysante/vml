@@ -206,6 +206,15 @@ TEST_CASE("vector array conversion", "[vector]") {
     CHECK(s[3] == 4);
 }
 
+TEST_CASE("vector pair conversion", "[vector]") {
+    std::pair<int, int> const t = { 1, 2 };
+    vml::int2 const v = t;
+    CHECK(v == vml::int2{ 1, 2 });
+    std::pair<int, int> const s = v;
+    CHECK(s.first == 1);
+    CHECK(s.second == 2);
+}
+
 TEST_CASE("vector quaternion conversion", "[vector]") {
     vml::quaternion_int const q = { 1, 2, 3, 4 };
     vml::int4 const v = q;
@@ -255,7 +264,7 @@ TEST_CASE("fold(vector)", "[vector]") {
     static_assert(std::is_same_v<decltype(rf), double const>);
 }
 
-TEST_CASE("vector<bool>", "[vector]") {
+TEST_CASE("vector comparisons", "[vector]") {
     int3 const i = { 1, 2, 3 };
     float3 const f = { .1, .2, .3 };
     CHECK((i > f).all());
@@ -293,4 +302,89 @@ TEST_CASE("Conversion from foreign vector and tuple type") {
     MyVec2 w = v;
     CHECK(w.x == 1);
     CHECK(w.y == 2);
+}
+
+namespace {
+
+template <unsigned N>
+struct int_mod {
+    int_mod(unsigned v): value(v % N) {}
+
+    int_mod& operator=(unsigned rhs) { return set_value(rhs); }
+
+    int_mod& operator+=(int_mod rhs) { return set_value(get() + rhs.get()); }
+
+    int_mod& operator-=(int_mod rhs) { return set_value(get() - rhs.get()); }
+
+    int_mod& operator*=(int_mod rhs) { return set_value(get() * rhs.get()); }
+
+    int_mod& operator/=(int_mod rhs) {
+        assert(rhs != 0);
+        return set_value(get() * mod_inverse(rhs.get()));
+    }
+
+    bool operator==(int_mod const&) const = default;
+
+    bool operator==(unsigned rhs) const { return *this == int_mod(rhs); }
+
+    unsigned get() const { return value; }
+
+private:
+    int_mod& set_value(unsigned v) {
+        value = v % N;
+        return *this;
+    }
+
+    std::array<int, 3> gcd_extended(int val, int n) {
+        if (val == 0) return { n, 0, 1 };
+        auto [gcd, x1, y1] = gcd_extended(n % val, val);
+        int x = y1 - (n / val) * x1;
+        int y = x1;
+        return { gcd, x, y };
+    }
+
+    unsigned mod_inverse(unsigned val) {
+        auto [gcd, x, _] = gcd_extended((int)val, N);
+        assert(gcd == 1);
+        int result = (x % (int)N + (int)N) % (int)N;
+        assert(result >= 0);
+        return (unsigned)result;
+    }
+
+    friend std::ostream& operator<<(std::ostream& str, int_mod i) {
+        return str << i.get() << " + " << N << "Z";
+    }
+
+    unsigned value;
+};
+
+template <unsigned N>
+int_mod<N> operator+(int_mod<N> lhs, int_mod<N> rhs) {
+    return lhs += rhs;
+}
+
+template <unsigned N>
+int_mod<N> operator-(int_mod<N> lhs, int_mod<N> rhs) {
+    return lhs -= rhs;
+}
+
+template <unsigned N>
+int_mod<N> operator*(int_mod<N> lhs, int_mod<N> rhs) {
+    return lhs *= rhs;
+}
+
+template <unsigned N>
+int_mod<N> operator/(int_mod<N> lhs, int_mod<N> rhs) {
+    return lhs /= rhs;
+}
+
+} // namespace
+
+template <unsigned N>
+struct vml::is_scalar<int_mod<N>>: std::true_type {};
+
+TEST_CASE("custom scalar type", "[vector]") {
+    using V = vml::vector<int_mod<7>, 3>;
+    CHECK(V{ 3, 4, 5 } * V{ 4, 5, 2 } == V{ 5, 6, 3 });
+    CHECK(V{ 1, 1, 1 } / V{ 4, 5, 2 } == V{ 2, 3, 4 });
 }

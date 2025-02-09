@@ -113,7 +113,7 @@ constexpr bool __is_vector_type_impl = false;
 template <typename Vector, typename T, size_t... I>
 constexpr bool __is_vector_type_constructible = requires(T&& t) {
     Vector{ (I, (T&&)t)... };
-} || requires(ValueType&& t) { Vector((I, (T&&)t)...); };
+} || requires(T&& t) { Vector((I, (T&&)t)...); };
 
 template <typename Vector, typename ValueType, size_t N, size_t... I>
 constexpr bool
