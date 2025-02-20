@@ -280,6 +280,12 @@ TEST_CASE("fmod", "[vector]") {
     CHECK(v.z == 0.3_a);
 }
 
+TEST_CASE("clamp", "[vector]") {
+    float3 v = { 0.5, 1.5, -1.2 };
+    auto w = vml::clamp(v, { 0, 0, 0 }, { 1, 1, 1 });
+    CHECK(w == vml::float3{ 0.5, 1, 0 });
+}
+
 namespace {
 
 struct MyVec2 {

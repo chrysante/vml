@@ -1084,6 +1084,17 @@ __vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
     return map(v, w..., [](auto&&... x) { return _VVML::max(x...); });
 }
 
+template <real_scalar T, real_scalar U = T, real_scalar V = T, size_t Size,
+          vector_options O, vector_options P = O, vector_options Q = O>
+__vml_mathfunction __vml_always_inline __vml_interface_export constexpr vector<
+    __vml_promote(T, U, V), Size, combine(O, P, Q)>
+    clamp(vector<T, Size, O> const& value, vector<U, Size, P> const& min,
+          vector<U, Size, P> const& max) {
+    return map(value, min, max, [](auto&& value, auto&& min, auto&& max) {
+        return value < min ? min : value > max ? max : value;
+    });
+}
+
 template <scalar T, size_t Size, vector_options O>
 __vml_mathfunction __vml_always_inline __vml_interface_export constexpr auto
     abs(vector<T, Size, O> const& a) {
