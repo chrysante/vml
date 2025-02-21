@@ -357,6 +357,16 @@ __vml_mathfunction __vml_interface_export constexpr vector<
 }
 
 template <std::size_t Dim, std::floating_point T, vector_options O,
+          std::floating_point U, vector_options P, std::floating_point V,
+          vector_options Q>
+__vml_mathfunction __vml_interface_export constexpr vector<
+    __vml_promote(T, U, V), Dim, combine(O, P, Q)>
+    lerp(vector<T, Dim, O> const& a, vector<U, Dim, P> const& b,
+         vector<V, Dim, Q> const& t) {
+    return (vector<V, Dim, Q>(1) - t) * a + t * b;
+}
+
+template <std::size_t Dim, std::floating_point T, vector_options O,
           std::floating_point U, vector_options P, real_scalar V>
 __vml_mathfunction __vml_interface_export constexpr vector<
     __vml_promote(T, U, V), Dim, combine(O, P)>

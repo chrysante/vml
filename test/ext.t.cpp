@@ -147,6 +147,12 @@ TEST_CASE("AABB from size") {
     CHECK(rect.size() == vml::float2{ 2, 4 });
 }
 
+TEST_CASE("lerp", "[vector]") {
+    float3 v = { 0.9, 0.5, 0.1 };
+    auto w = vml::lerp(float3{ 0, 0, 0 }, float3{ 1, 1, 1 }, v);
+    CHECK(w == v);
+}
+
 TEST_CASE("slerp", "[quaternion]") {
     using namespace Catch::literals;
     quaternion_double a = vml::make_rotation(0.5, double3{ 1, 0, 0 });
