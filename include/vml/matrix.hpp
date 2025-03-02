@@ -755,6 +755,11 @@ struct matrix: public __matrix_base<T, Rows, Columns, O> {
     {
         return fold(__vml_logical_or);
     }
+    __vml_always_inline __vml_interface_export constexpr bool none() const
+        requires std::convertible_to<T, bool>
+    {
+        return !any();
+    }
     __vml_always_inline __vml_interface_export constexpr auto operator!() const
         requires requires(T&& t) { !t; }
     {

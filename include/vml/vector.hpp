@@ -739,6 +739,11 @@ struct vector: public __vector_base<T, Size, O> {
     {
         return fold(__vml_logical_or);
     }
+    __vml_always_inline __vml_interface_export constexpr bool none() const
+        requires std::convertible_to<T, bool>
+    {
+        return !any();
+    }
 
     __vml_always_inline __vml_interface_export constexpr T& min()
         requires real_scalar<T>
